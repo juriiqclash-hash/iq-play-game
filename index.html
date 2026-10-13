@@ -843,12 +843,12 @@
     end.hidden = false;
     var sc = $('endScores'), btns = $('endBtns'), note = $('endNote');
     btns.innerHTML = ''; sc.innerHTML = ''; note.hidden = true;
-    function block(p, i, win) {
+    function block(p, i, win, iqOverride) {
       var d = el('div', 'pres' + (win ? ' win' : ''));
       var ph = el('div', 'ph'); ph.appendChild(el('div', 'avatar a' + i, initial(p.name)));
       ph.appendChild(el('span', null, p.name + (p.id === myId && mode === 'online' ? ' (du)' : '')));
       if (mode === 'online') ph.appendChild(el('b', null, p.score + ' Pkt.'));
-      var iq = calcIQ(p), row = el('div', 'iq'); row.appendChild(el('span', null, 'Geschätzter IQ'));
+      var iq = iqOverride != null ? iqOverride : calcIQ(p), row = el('div', 'iq'); row.appendChild(el('span', null, 'Geschätzter IQ'));
       var strong = el('strong', null, String(iq)); strong.appendChild(el('small', null, 'IQ')); row.appendChild(strong);
       d.appendChild(ph); d.appendChild(row);
       d.appendChild(el('div', 'meta', avgTxt(p) + ' · ' + (p.misses || 0) + ' Fehler'));
@@ -869,7 +869,13 @@
     $('endTitle').textContent = !winner ? 'Unentschieden' : iWon ? 'True High IQ!' : 'Du wurdest IQ-Gemoggt!';
     $('endText').textContent = !winner ? 'Der Stapel ist leer.' : iWon ? 'Du hast gewonnen!' : 'Du hast verloren!';
     if (left) { note.textContent = st.last.pid === myId ? 'Du hast das Spiel verlassen.' : 'Dein Gegner hat das Spiel verlassen.'; note.hidden = false; }
-    st.players.forEach(function (p, i) { sc.appendChild(block(p, i, winner && winner.id === p.id)); });
+    // Der Gewinner hat immer den höheren IQ
+    var iqs = st.players.map(calcIQ);
+    if (winner && st.players.length === 2) {
+      var w = st.players[0].id === winner.id ? 0 : 1, o = 1 - w;
+      if (iqs[w] <= iqs[o]) { iqs[w] = Math.min(180, iqs[o] + 1); if (iqs[w] <= iqs[o]) iqs[o] = iqs[w] - 1; }
+    }
+    st.players.forEach(function (p, i) { sc.appendChild(block(p, i, winner && winner.id === p.id, iqs[i])); });
     var host = st.players[0].id === myId;
     if (host && st.players.length === 2 && !left) {
       addBtn(btns, 'Revanche', true, hostStart);

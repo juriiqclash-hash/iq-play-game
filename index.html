@@ -438,12 +438,12 @@
   // Geschätzter IQ: 180 bei Ø 2,5 s pro Set ohne Fehler (menschliches Limit), langsamer = weniger, jeder Fehler −8
   function calcIQ(p) {
     var tn = p.tn || 0, miss = p.misses || 0;
-    if (!tn && !miss) return null;
-    var iq = tn ? 180 - 35 * Math.log(Math.max((p.tsum / tn) / 1000, 2.5) / 2.5) : 60;
+    var t = tn ? p.tsum / tn / 1000 : 60;   // ohne Set zählt als Ø 60 s
+    var iq = 180 - 35 * Math.log(Math.max(t, 2.5) / 2.5);
     iq -= 8 * miss;
     return Math.round(Math.max(40, Math.min(180, iq)));
   }
-  function avgTxt(p) { return p.tn ? 'Ø ' + (p.tsum / p.tn / 1000).toFixed(1).replace('.', ',') + ' s pro Set' : 'noch kein Set'; }
+  function avgTxt(p) { return p.tn ? 'Ø ' + (p.tsum / p.tn / 1000).toFixed(1).replace('.', ',') + ' s pro Set' : 'kein Set gefunden'; }
 
   /* ---------- Kartendarstellung (unverändert) ---------- */
   var squiggle = (function () {
@@ -767,7 +767,7 @@
     tableEl.replaceChildren.apply(tableEl, nodes);
     prevBoard = st.board.slice();
     var key = st.board.join(',');
-    if (key !== boardKey) { boardKey = key; roundStart = Date.now(); }
+    if (key !== boardKey) { boardKey = key; roundStart = Date.now(); cheatOn = false; }
     fitBoard(); applyCheat();
     renderEnd();
   }
@@ -820,7 +820,7 @@
       ph.appendChild(el('span', null, p.name + (p.id === myId && mode === 'online' ? ' (du)' : '')));
       if (mode === 'online') ph.appendChild(el('b', null, p.score + ' Pkt.'));
       var iq = calcIQ(p), row = el('div', 'iq'); row.appendChild(el('span', null, 'Geschätzter IQ'));
-      var strong = el('strong', null, iq === null ? '–' : String(iq)); strong.appendChild(el('small', null, 'IQ')); row.appendChild(strong);
+      var strong = el('strong', null, String(iq)); strong.appendChild(el('small', null, 'IQ')); row.appendChild(strong);
       d.appendChild(ph); d.appendChild(row);
       d.appendChild(el('div', 'meta', avgTxt(p) + ' · ' + (p.misses || 0) + ' Fehler'));
       return d;

@@ -174,8 +174,9 @@
   #s-game .stage { padding: 8px; border-radius: 20px; }
 
   .sheet > * { flex-shrink: 0; }
-  .sheet .btns { display: flex; flex-direction: column; gap: 12px; }
-  .sheet .btns .btn { flex: none; }
+  .sheet .btns { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  .sheet .btns .btn { margin: 0; }
+  .sheet .btns .btn + .btn { margin-top: 2px; }
   .stage { position: relative; }
   .stage .table { transition: filter .3s; }
   .stage.counting .table { filter: blur(18px); pointer-events: none; }
@@ -914,13 +915,17 @@
     // Online: atomar per Versionsprüfung eintragen
     var r = await mutate(function (s) { return applyMove(s, myId, picked, ms); });
     busy = false; sel = [];
+    renderGame();   // Auswahl zurücksetzen
+    if (!ok && r.ok) picked.forEach(function (p) {
+      var n = cardNode(p); if (n) { n.classList.add('bad'); setTimeout(function () { n.classList.remove('bad'); }, 450); }
+    });
     if (r.ok) {
       setMsg(ok ? 'Set gefunden! +1' : 'Das ist kein Set. −1', ok ? 'good' : 'bad');
       flashPlayer(myId, ok);
     } else if (r.reason === 'invalid') {
-      setMsg('Zu spät! Diese Karten sind schon weg.', 'bad'); renderGame();
+      setMsg('Zu spät! Diese Karten sind schon weg.', 'bad');
     } else {
-      setMsg('Verbindungsproblem, bitte nochmal.', 'bad'); renderGame();
+      setMsg('Verbindungsproblem, bitte nochmal.', 'bad');
     }
   }
 

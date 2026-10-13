@@ -154,7 +154,24 @@
   .msg.bad { color: var(--bad); background: #fdecee; border-color: #f4bcc2; }
 
   .stage { background: #fff; box-shadow: 0 8px 24px -14px rgba(0,0,0,.12); border: 1px solid var(--line); border-radius: 26px; padding: 12px; flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .table { display: grid; gap: 10px; justify-content: center; align-content: center; }
+  .table { display: grid; gap: 8px; justify-content: center; align-content: center; }
+
+  /* kompaktes Spiel-UI, damit das Spielfeld maximal Platz hat */
+  #s-game { gap: 8px; }
+  #s-game .topbar .iconbtn { width: 36px; height: 36px; border-radius: 11px; font-size: 16px; }
+  #s-game .chip { padding: 5px 12px; } #s-game .chip b { font-size: 13px; }
+  #s-game button.btn.sm { padding: 7px 12px; font-size: 13px; }
+  #s-game .vs { gap: 8px; }
+  #s-game .pcard { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 10px; padding: 7px 12px; border-radius: 15px; }
+  #s-game .pcard .track { grid-column: 1 / -1; height: 4px; }
+  #s-game .pcard .pt { font-size: 30px; }
+  #s-game .pcard .avatar { width: 26px; height: 26px; border-radius: 9px; font-size: 12px; }
+  #s-game .mid b { font-size: 20px; } #s-game .mid { font-size: 9px; }
+  #s-game .stats { gap: 8px; }
+  #s-game .stat { padding: 5px 12px; border-radius: 12px; min-width: 60px; }
+  #s-game .stat dt { font-size: 9px; } #s-game .stat dd { font-size: 17px; margin: 0; }
+  #s-game .msg { min-height: 28px; padding: 3px 14px; font-size: 13px; }
+  #s-game .stage { padding: 8px; border-radius: 20px; }
 
   /* Spielkarten – unverändert */
   .card { display: block; width: 100%; aspect-ratio: 3 / 2; padding: 0; background: var(--card); border: 1px solid var(--card-line); border-radius: 10px; cursor: pointer;
@@ -201,7 +218,6 @@
   @keyframes fan3 { from { transform: translateX(-50%) translateY(14px); opacity: 0; } }
   @media (max-width: 420px) {
     .logo { font-size: 50px; } .codebig { font-size: 44px; }
-    .pcard .pt { font-size: 44px; }
     .slot { padding: 10px; gap: 10px; } .slot .avatar { width: 34px; height: 34px; font-size: 15px; }
   }
   @media (max-height: 760px) {
@@ -210,10 +226,10 @@
     .glass { padding: 14px; gap: 10px; }
     .codebig { font-size: 40px; } .logo { font-size: 48px; }
     .fan { height: 96px; transform: scale(.85); margin-bottom: 0; }
-    .pcard { padding: 8px 12px; gap: 6px; } .pcard .pt { font-size: 38px; }
-    button.btn { padding: 12px 18px; } .stat { padding: 7px 12px; } .stat dd { font-size: 20px; }
+    button.btn { padding: 12px 18px; }
     .sheet { padding: 20px 18px 18px; gap: 12px; }
   }
+  @media (max-width: 520px) { body { padding-left: 8px; padding-right: 8px; } #s-game .stage { padding: 6px; border-radius: 16px; } }
   @media (max-height: 620px) { .fan { display: none; } .msg { min-height: 30px; padding: 4px 12px; } }
   @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
@@ -760,11 +776,11 @@
   function fitBoard() {
     var stage = $('stage'), t = $('table'), n = st ? st.board.length : 0;
     if (!n) return;
-    var cs = getComputedStyle(stage), gap = 10;
-    var w = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 8;
-    var h = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 8;
+    var cs = getComputedStyle(stage), gap = 8;
+    var w = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    var h = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 6;
     if (w <= 0 || h <= 0) return;
-    function size(c, r) { return Math.min((w - gap * (c - 1)) / c, (h - gap * (r - 1)) / r * 1.5, 210); }
+    function size(c, r) { return Math.min((w - gap * (c - 1)) / c, (h - gap * (r - 1)) / r * 1.5, 260); }
     var cols = Math.ceil(n / 3);
     var A = size(3, cols), B = size(cols, 3);   // A: 3 Spalten, B: 3 Reihen
     var useB = B > A, cw = Math.max(40, Math.floor(useB ? B : A));
@@ -775,22 +791,22 @@
   if (window.ResizeObserver) new ResizeObserver(function () { if (st && !$('s-game').hidden) fitBoard(); }).observe($('stage'));
   window.addEventListener('resize', function () { if (st && !$('s-game').hidden) fitBoard(); });
 
-  /* ---------- Cheat-Menü: Ctrl+Shift+A+0 ---------- */
+  /* ---------- Cheat-Menü: dreimal schnell die 9 ---------- */
   function applyCheat() {
     var ids = (cheatOn && st && st.status === 'playing') ? findSet(st.board) || [] : [];
     $('table').querySelectorAll('.card').forEach(function (c) { c.classList.toggle('cheat', ids.indexOf(Number(c.dataset.id)) >= 0); });
   }
-  var keysDown = {};
+  var nines = [];
   window.addEventListener('keydown', function (e) {
-    if (!(e.ctrlKey && e.shiftKey)) return;
-    keysDown[e.code] = true;
-    if (e.code === 'KeyA' || e.code === 'Digit0' || e.code === 'Numpad0') {
-      e.preventDefault();
-      if (!e.repeat && keysDown.KeyA && (keysDown.Digit0 || keysDown.Numpad0)) { cheatOn = !cheatOn; applyCheat(); }
-    }
+    if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
+    var t = e.target && e.target.tagName;
+    if (t === 'INPUT' || t === 'TEXTAREA') return;
+    if (e.key !== '9') { nines = []; return; }
+    var now = Date.now();
+    nines = nines.filter(function (x) { return now - x < 1000; });
+    nines.push(now);
+    if (nines.length >= 3) { nines = []; cheatOn = !cheatOn; applyCheat(); }
   });
-  window.addEventListener('keyup', function (e) { delete keysDown[e.code]; });
-  window.addEventListener('blur', function () { keysDown = {}; });
 
   function renderEnd() {
     var end = $('end');

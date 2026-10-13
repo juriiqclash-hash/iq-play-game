@@ -173,6 +173,16 @@
   #s-game .msg { min-height: 28px; padding: 3px 14px; font-size: 13px; }
   #s-game .stage { padding: 8px; border-radius: 20px; }
 
+  .sheet > * { flex-shrink: 0; }
+  .sheet .btns { display: flex; flex-direction: column; gap: 12px; }
+  .sheet .btns .btn { flex: none; }
+  .stage { position: relative; }
+  .stage .table { transition: filter .3s; }
+  .stage.counting .table { filter: blur(18px); pointer-events: none; }
+  .count { position: absolute; inset: 0; display: grid; place-items: center; font: 800 min(32vh, 160px)/1 var(--font-display); color: var(--ink); pointer-events: none; }
+  .count span { animation: pop .9s ease-out forwards; }
+  @keyframes pop { 0% { opacity: 0; transform: scale(1.6); } 25% { opacity: 1; transform: scale(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: scale(.85); } }
+
   /* Spielkarten – unverändert */
   .card { display: block; width: 100%; aspect-ratio: 3 / 2; padding: 0; background: var(--card); border: 1px solid var(--card-line); border-radius: 10px; cursor: pointer;
     box-shadow: 0 1px 0 rgba(0,0,0,.08), 0 3px 8px rgba(20,30,40,.14); outline: 3px solid transparent; outline-offset: 2px;
@@ -332,7 +342,7 @@
       <div class="stat"><dt>Zeit</dt><dd id="sTime">0:00</dd></div>
     </dl>
     <p id="msg" class="msg" role="status" aria-live="polite"></p>
-    <div class="stage" id="stage"><div id="table" class="table"></div></div>
+    <div class="stage" id="stage"><div id="table" class="table"></div><div class="count" id="count" hidden></div></div>
 
     <div id="end" class="modal" hidden>
       <div class="sheet">
@@ -481,7 +491,7 @@
   /* ---------- Zustand ---------- */
   var mode = null;            // 'solo' | 'online'
   var st = null;
-  var sel = [], busy = false, prevBoard = [], hintId = null, boardKey = '', roundStart = Date.now(), cheatOn = false;
+  var sel = [], busy = false, prevBoard = [], hintId = null, boardKey = '', roundStart = Date.now(), cheatOn = false, counting = false, cdTimer = null;
   var soloStart = 0, soloHints = 0, soloTimer = null;
   var sb = null, channel = null, pollTimer = null, online = {};
   var cfg = window.SUPABASE_CONFIG || {};
@@ -514,8 +524,8 @@
     soloStart = Date.now(); clearInterval(soloTimer);
     $('sTime').textContent = '0:00';
     soloTimer = setInterval(function () { if (st && st.status === 'playing') $('sTime').textContent = fmt(Math.floor((Date.now() - soloStart) / 1000)); }, 1000);
-    setMsg('Wähle drei Karten, die zusammen ein Set bilden.', '');
-    show('game'); renderGame();
+    setMsg('Mach dich bereit …', '');
+    show('game'); renderGame(); startCountdown();
   }
 
   /* ---------- Online: DB ---------- */
@@ -584,7 +594,7 @@
     mode = 'online'; st = row; sel = []; prevBoard = []; busy = false;
     lsSet('set_lobby', row.code);
     subscribe(row.code);
-    routeState(true);
+    routeState(false);
   }
 
   function subscribe(code) {
@@ -631,7 +641,7 @@
     if (st.status === 'waiting') {
       show('lobby'); renderLobby(); $('end').hidden = true;
     } else {
-      if (force && st.status === 'playing') { sel = []; prevBoard = []; hintId = null; setMsg('Los! Wer findet zuerst ein Set?', ''); }
+      if (force && st.status === 'playing') { sel = []; prevBoard = []; hintId = null; setMsg('Mach dich bereit …', ''); startCountdown(); }
       if ($('s-game').hidden) show('game');
       renderGame();
     }
@@ -711,7 +721,7 @@
     toStart();
   }
   function toStart() {
-    unsubscribe(); clearInterval(soloTimer); lsSet('set_lobby', null);
+    stopCountdown(); unsubscribe(); clearInterval(soloTimer); lsSet('set_lobby', null);
     mode = null; st = null; sel = []; $('end').hidden = true; show('start');
   }
   $('bLeave').addEventListener('click', leaveOnline);
@@ -791,9 +801,27 @@
   if (window.ResizeObserver) new ResizeObserver(function () { if (st && !$('s-game').hidden) fitBoard(); }).observe($('stage'));
   window.addEventListener('resize', function () { if (st && !$('s-game').hidden) fitBoard(); });
 
+  /* ---------- Countdown 3-2-1 vor jedem Spiel ---------- */
+  function stopCountdown() {
+    clearTimeout(cdTimer); counting = false;
+    $('stage').classList.remove('counting'); $('count').hidden = true;
+  }
+  function startCountdown() {
+    stopCountdown(); counting = true; cheatOn = false; sel = [];
+    $('stage').classList.add('counting');
+    var seq = ['3', '2', '1', 'Los!'], i = 0, c = $('count');
+    c.hidden = false;
+    (function tick() {
+      if (i >= seq.length) { stopCountdown(); roundStart = Date.now(); if (mode === 'solo') soloStart = Date.now(); setMsg('Wer findet zuerst ein Set?', ''); return; }
+      c.innerHTML = ''; c.appendChild(el('span', null, seq[i]));
+      var last = i === seq.length - 1; i++;
+      cdTimer = setTimeout(tick, last ? 600 : 900);
+    })();
+  }
+
   /* ---------- Cheat-Menü: dreimal schnell die 9 ---------- */
   function applyCheat() {
-    var ids = (cheatOn && st && st.status === 'playing') ? findSet(st.board) || [] : [];
+    var ids = (cheatOn && !counting && st && st.status === 'playing') ? findSet(st.board) || [] : [];
     $('table').querySelectorAll('.card').forEach(function (c) { c.classList.toggle('cheat', ids.indexOf(Number(c.dataset.id)) >= 0); });
   }
   var nines = [];
@@ -801,7 +829,7 @@
     if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
     var t = e.target && e.target.tagName;
     if (t === 'INPUT' || t === 'TEXTAREA') return;
-    if (e.key !== '9') { nines = []; return; }
+    if (counting || e.key !== '9') { nines = []; return; }
     var now = Date.now();
     nines = nines.filter(function (x) { return now - x < 1000; });
     nines.push(now);
@@ -863,7 +891,7 @@
   });
 
   async function onPick(id) {
-    if (busy || !st || st.status !== 'playing') return;
+    if (busy || counting || !st || st.status !== 'playing') return;
     clearHint();
     var i = sel.indexOf(id), node = cardNode(id);
     if (i >= 0) { sel.splice(i, 1); node.setAttribute('aria-pressed', 'false'); return; }
@@ -897,7 +925,7 @@
   }
 
   $('bHint').addEventListener('click', function () {
-    if (busy || !st || st.status !== 'playing') return;
+    if (busy || counting || !st || st.status !== 'playing') return;
     clearHint();
     var s = findSet(st.board); soloHints++;
     if (!s) return;

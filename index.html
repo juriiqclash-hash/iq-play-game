@@ -898,7 +898,7 @@
     if (busy || counting || !st || st.status !== 'playing') return;
     clearHint();
     var i = sel.indexOf(id), node = cardNode(id);
-    if (i >= 0) { sel.splice(i, 1); node.setAttribute('aria-pressed', 'false'); return; }
+    if (i >= 0) { sel.splice(i, 1); node.setAttribute('aria-pressed', 'false'); setMsg(sel.length ? sel.length + ' von 3 Karten gewählt' : '', ''); return; }
     sel.push(id); node.setAttribute('aria-pressed', 'true');
     if (sel.length < 3) { setMsg(sel.length + ' von 3 Karten gewählt', ''); return; }
 

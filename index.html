@@ -583,7 +583,7 @@
     <button class="modecard" id="bClassic" type="button"><b data-i18n="solo.classic">Klassisch</b><span data-i18n="solo.classicText">Alle Karten, so schnell du kannst</span></button>
     <div class="modecard"><b data-i18n="solo.attack">Zeitattacke</b><span data-i18n="solo.attackText">So viele Sets wie möglich vor Ablauf der Zeit</span>
       <div class="opts t3" id="atkOpts"></div>
-      <button class="btn primary block" id="bAttackGo" type="button" data-i18n="solo.start">Start</button></div>
+      <button class="btn primary block" id="bAttackGo" type="button" hidden data-i18n="solo.start">Start</button></div>
     <div class="btns"><button class="btn block ghost" id="bSoloCancel" type="button" data-i18n="mode.cancel">Abbrechen</button></div>
   </div>
 </div>
@@ -830,20 +830,21 @@
   $('name').value = lsGet('set_name') || '';
   syncAvatar();
   $('name').addEventListener('input', function () { lsSet('set_name', $('name').value.trim()); syncAvatar(); });
-  var ATTACK_LENS = [30, 60, 120];
+  var ATTACK_LENS = [30, 60, 120], atkPick = null;
   function atkLen() { var v = parseInt(lsGet('set_attack_len'), 10); return ATTACK_LENS.indexOf(v) >= 0 ? v : 60; }
   function renderAtkOpts() {
-    var box = $('atkOpts'), cur = atkLen(), a = (loadStats().solo.attack) || {}; box.innerHTML = '';
+    var box = $('atkOpts'), cur = atkPick, a = (loadStats().solo.attack) || {}; box.innerHTML = '';
+    $('bAttackGo').hidden = !cur;   // Start erst nach Zeitauswahl
     ATTACK_LENS.forEach(function (n) {
       var b = el('button', 'opt' + (n === cur ? ' on' : ''), n + ' s'); b.type = 'button';
       b.appendChild(el('small', null, T('attack.best', { n: a[n] && a[n].best != null ? a[n].best : '–' })));
-      b.addEventListener('click', function () { lsSet('set_attack_len', String(n)); renderAtkOpts(); });
+      b.addEventListener('click', function () { atkPick = n; renderAtkOpts(); });
       box.appendChild(b);
     });
   }
-  $('bSolo').addEventListener('click', function () { lsSet('set_name', myName()); renderAtkOpts(); $('soloModal').hidden = false; });
+  $('bSolo').addEventListener('click', function () { lsSet('set_name', myName()); atkPick = null; renderAtkOpts(); $('soloModal').hidden = false; });
   $('bClassic').addEventListener('click', function () { $('soloModal').hidden = true; go('/solo'); });
-  $('bAttackGo').addEventListener('click', function () { $('soloModal').hidden = true; go('/zeitattacke/' + atkLen()); });
+  $('bAttackGo').addEventListener('click', function () { $('soloModal').hidden = true; if (atkPick) go('/zeitattacke/' + atkPick); });
   $('bSoloCancel').addEventListener('click', function () { $('soloModal').hidden = true; });
   $('soloModal').addEventListener('click', function (e) { if (e.target === this) this.hidden = true; });
   $('bMulti').addEventListener('click', function () {

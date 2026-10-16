@@ -196,8 +196,6 @@
   .sw.on { border-color: var(--ink); }
   .langs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .langs .opt { font: 600 14px var(--font-body); padding: 10px 4px; }
-  @media (max-width: 540px) { .narrow .topbar { padding-left: 50px; } }
-  #s-multi > :first-child, #s-lobby > :first-child { margin-top: 0; }
 
   /* Modi: Popup, Teams, Mehrspieler-Anzeige */
   .sheet.picker { text-align: left; max-width: 440px; }
@@ -661,7 +659,7 @@
 
   /* ---------- Screens ---------- */
   var SCREENS = ['start', 'multi', 'lobby', 'game'];
-  function show(name) { SCREENS.forEach(function (n) { $('s-' + n).hidden = n !== name; }); $('gSettings').hidden = name === 'game'; window.scrollTo(0, 0); }
+  function show(name) { SCREENS.forEach(function (n) { $('s-' + n).hidden = n !== name; }); $('gSettings').hidden = name !== 'start'; window.scrollTo(0, 0); }
 
   /* ---------- Zustand ---------- */
   var mode = null;            // 'solo' | 'online'

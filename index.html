@@ -1192,6 +1192,17 @@
     $('endTitle').textContent = !hasWin ? 'Unentschieden' : iWon ? 'True High IQ!' : 'Du wurdest IQ-Gemoggt!';
     var wname = '';
     if (hasWin && !teams) { var wp = st.players.filter(function (p) { return p.id === st.winner; })[0]; wname = wp ? wp.name : ''; }
+    var placement = !teams && st.players.length > 2 && meP;
+    if (placement) {
+      var better = st.players.filter(function (o) { return o !== meP && (o.score > meP.score || (o.score === meP.score && isWinnerP(st, o) && !isWinnerP(st, meP))); }).length;
+      var rank = better + 1, total = st.players.length;
+      $('endTitle').textContent = '#' + rank;
+      $('endText').textContent = rank === 1 && iWon ? 'True High IQ! Du hast gewonnen!'
+        : rank === total ? 'Letzter Platz – du wurdest IQ-Gemoggt.'
+        : rank === 2 ? 'So knapp! Nur einer war schneller.'
+        : rank === 3 ? 'Podium! Aber da geht noch mehr.'
+        : 'Mittelfeld – mehr Speed bitte.';
+    } else
     $('endText').textContent = !hasWin ? 'Der Stapel ist leer.'
       : teams ? (iWon ? 'Dein Team hat gewonnen!' : 'Dein Team hat verloren!')
       : iWon ? 'Du hast gewonnen!' : (many && wname ? wname + ' hat gewonnen. Du hast verloren!' : 'Du hast verloren!');

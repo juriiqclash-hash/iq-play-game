@@ -772,8 +772,8 @@
     $('s-game').classList.toggle('solo', solo);
     $('soloBar').hidden = !solo;
     var sec = $('s-game');
-    if (solo && $('soloBar').nextElementSibling !== $('end')) sec.insertBefore($('soloBar'), $('end'));   // Stats unten
-    if (!solo && $('soloBar').nextElementSibling === $('end')) sec.insertBefore($('soloBar'), $('msg'));
+    if (solo && $('soloBar').nextElementSibling !== $('stage')) sec.insertBefore($('soloBar'), $('stage'));   // Stats unter der Kopfzeile
+    if (!solo && $('soloBar').nextElementSibling === $('stage')) sec.insertBefore($('soloBar'), $('msg'));
     $('msg').hidden = mode === 'solo';   // Solo: kein Statustext, Spielfeld nutzt den Platz
     $('bHint').hidden = mode !== 'solo';
     $('gChip').innerHTML = mode === 'online' ? 'Lobby <b>' + st.code + '</b>' : 'Solo';

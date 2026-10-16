@@ -169,6 +169,18 @@
   .stage { background: #fff; box-shadow: 0 8px 24px -14px rgba(0,0,0,.12); border: 1px solid var(--line); border-radius: 26px; padding: 12px; flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
   .table { display: grid; gap: 8px; justify-content: center; align-content: center; }
 
+  .seg { display: grid; grid-template-columns: 1fr 1fr; background: var(--surface-2); border-radius: 13px; padding: 4px; gap: 4px; }
+  .seg button { font: 600 14px var(--font-body); border: 0; background: transparent; border-radius: 10px; padding: 9px; cursor: pointer; color: var(--muted); }
+  .seg button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .tile { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 10px 6px; text-align: center; }
+  .tile b { display: block; font: 800 24px/1.1 var(--font-display); font-variant-numeric: tabular-nums; }
+  .tile span { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+  .tile.hero { grid-column: 1 / -1; background: var(--ink); color: #fff; } .tile.hero span { color: #bbb; } .tile.hero b { font-size: 40px; }
+  .mrow { display: flex; justify-content: space-between; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); font-weight: 600; font-size: 14px; }
+  .mrow span:last-child { color: var(--muted); font-weight: 500; }
+  #statsBody { display: flex; flex-direction: column; gap: 8px; }
+
   /* Modi: Popup, Teams, Mehrspieler-Anzeige */
   .sheet.picker { text-align: left; max-width: 440px; }
   .sheet.picker .title { text-align: center; }
@@ -334,6 +346,7 @@
       </div>
       <button class="btn primary block" id="bMulti" type="button">Multiplayer</button>
       <button class="btn block" id="bSolo" type="button">Solo spielen</button>
+      <button class="btn block ghost" id="bStats" type="button">Stats</button>
     </div>
   </section>
 
@@ -420,6 +433,15 @@
   </section>
 </div>
 
+<div id="statsModal" class="modal" hidden>
+  <div class="sheet picker" role="dialog" aria-label="Stats">
+    <h2 class="title">Deine Stats</h2>
+    <div class="seg"><button type="button" class="on" data-tab="mp">Multiplayer</button><button type="button" data-tab="solo">Solo</button></div>
+    <div id="statsBody"></div>
+    <p class="muted" style="font-size:12px;text-align:center">Gespeichert in diesem Browser.</p>
+    <div class="btns"><button class="btn primary block" id="bStatsClose" type="button">Schließen</button><button class="btn block ghost" id="bStatsReset" type="button">Zurücksetzen</button></div>
+  </div>
+</div>
 <div id="modeModal" class="modal" hidden>
   <div class="sheet picker" role="dialog" aria-label="Spielmodus">
     <h2 class="title">Spielmodus</h2>
@@ -685,6 +707,62 @@
 
   function genCode() { return String(Math.floor(100000 + Math.random() * 900000)); }
 
+  /* ---------- Stats (lokal gespeichert) ---------- */
+  function emptyStats() {
+    return { solo: { games: 0, sets: 0, misses: 0, hints: 0, bestTime: null, iqSum: 0, iqBest: 0 },
+      mp: { games: 0, wins: 0, losses: 0, draws: 0, sets: 0, misses: 0, iqSum: 0, iqBest: 0, streak: 0, bestStreak: 0, tsum: 0, tn: 0, modes: {} } };
+  }
+  function loadStats() {
+    try { var o = JSON.parse(lsGet('set_stats')); if (o && o.solo && o.mp) return o; } catch (e) {}
+    return emptyStats();
+  }
+  function saveStats(o) { lsSet('set_stats', JSON.stringify(o)); }
+  function recordSolo(p, ms) {
+    var o = loadStats(), t = o.solo, iq = calcIQ(p);
+    t.games++; t.sets += p.sets; t.misses += p.misses; t.hints += soloHints; t.iqSum += iq; t.iqBest = Math.max(t.iqBest, iq);
+    if (t.bestTime == null || ms < t.bestTime) t.bestTime = ms;
+    saveStats(o);
+  }
+  function recordOnline(row) {
+    var mine = row.players.filter(function (p) { return p.id === myId; })[0];
+    if (!mine || mine.left) return;
+    var o = loadStats(), t = o.mp, iq = calcIQ(mine), kind = isTeams(row) ? 'teams' : row.players.length === 2 ? '1v1' : 'ffa';
+    var won = isWinnerP(row, mine), draw = row.winner == null;
+    t.games++; t.sets += mine.sets; t.misses += mine.misses; t.tsum += mine.tsum || 0; t.tn += mine.tn || 0; t.iqSum += iq; t.iqBest = Math.max(t.iqBest, iq);
+    if (draw) { t.draws++; } else if (won) { t.wins++; t.streak++; t.bestStreak = Math.max(t.bestStreak, t.streak); } else { t.losses++; t.streak = 0; }
+    var m = t.modes[kind] || (t.modes[kind] = { g: 0, w: 0 }); m.g++; if (won && !draw) m.w++;
+    saveStats(o);
+  }
+  var statsTab = 'mp';
+  function renderStats() {
+    var o = loadStats(), body = $('statsBody'); body.innerHTML = '';
+    document.querySelectorAll('.seg button').forEach(function (b) { b.classList.toggle('on', b.dataset.tab === statsTab); });
+    function tile(box, val, label, hero) { var t = el('div', 'tile' + (hero ? ' hero' : '')); t.appendChild(el('b', null, String(val))); t.appendChild(el('span', null, label)); box.appendChild(t); }
+    var grid = el('div', 'tiles'); body.appendChild(grid);
+    function avg(sum, n) { return n ? Math.round(sum / n) : '–'; }
+    if (statsTab === 'mp') {
+      var t = o.mp;
+      tile(grid, t.wins, 'Siege', true);
+      tile(grid, t.games, 'Spiele'); tile(grid, t.games ? Math.round(t.wins / t.games * 100) + '%' : '–', 'Siegquote'); tile(grid, t.losses, 'Niederlagen');
+      tile(grid, t.bestStreak, 'Beste Serie'); tile(grid, avg(t.iqSum, t.games), 'Ø IQ'); tile(grid, t.iqBest || '–', 'Bester IQ');
+      tile(grid, t.sets, 'Sets'); tile(grid, t.misses, 'Fehler'); tile(grid, t.tn ? (t.tsum / t.tn / 1000).toFixed(1).replace('.', ',') + ' s' : '–', 'Ø Zeit/Set');
+      [['1v1', '1v1'], ['teams', 'Teams'], ['ffa', 'Jeder gegen jeden']].forEach(function (k) {
+        var m = t.modes[k[0]]; if (!m) return;
+        var row = el('div', 'mrow'); row.appendChild(el('span', null, k[1])); row.appendChild(el('span', null, m.w + ' Siege · ' + m.g + ' Spiele')); body.appendChild(row);
+      });
+    } else {
+      var q = o.solo;
+      tile(grid, q.games, 'Spiele', true);
+      tile(grid, q.bestTime == null ? '–' : fmt(Math.round(q.bestTime / 1000)), 'Beste Zeit'); tile(grid, avg(q.iqSum, q.games), 'Ø IQ'); tile(grid, q.iqBest || '–', 'Bester IQ');
+      tile(grid, q.sets, 'Sets'); tile(grid, q.misses, 'Fehler'); tile(grid, q.hints, 'Tipps');
+    }
+  }
+  $('bStats').addEventListener('click', function () { renderStats(); $('statsModal').hidden = false; });
+  $('bStatsClose').addEventListener('click', function () { $('statsModal').hidden = true; });
+  $('statsModal').addEventListener('click', function (e) { if (e.target === this) this.hidden = true; });
+  document.querySelectorAll('.seg button').forEach(function (b) { b.addEventListener('click', function () { statsTab = b.dataset.tab; renderStats(); }); });
+  $('bStatsReset').addEventListener('click', function () { if (window.confirm('Alle Stats zurücksetzen?')) { saveStats(emptyStats()); renderStats(); } });
+
   /* ---------- Modus-Popup ---------- */
   var MODES = { teams: [{ kind: 'ffa', n: 2 }, { kind: 'teams', teams: 2, size: 2 }, { kind: 'teams', teams: 2, size: 3 }, { kind: 'teams', teams: 2, size: 4 }, { kind: 'teams', teams: 2, size: 5 }], ffa: [] };
   for (var fn = 3; fn <= 10; fn++) MODES.ffa.push({ kind: 'ffa', n: fn });
@@ -809,6 +887,7 @@
         setTimeout(function () { flashPlayer(who.id, row.last.ok); }, 0);
       }
     }
+    if (old.status !== 'finished' && row.status === 'finished') recordOnline(row);
     routeState(old.status !== row.status);
   }
 
@@ -1183,7 +1262,9 @@
       setTimeout(function () {
         var next = applyMove(clone(st), myId, picked, ms);
         sel = []; busy = false;
+        var wasOver = st.status === 'finished';
         if (next) st = next;
+        if (!wasOver && st.status === 'finished') recordSolo(st.players[0], Date.now() - soloStart);
         renderGame();
       }, 450);
       return;

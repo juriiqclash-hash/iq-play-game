@@ -185,6 +185,15 @@
   .count span { animation: pop .9s ease-out forwards; }
   @keyframes pop { 0% { opacity: 0; transform: scale(1.6); } 25% { opacity: 1; transform: scale(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: scale(.85); } }
 
+  /* Solo: alles in einer Zeile, weiße Fläche nur um die Karten */
+  #s-game.solo .topbar { gap: 8px; }
+  #s-game.solo .topbar .stats { flex: 1; min-width: 0; gap: 6px; flex-wrap: nowrap; }
+  #s-game.solo .stat { min-width: 0; padding: 3px 10px; }
+  #s-game.solo .stat dd { font-size: 16px; }
+  #s-game.solo .stage { background: none; border: 0; box-shadow: none; padding: 0; border-radius: 0; }
+  #s-game.solo .table { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 8px; box-shadow: 0 8px 24px -14px rgba(0,0,0,.12); }
+  #s-game.solo .table, #s-game.solo .stage { align-content: center; }
+
   /* Spielkarten – unverändert */
   .card { display: block; width: 100%; aspect-ratio: 3 / 2; padding: 0; background: var(--card); border: 1px solid var(--card-line); border-radius: 10px; cursor: pointer;
     box-shadow: 0 1px 0 rgba(0,0,0,.08), 0 3px 8px rgba(20,30,40,.14); outline: 3px solid transparent; outline-offset: 2px;
@@ -760,7 +769,12 @@
 
   function renderGame() {
     renderScoreboard();
-    $('soloBar').hidden = mode !== 'solo';
+    var solo = mode === 'solo';
+    $('s-game').classList.toggle('solo', solo);
+    $('soloBar').hidden = !solo;
+    $('gChip').hidden = solo;
+    var tb = document.querySelector('#s-game .topbar');
+    if (solo && $('soloBar').parentNode !== tb) tb.insertBefore($('soloBar'), $('bHint'));
     $('msg').hidden = mode === 'solo';   // Solo: kein Statustext, Spielfeld nutzt den Platz
     $('bHint').hidden = mode !== 'solo';
     $('gChip').innerHTML = mode === 'online' ? 'Lobby <b>' + st.code + '</b>' : 'Solo';
@@ -790,9 +804,9 @@
   function fitBoard() {
     var stage = $('stage'), t = $('table'), n = st ? st.board.length : 0;
     if (!n) return;
-    var cs = getComputedStyle(stage), gap = 8;
-    var w = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-    var h = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 6;
+    var cs = getComputedStyle(stage), gap = 8, pad = (mode === 'solo') ? 18 : 0;
+    var w = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - pad;
+    var h = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 6 - pad;
     if (w <= 0 || h <= 0) return;
     function size(c, r) { return Math.min((w - gap * (c - 1)) / c, (h - gap * (r - 1)) / r * 1.5, 320); }
     var cols = Math.ceil(n / 3);

@@ -5,6 +5,7 @@
   // Deep-Links auf GitHub Pages (404.html leitet nach ?/pfad um)
   try { var th = localStorage.getItem('set_theme'); if (th) document.documentElement.setAttribute('data-theme', th);
     var md = localStorage.getItem('set_mode'); if (md === 'dark' || (md === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.setAttribute('data-mode', 'dark'); } catch (e) {}
+  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); window.__bip = e; window.dispatchEvent(new Event('bip-ready')); });
   (function (l) {
     if (l.search[1] === '/') {
       var d = l.search.slice(1).split('&').map(function (x) { return x.replace(/~and~/g, '&'); }).join('?');
@@ -444,6 +445,7 @@
       <button class="btn block" id="bSolo" type="button" data-i18n="btn.solo">Solo spielen</button>
       <button class="btn block" id="bStats" type="button" data-i18n="btn.stats">Stats</button>
       <button class="btn block" id="bRejoin" type="button" hidden></button>
+      <button class="btn block" id="bInstall" type="button" hidden><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><path d="M5 21h14"/></svg><span data-i18n="install.btn">App installieren</span></button>
     </div>
   </section>
 
@@ -1014,6 +1016,21 @@
       sb.from('lobbies').delete().eq('status', 'waiting').lt('created_at', new Date(Date.now() - 6 * H).toISOString()).then(noop, noop);
     } catch (e) {}
   }
+
+  /* ---------- App installieren (PWA) ---------- */
+  var isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  function updateInstall() { $('bInstall').hidden = isStandalone || !(window.__bip || isIOS); }
+  window.addEventListener('bip-ready', updateInstall);
+  window.addEventListener('appinstalled', function () { window.__bip = null; isStandalone = true; updateInstall(); });
+  $('bInstall').addEventListener('click', function () {
+    var ev = window.__bip;
+    if (ev) {
+      ev.prompt();
+      Promise.resolve(ev.userChoice).then(function () { window.__bip = null; updateInstall(); }, function () {});
+    } else if (isIOS) appDialog({ title: T('install.iosTitle'), text: T('install.iosText'), buttons: [{ label: T('set.close'), value: false, primary: true }] });
+  });
+  updateInstall();
 
   /* ---------- Spielregeln ---------- */
   function renderRules() {

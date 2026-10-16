@@ -852,7 +852,7 @@
   var pickedMode = MODES.teams[0];
   function modeInfoText(c) {
     if (c.kind === 'teams') return T('mode.infoTeams', { size: c.size });
-    if (c.n === 2) return T('mode.info1v1');
+    if (c.n === 2) return '';
     return T('mode.infoFfa', { n: c.n });
   }
   function renderModePicker() {

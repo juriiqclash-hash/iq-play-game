@@ -418,7 +418,7 @@
   </defs>
 </svg>
 
-<button class="iconbtn" id="gSettings" data-settings type="button" aria-label="Settings" style="position:fixed;top:max(12px,env(safe-area-inset-top));left:12px;z-index:12"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+<button class="iconbtn" id="gSettings" data-settings type="button" data-i18n-aria="set.title" aria-label="Settings" style="position:fixed;top:max(12px,env(safe-area-inset-top));left:12px;z-index:12"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
 <button class="iconbtn" id="gRules" type="button" aria-label="Regeln" data-i18n-aria="rules.title" style="position:fixed;top:max(12px,env(safe-area-inset-top));left:62px;z-index:12"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
 <div class="app">
 
@@ -426,7 +426,7 @@
   <section id="s-start" class="screen narrow" hidden style="position:relative">
     <div class="hero">
       <div class="fan" id="fan" aria-hidden="true"></div>
-      <h1 class="logo">SET<small>DUELL</small></h1>
+      <h1 class="logo">SET<small data-i18n="logo.sub">DUELL</small></h1>
       <p class="muted" data-i18n="start.tag">Wer findet das Set zuerst?</p>
     </div>
     <div class="glass">
@@ -466,7 +466,7 @@
       </div>
     </div>
     <div class="glass option" id="pubCard">
-      <div class="row split"><h3 data-i18n="multi.public">Öffentliche Lobbys</h3><button class="iconbtn" id="bPubRefresh" type="button" aria-label="Refresh">↻</button></div>
+      <div class="row split"><h3 data-i18n="multi.public">Öffentliche Lobbys</h3><button class="iconbtn" id="bPubRefresh" type="button" data-i18n-aria="multi.refresh" aria-label="Refresh">↻</button></div>
       <div id="pubList" class="publist"></div>
     </div>
     <p class="err" id="multiErr" role="alert" style="text-align:center"></p>
@@ -1107,9 +1107,11 @@
       tile(grid, q.games, T('st.games'), true);
       tile(grid, q.bestTime == null ? '–' : fmt(Math.round(q.bestTime / 1000)), T('st.bestTime')); tile(grid, avg(q.iqSum, q.games), T('st.avgIq')); tile(grid, q.iqBest || '–', T('st.bestIq'));
       tile(grid, q.sets, T('st.sets')); tile(grid, q.misses, T('st.misses')); tile(grid, q.hints, T('st.hints'));
+      body.appendChild(el('div', 'eyebrow', T('st.attack')));
       ATTACK_LENS.forEach(function (n) {
-        var a = q.attack && q.attack[n]; if (!a || !a.games) return;
-        var rw = el('div', 'mrow'); rw.appendChild(el('span', null, T('st.attack') + ' ' + n + ' s')); rw.appendChild(el('span', null, T('st.attackRow', { b: a.best, g: a.games }))); body.appendChild(rw);
+        var a = (q.attack && q.attack[n]) || { best: null, games: 0 };
+        var rw = el('div', 'mrow'); rw.appendChild(el('span', null, T('st.attack') + ' ' + n + ' s'));
+        rw.appendChild(el('span', null, T('st.attackRow', { b: a.best == null ? '–' : a.best, g: a.games }))); body.appendChild(rw);
       });
     }
   }

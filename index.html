@@ -150,6 +150,7 @@
   .stats dl { display: contents; }
 
   .msg { align-self: center; min-height: 36px; display: inline-flex; align-items: center; padding: 8px 16px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); color: var(--muted); font-weight: 600; font-size: 14px; text-align: center; transition: color .2s, background .2s, border-color .2s; }
+  .msg:empty { visibility: hidden; }
   .msg.good { color: var(--good); background: #e8f7ef; border-color: #b5e3c9; }
   .msg.bad { color: var(--bad); background: #fdecee; border-color: #f4bcc2; }
 
@@ -340,7 +341,6 @@
       <div class="stat"><dt>Sets</dt><dd id="sSets">0</dd></div>
       <div class="stat"><dt>Stapel</dt><dd id="sDeck">69</dd></div>
       <div class="stat"><dt>Fehler</dt><dd id="sMiss">0</dd></div>
-      <div class="stat"><dt>Zeit</dt><dd id="sTime">0:00</dd></div>
     </dl>
     <p id="msg" class="msg" role="status" aria-live="polite"></p>
     <div class="stage" id="stage"><div id="table" class="table"></div><div class="count" id="count" hidden></div></div>
@@ -493,7 +493,7 @@
   var mode = null;            // 'solo' | 'online'
   var st = null;
   var sel = [], busy = false, prevBoard = [], hintId = null, boardKey = '', roundStart = Date.now(), cheatOn = false, counting = false, cdTimer = null;
-  var soloStart = 0, soloHints = 0, soloTimer = null;
+  var soloHints = 0;
   var sb = null, channel = null, pollTimer = null, online = {};
   var cfg = window.SUPABASE_CONFIG || {};
   var configured = !!(cfg.url && cfg.anonKey && window.supabase);
@@ -522,9 +522,6 @@
     var s = { players: [{ id: myId, name: myName(), score: 0, sets: 0, misses: 0 }], target: 0, version: 0, winner: null, last: null };
     st = startState(s);
     sel = []; prevBoard = []; hintId = null; soloHints = 0; busy = false; boardKey = '';
-    soloStart = Date.now(); clearInterval(soloTimer);
-    $('sTime').textContent = '0:00';
-    soloTimer = setInterval(function () { if (st && st.status === 'playing') $('sTime').textContent = fmt(Math.floor((Date.now() - soloStart) / 1000)); }, 1000);
     setMsg('Mach dich bereit …', '');
     show('game'); renderGame(); startCountdown();
   }
@@ -722,7 +719,7 @@
     toStart();
   }
   function toStart() {
-    stopCountdown(); unsubscribe(); clearInterval(soloTimer); lsSet('set_lobby', null);
+    stopCountdown(); unsubscribe(); lsSet('set_lobby', null);
     mode = null; st = null; sel = []; $('end').hidden = true; show('start');
   }
   $('bLeave').addEventListener('click', leaveOnline);
@@ -813,7 +810,7 @@
     var seq = ['3', '2', '1', 'Los!'], i = 0, c = $('count');
     c.hidden = false;
     (function tick() {
-      if (i >= seq.length) { stopCountdown(); roundStart = Date.now(); if (mode === 'solo') soloStart = Date.now(); setMsg('Wer findet zuerst ein Set?', ''); return; }
+      if (i >= seq.length) { stopCountdown(); roundStart = Date.now(); setMsg(mode === 'solo' ? '' : 'Wer findet zuerst ein Set?', ''); return; }
       c.innerHTML = ''; c.appendChild(el('span', null, seq[i]));
       var last = i === seq.length - 1; i++;
       cdTimer = setTimeout(tick, last ? 600 : 900);
@@ -857,7 +854,7 @@
     sc.className = 'final';
     if (mode === 'solo') {
       $('endTitle').textContent = 'Alle Karten gespielt';
-      $('endText').textContent = 'Zeit ' + $('sTime').textContent + ' · ' + soloHints + ' Tipps';
+      $('endText').textContent = soloHints + (soloHints === 1 ? ' Tipp' : ' Tipps') + ' genutzt';
       sc.appendChild(block(st.players[0], 0, false));
       addBtn(btns, 'Nochmal spielen', true, startSolo);
       addBtn(btns, 'Zum Start', false, toStart);

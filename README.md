@@ -6,3 +6,7 @@
 1. Supabase-Projekt anlegen, `supabase-setup.sql` im SQL Editor ausführen.
 2. In `config.js` die Project URL und den anon key eintragen.
 3. `index.html` hosten (z.B. GitHub Pages) oder lokal öffnen.
+
+## Routen
+`/` Start · `/solo` · `/multiplayer` · `/lobby/123456` (tritt direkt der Lobby bei).
+Auf GitHub Pages sorgt `404.html` dafür, dass diese Pfade auch beim direkten Aufruf oder Neuladen funktionieren.

@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><title>SET Duell</title>
+<script>
+  // GitHub Pages: unbekannte Pfade (/solo, /lobby/123456 ...) an index.html weiterreichen
+  var l = location, seg = l.hostname.slice(-10) === '.github.io' ? 1 : 0;
+  l.replace(l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+    l.pathname.split('/').slice(0, 1 + seg).join('/') + '/?/' +
+    l.pathname.slice(1).split('/').slice(seg).join('/').replace(/&/g, '~and~') +
+    (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') + l.hash);
+</script></head><body></body></html>

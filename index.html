@@ -1,6 +1,18 @@
 <!doctype html>
 <html lang="de">
 <head>
+<script>
+  // Deep-Links auf GitHub Pages (404.html leitet nach ?/pfad um)
+  (function (l) {
+    if (l.search[1] === '/') {
+      var d = l.search.slice(1).split('&').map(function (x) { return x.replace(/~and~/g, '&'); }).join('?');
+      history.replaceState(null, null, l.pathname.slice(0, -1) + d + l.hash);
+    }
+    var m = l.pathname.match(/^(.*?\/)(?:solo|multiplayer|lobby(?:\/\d{0,6})?)\/?$/);
+    window.__BASE = m ? m[1] : l.pathname.replace(/[^\/]*$/, '');
+    document.write('<base href="' + window.__BASE + '">');
+  })(location);
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f6f6f3">
@@ -516,14 +528,46 @@
   $('name').value = lsGet('set_name') || '';
   syncAvatar();
   $('name').addEventListener('input', function () { lsSet('set_name', $('name').value.trim()); syncAvatar(); });
-  $('bSolo').addEventListener('click', function () { lsSet('set_name', myName()); startSolo(); });
+  $('bSolo').addEventListener('click', function () { lsSet('set_name', myName()); go('/solo'); });
   $('bMulti').addEventListener('click', function () {
     if (!$('name').value.trim()) { $('name').focus(); $('name').placeholder = 'Bitte Username eingeben'; return; }
     lsSet('set_name', myName());
-    $('cfgWarn').hidden = configured; $('multiErr').textContent = '';
-    show('multi');
+    if (pendingCode) { var pc = pendingCode; pendingCode = null; go('/lobby/' + pc); return; }
+    go('/multiplayer');
   });
-  $('bMultiBack').addEventListener('click', function () { show('start'); });
+  $('bMultiBack').addEventListener('click', function () { go('/'); });
+
+  /* ---------- Routing: /, /solo, /multiplayer, /lobby/XXXXXX ---------- */
+  var BASE = window.__BASE || '/', pendingCode = null;
+  function relPath() { return decodeURI(location.pathname.slice(BASE.length)).replace(/\/+$/, '').replace(/^index\.html$/, ''); }
+  function setUrl(rel, replace) {
+    var u = BASE + rel;
+    if (location.pathname === u || (rel === '' && location.pathname === BASE)) return;
+    try { history[replace ? 'replaceState' : 'pushState'](null, '', u); } catch (e) {}
+  }
+  function go(path) { setUrl(path.replace(/^\//, ''), false); return route(); }
+  async function leaveCurrent() { if (mode === 'online') await leaveOnline(true); else if (mode) toStart(true); }
+  async function route() {
+    var rel = relPath(), m;
+    if (rel === 'solo') { await leaveCurrent(); startSolo(); return; }
+    if (rel === 'multiplayer') {
+      await leaveCurrent();
+      if (!$('name').value.trim()) { $('name').placeholder = 'Bitte Username eingeben'; setUrl('', true); show('start'); return; }
+      $('cfgWarn').hidden = configured; $('multiErr').textContent = ''; show('multi'); return;
+    }
+    if ((m = rel.match(/^lobby\/(\d{6})$/))) {
+      if (mode === 'online' && st && st.code === m[1]) return;
+      await leaveCurrent();
+      if (!$('name').value.trim()) { pendingCode = m[1]; $('name').placeholder = 'Username eingeben, um beizutreten'; show('start'); $('name').focus(); return; }
+      var err = configured ? await joinLobby(m[1]) : 'Supabase ist nicht konfiguriert.';
+      if (err) { setUrl('multiplayer', true); $('cfgWarn').hidden = configured; show('multi'); $('multiErr').textContent = err; }
+      return;
+    }
+    await leaveCurrent();
+    pendingCode = null; show('start');
+    if (rel !== '') setUrl('', true);
+  }
+  window.addEventListener('popstate', route);
 
   /* ---------- Solo ---------- */
   function startSolo() {
@@ -604,6 +648,7 @@
   function enterLobby(row) {
     mode = 'online'; st = row; sel = []; prevBoard = []; busy = false;
     lsSet('set_lobby', row.code);
+    setUrl('lobby/' + row.code, false);
     subscribe(row.code);
     routeState(false);
   }
@@ -710,7 +755,7 @@
   }
   $('bStart').addEventListener('click', hostStart);
 
-  async function leaveOnline() {
+  async function leaveOnline(skipUrl) {
     var code = st && st.code;
     if (mode === 'online' && st) {
       try {
@@ -729,13 +774,14 @@
       } catch (e) {}
       if (code && st && st.status === 'waiting' && st.players.length === 0) { try { await sb.from('lobbies').delete().eq('code', code); } catch (e) {} }
     }
-    toStart();
+    toStart(skipUrl === true);
   }
-  function toStart() {
+  function toStart(skipUrl) {
     clearInterval(soloTimer); stopCountdown(); unsubscribe(); lsSet('set_lobby', null);
     mode = null; st = null; sel = []; $('end').hidden = true; show('start');
+    if (skipUrl !== true) setUrl('', false);
   }
-  $('bLeave').addEventListener('click', leaveOnline);
+  $('bLeave').addEventListener('click', function () { leaveOnline(); });
   $('bQuit').addEventListener('click', function () { if (mode === 'online') leaveOnline(); else toStart(); });
 
   /* ---------- Spiel ---------- */
@@ -899,7 +945,7 @@
     } else if (!host && !left) {
       btns.appendChild(el('p', 'muted pulse-dots', 'Warte auf den Host'));
     }
-    addBtn(btns, 'Verlassen', false, leaveOnline);
+    addBtn(btns, 'Verlassen', false, function () { leaveOnline(); });
   }
   function addBtn(parent, label, primary, fn) {
     var b = el('button', 'btn block' + (primary ? ' primary' : ''), label); b.type = 'button';
@@ -961,15 +1007,7 @@
   });
 
   /* ---------- Start / Wiedereinstieg ---------- */
-  show('start');
-  var saved = lsGet('set_lobby');
-  if (saved && configured) {
-    dbRead(saved).then(function (r) {
-      var row = r.data;
-      if (row && row.status !== 'finished' && row.players.some(function (p) { return p.id === myId; })) enterLobby(row);
-      else lsSet('set_lobby', null);
-    });
-  }
+  route();
 })();
 </script>
 </body>

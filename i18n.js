@@ -4,6 +4,7 @@
   var NAMES = { de: "Deutsch", en: "English", fr: "Français", es: "Español", it: "Italiano", pt: "Português", nl: "Nederlands", pl: "Polski", tr: "Türkçe", ru: "Русский", zh: "中文", ja: "日本語" };
 
   D.de = {
+    "lobby.shuffle": "Mischen", "lobby.moveHint": "Tippe auf einen Spieler und dann auf einen anderen Platz, um ihn zu verschieben.",
     "start.tag": "Wer findet das Set zuerst?", "start.name": "Dein Username",
     "btn.multi": "Multiplayer", "btn.solo": "Solo spielen", "btn.stats": "Stats", "back": "Zurück",
     "multi.title": "Multiplayer",
@@ -48,6 +49,7 @@
   };
 
   D.en = {
+    "lobby.shuffle": "Shuffle", "lobby.moveHint": "Tap a player, then another spot to move them.",
     "start.tag": "Who finds the set first?", "start.name": "Your username",
     "btn.multi": "Multiplayer", "btn.solo": "Play solo", "btn.stats": "Stats", "back": "Back",
     "multi.title": "Multiplayer",
@@ -92,6 +94,7 @@
   };
 
   D.fr = {
+    "lobby.shuffle": "Mélanger", "lobby.moveHint": "Touche un joueur, puis une autre place pour le déplacer.",
     "start.tag": "Qui trouve le set en premier ?", "start.name": "Ton pseudo",
     "btn.multi": "Multijoueur", "btn.solo": "Jouer en solo", "btn.stats": "Stats", "back": "Retour",
     "multi.title": "Multijoueur",
@@ -136,6 +139,7 @@
   };
 
   D.es = {
+    "lobby.shuffle": "Mezclar", "lobby.moveHint": "Toca un jugador y luego otro lugar para moverlo.",
     "start.tag": "¿Quién encuentra el set primero?", "start.name": "Tu nombre de usuario",
     "btn.multi": "Multijugador", "btn.solo": "Jugar solo", "btn.stats": "Estadísticas", "back": "Atrás",
     "multi.title": "Multijugador",
@@ -180,6 +184,7 @@
   };
 
   D.it = {
+    "lobby.shuffle": "Mescola", "lobby.moveHint": "Tocca un giocatore e poi un altro posto per spostarlo.",
     "start.tag": "Chi trova il set per primo?", "start.name": "Il tuo username",
     "btn.multi": "Multiplayer", "btn.solo": "Gioca da solo", "btn.stats": "Statistiche", "back": "Indietro",
     "multi.title": "Multiplayer",
@@ -224,6 +229,7 @@
   };
 
   D.pt = {
+    "lobby.shuffle": "Embaralhar", "lobby.moveHint": "Toque em um jogador e depois em outro lugar para movê-lo.",
     "start.tag": "Quem encontra o set primeiro?", "start.name": "Seu nome de usuário",
     "btn.multi": "Multijogador", "btn.solo": "Jogar sozinho", "btn.stats": "Estatísticas", "back": "Voltar",
     "multi.title": "Multijogador",
@@ -268,6 +274,7 @@
   };
 
   D.nl = {
+    "lobby.shuffle": "Husselen", "lobby.moveHint": "Tik op een speler en daarna op een andere plek om hem te verplaatsen.",
     "start.tag": "Wie vindt de set het eerst?", "start.name": "Je gebruikersnaam",
     "btn.multi": "Multiplayer", "btn.solo": "Solo spelen", "btn.stats": "Statistieken", "back": "Terug",
     "multi.title": "Multiplayer",
@@ -312,6 +319,7 @@
   };
 
   D.pl = {
+    "lobby.shuffle": "Wymieszaj", "lobby.moveHint": "Dotknij gracza, a potem innego miejsca, aby go przenieść.",
     "start.tag": "Kto pierwszy znajdzie set?", "start.name": "Twoja nazwa użytkownika",
     "btn.multi": "Multiplayer", "btn.solo": "Graj solo", "btn.stats": "Statystyki", "back": "Wstecz",
     "multi.title": "Multiplayer",
@@ -356,6 +364,7 @@
   };
 
   D.tr = {
+    "lobby.shuffle": "Karıştır", "lobby.moveHint": "Bir oyuncuya, sonra başka bir yere dokunarak taşı.",
     "start.tag": "Seti ilk kim bulacak?", "start.name": "Kullanıcı adın",
     "btn.multi": "Çok oyunculu", "btn.solo": "Tek başına oyna", "btn.stats": "İstatistikler", "back": "Geri",
     "multi.title": "Çok oyunculu",
@@ -400,6 +409,7 @@
   };
 
   D.ru = {
+    "lobby.shuffle": "Перемешать", "lobby.moveHint": "Нажми на игрока, затем на другое место, чтобы переместить его.",
     "start.tag": "Кто первым найдёт сет?", "start.name": "Твой ник",
     "btn.multi": "Мультиплеер", "btn.solo": "Играть одному", "btn.stats": "Статистика", "back": "Назад",
     "multi.title": "Мультиплеер",
@@ -444,6 +454,7 @@
   };
 
   D.zh = {
+    "lobby.shuffle": "随机打乱", "lobby.moveHint": "点击一名玩家，再点击另一个位置即可移动。",
     "start.tag": "谁最先找到 SET？", "start.name": "你的用户名",
     "btn.multi": "多人游戏", "btn.solo": "单人游戏", "btn.stats": "统计", "back": "返回",
     "multi.title": "多人游戏",
@@ -488,6 +499,7 @@
   };
 
   D.ja = {
+    "lobby.shuffle": "シャッフル", "lobby.moveHint": "プレイヤーをタップし、次に別の場所をタップして移動します。",
     "start.tag": "誰が最初にセットを見つける？", "start.name": "ユーザー名",
     "btn.multi": "マルチプレイ", "btn.solo": "ひとりで遊ぶ", "btn.stats": "統計", "back": "戻る",
     "multi.title": "マルチプレイ",

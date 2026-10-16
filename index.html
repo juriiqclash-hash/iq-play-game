@@ -196,7 +196,7 @@
   .sw.on { border-color: var(--ink); }
   .langs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .langs .opt { font: 600 14px var(--font-body); padding: 10px 4px; }
-  .settingsbtn { position: absolute; top: 0; right: 0; }
+  .settingsbtn { position: absolute; top: 0; left: 0; }
 
   /* Modi: Popup, Teams, Mehrspieler-Anzeige */
   .sheet.picker { text-align: left; max-width: 440px; }
@@ -209,6 +209,8 @@
   .slots.dense { gap: 6px; } .slots.dense .slot { padding: 7px 10px; border-radius: 13px; gap: 8px; }
   .slots.dense .avatar { width: 30px; height: 30px; border-radius: 10px; font-size: 13px; }
   .team { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .slot.empty .who b { white-space: normal; font-size: 13px; line-height: 1.25; }
+  .slot.sel { outline: 2px solid var(--accent); outline-offset: 1px; } .slot.clk { cursor: pointer; }
   .slot.pick { cursor: pointer; } .slot.pick:hover { background: var(--surface-2); }
   .vs.many { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 6px; }
   .gcard { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 6px 10px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 3px 8px; min-width: 0; transition: border-color .2s; }
@@ -348,7 +350,7 @@
 
   <!-- START -->
   <section id="s-start" class="screen narrow" hidden style="position:relative">
-    <button class="iconbtn settingsbtn" data-settings type="button" aria-label="Settings">⚙</button>
+    <button class="iconbtn settingsbtn" data-settings type="button" aria-label="Settings"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
     <div class="hero">
       <div class="fan" id="fan" aria-hidden="true"></div>
       <h1 class="logo">SET<small>DUELL</small></h1>
@@ -371,9 +373,9 @@
   <!-- MULTIPLAYER MENU -->
   <section id="s-multi" class="screen narrow" hidden>
     <div class="topbar">
-      <button class="iconbtn" id="bMultiBack" type="button" data-i18n-aria="back" aria-label="Zurück">←</button>
+      <div class="row" style="gap:8px;flex:none;flex-wrap:nowrap"><button class="iconbtn" data-settings type="button" aria-label="Settings"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button><button class="iconbtn" id="bMultiBack" type="button" data-i18n-aria="back" aria-label="Zurück">←</button></div>
       <span class="eyebrow" data-i18n="multi.title">Multiplayer</span>
-      <button class="iconbtn" data-settings type="button" aria-label="Settings">⚙</button>
+      <span style="width:92px"></span>
     </div>
     <div id="cfgWarn" class="notice" hidden data-i18n-html="multi.cfg">Supabase ist noch nicht konfiguriert. Trage URL und anon key in <code>config.js</code> ein.</div>
     <div class="glass option">
@@ -393,9 +395,9 @@
   <!-- LOBBY -->
   <section id="s-lobby" class="screen narrow" hidden>
     <div class="topbar">
-      <button class="iconbtn" id="bLeave" type="button" data-i18n-aria="lobby.leave" aria-label="Lobby verlassen">←</button>
+      <div class="row" style="gap:8px;flex:none;flex-wrap:nowrap"><button class="iconbtn" data-settings type="button" aria-label="Settings"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button><button class="iconbtn" id="bLeave" type="button" data-i18n-aria="lobby.leave" aria-label="Lobby verlassen">←</button></div>
       <span class="eyebrow" id="lobbyTitle">Lobby</span>
-      <button class="iconbtn" data-settings type="button" aria-label="Settings">⚙</button>
+      <span style="width:92px"></span>
     </div>
     <div class="glass codecard">
       <span class="eyebrow" data-i18n="lobby.code">Lobby-Code</span>
@@ -406,6 +408,7 @@
       </div>
     </div>
     <div class="slots" id="lobbyPlayers"></div>
+    <div class="row split" id="teamTools" hidden><span class="muted" id="moveHint" style="font-size:12px;flex:1"></span><button class="btn sm" id="bShuffle" type="button" data-i18n="lobby.shuffle">Mischen</button></div>
     <div class="glass">
       <div class="row split">
         <div><div style="font-weight:600" data-i18n="lobby.target">Punkte zum Sieg</div><div class="muted" id="tHint" style="font-size:13px"></div></div>
@@ -557,6 +560,25 @@
   function isWinnerP(s, p) { return s.winner != null && (s.winner === p.id || (isTeams(s) && s.winner === 't' + p.team)); }
   function sameSide(s, a, b) { return isTeams(s) ? a.team === b.team : a.id === b.id; }
   function hostId(s) { var p = s.players.filter(function (x) { return !x.left; })[0]; return p && p.id; }
+  // Teamplätze: jeder Spieler hat team + slot; fehlende/kollidierende Werte werden ergänzt
+  function layoutTeams(s) {
+    var c = cfgOf(s), g = [], rest = [];
+    for (var t = 0; t < c.teams; t++) g.push(new Array(c.size).fill(null));
+    s.players.forEach(function (p) {
+      var t = p.team || 0, k = p.slot;
+      if (g[t] && k != null && k >= 0 && k < c.size && !g[t][k]) g[t][k] = p; else rest.push(p);
+    });
+    rest.forEach(function (p) {
+      var t = p.team || 0, k = g[t] ? g[t].indexOf(null) : -1;
+      if (k < 0) for (var u = 0; u < g.length && k < 0; u++) { k = g[u].indexOf(null); if (k >= 0) t = u; }
+      if (k >= 0) g[t][k] = p;
+    });
+    return g;
+  }
+  function normalizeSlots(s) {
+    if (!isTeams(s)) return;
+    layoutTeams(s).forEach(function (col, t) { col.forEach(function (p, k) { if (p) { p.team = t; p.slot = k; } }); });
+  }
   function startable(s) {
     var c = cfgOf(s), act = s.players.filter(function (p) { return !p.left; });
     if (c.kind !== 'teams') return act.length >= 2;
@@ -858,7 +880,7 @@
   async function createLobby(cfg) {
     for (var i = 0; i < 5; i++) {
       var code = genCode();
-      var host = { id: myId, name: myName(), score: 0, sets: 0, misses: 0, team: 0, cfg: cfg };
+      var host = { id: myId, name: myName(), score: 0, sets: 0, misses: 0, team: 0, slot: 0, cfg: cfg };
       var row = { code: code, status: 'waiting', target: cfg.kind === 'teams' ? 5 * cfg.size : 5, version: 0,
         players: [host], deck: [], board: [] };
       var r = await sb.from('lobbies').insert(row).select().single();
@@ -892,7 +914,7 @@
       if (jc.kind === 'teams') {
         var best = 0, bestN = 99;
         for (var t = 0; t < jc.teams; t++) { var n = row.players.filter(function (p) { return p.team === t; }).length; if (n < jc.size && n < bestN) { best = t; bestN = n; } }
-        me2.team = best;
+        me2.team = best; me2.slot = Math.max(0, layoutTeams(row)[best].indexOf(null));
       }
       var players = row.players.concat([me2]);
       var u = await sb.from('lobbies').update({ players: players, version: row.version + 1 }).eq('code', code).eq('version', row.version).select().maybeSingle();
@@ -972,29 +994,38 @@
     var box = $('lobbyPlayers'); box.innerHTML = '';
     box.className = 'slots' + (capOf(c) > 4 ? ' dense' : '');
     $('s-lobby').classList.toggle('dense', capOf(c) > 4);
-    function slotFor(p, teamIdx) {
+    var hostMe = host;
+    function slotFor(p, t, k) {
       var slot = el('div', 'slot' + (p ? '' : ' empty'));
       var av = el('div', 'avatar' + (p ? '' : ' dim'), p ? initial(p.name) : '?');
       if (p) { av.style.background = colorOf(st, p); av.appendChild(el('span', 'live' + (isOn(p.id) ? ' on' : ''))); }
       var who = el('div', 'who');
       if (p) { who.appendChild(el('b', null, p.name)); who.appendChild(el('span', null, (p === st.players[0] ? T('lobby.host') : T('lobby.player')) + (p.id === myId ? ' · ' + T('you') : ''))); }
-      else { who.appendChild(el('b', 'muted', teamIdx != null ? T('lobby.free') : T('lobby.waitSlot'))); if (teamIdx == null) who.firstChild.className += ' pulse-dots'; }
+      else { who.appendChild(el('b', 'muted', t != null ? T('lobby.free') : T('lobby.waitSlot'))); if (t == null) who.firstChild.className += ' pulse-dots'; }
       slot.appendChild(av); slot.appendChild(who);
-      if (!p && teamIdx != null) { slot.classList.add('pick'); slot.addEventListener('click', function () { moveToTeam(teamIdx); }); }
+      if (t != null) {
+        if (p && p.id === selectedPid) slot.classList.add('sel');
+        var can = p ? hostMe : true;   // freie Plätze darf jeder nehmen; Spieler verschieben nur der Host
+        if (can) { slot.classList.add('clk'); if (!p) slot.classList.add('pick'); slot.addEventListener('click', function () { slotClick(p, t, k); }); }
+      }
       return slot;
     }
     if (c.kind === 'teams') {
       box.style.gridTemplateColumns = 'repeat(' + c.teams + ', 1fr)';
+      var grid = layoutTeams(st);
       for (var t = 0; t < c.teams; t++) {
-        var col = el('div', 'team'); var mem = st.players.filter(function (p) { return p.team === t; });
+        var col = el('div', 'team');
         var hd = el('div', 'eyebrow', T('game.team', { n: t + 1 })); hd.style.color = PALETTE[t]; col.appendChild(hd);
-        for (var k = 0; k < c.size; k++) col.appendChild(slotFor(mem[k], mem[k] ? null : t));
+        for (var k = 0; k < c.size; k++) col.appendChild(slotFor(grid[t][k], t, k));
         box.appendChild(col);
       }
     } else {
       box.style.gridTemplateColumns = '';
-      for (var i = 0; i < c.n; i++) box.appendChild(slotFor(st.players[i], null));
+      for (var i = 0; i < c.n; i++) box.appendChild(slotFor(st.players[i], null, null));
     }
+    $('teamTools').hidden = !(c.kind === 'teams' && host);
+    $('moveHint').textContent = T('lobby.moveHint');
+    $('bShuffle').disabled = st.players.length < 2;
     $('tVal').textContent = st.target;
     $('tMinus').disabled = !host || st.target <= 1;
     $('tPlus').disabled = !host || st.target >= 100;
@@ -1011,14 +1042,46 @@
     $('lobbyWait').hidden = host;
     $('lobbyErr').textContent = '';
   }
-  function moveToTeam(t) {
-    mutate(function (s) {
-      var c = cfgOf(s), p = s.players.filter(function (x) { return x.id === myId; })[0];
-      if (s.status !== 'waiting' || !p || c.kind !== 'teams') return null;
-      if (s.players.filter(function (x) { return x.team === t; }).length >= c.size) return null;
-      p.team = t; return s;
+  var selectedPid = null;
+  function slotClick(p, t, k) {
+    var host = st.players[0].id === myId;
+    if (p) {                                         // Host: Spieler auswählen / tauschen
+      if (!host) return;
+      if (!selectedPid) { selectedPid = p.id; renderLobby(); return; }
+      if (selectedPid === p.id) { selectedPid = null; renderLobby(); return; }
+      var from = selectedPid; selectedPid = null; hostMove(from, t, k); return;
+    }
+    if (host && selectedPid) { var f = selectedPid; selectedPid = null; hostMove(f, t, k); return; }
+    mutate(function (s) {                            // freier Platz: jeder darf sich selbst setzen
+      var c = cfgOf(s), me2 = s.players.filter(function (x) { return x.id === myId; })[0];
+      if (s.status !== 'waiting' || !me2 || c.kind !== 'teams') return null;
+      normalizeSlots(s);
+      if (s.players.some(function (x) { return x.team === t && x.slot === k; })) return null;
+      me2.team = t; me2.slot = k; return s;
     });
   }
+  function hostMove(pid, t, k) {
+    mutate(function (s) {
+      if (s.status !== 'waiting' || s.players[0].id !== myId || !isTeams(s)) return null;
+      normalizeSlots(s);
+      var p = s.players.filter(function (x) { return x.id === pid; })[0];
+      if (!p) return null;
+      var q = s.players.filter(function (x) { return x !== p && x.team === t && x.slot === k; })[0];
+      if (q) { q.team = p.team; q.slot = p.slot; }
+      p.team = t; p.slot = k; return s;
+    });
+  }
+  $('bShuffle').addEventListener('click', function () {
+    selectedPid = null;
+    mutate(function (s) {
+      var c = cfgOf(s);
+      if (s.status !== 'waiting' || s.players[0].id !== myId || c.kind !== 'teams') return null;
+      var order = shuffle(s.players.slice()), next = [];
+      for (var t = 0; t < c.teams; t++) next.push(0);
+      order.forEach(function (p, i) { var t = i % c.teams; p.team = t; p.slot = next[t]++; });
+      return s;
+    });
+  });
   function setTarget(n) {
     mutate(function (s) {
       if (s.status !== 'waiting' || s.players[0].id !== myId) return null;
@@ -1288,8 +1351,8 @@
         });
       });
     }
-    var active = st.players.filter(function (p) { return !p.left; }).length;
-    if (hostId(st) === myId && active >= 2) {
+    var active = st.players.filter(function (p) { return !p.left; }).length, isHost = hostId(st) === myId;
+    if (isHost && active >= 2) {
       addBtn(btns, T('end.rematch'), true, function () {
         mutate(function (s) {
           cleanLeft(s);
@@ -1297,10 +1360,10 @@
           s.status = 'waiting'; s.winner = null; s.last = null; return s;
         });
       });
-      addBtn(btns, T('end.toLobby'), false, function () { mutate(function (s) { cleanLeft(s); s.status = 'waiting'; s.winner = null; s.last = null; return s; }); });
-    } else if (hostId(st) !== myId && active >= 2) {
+    } else if (!isHost && active >= 2) {
       btns.appendChild(el('p', 'muted pulse-dots', T('lobby.waitHost')));
     }
+    if (meP && !meP.left) addBtn(btns, T('end.toLobby'), false, function () { mutate(function (s) { cleanLeft(s); s.status = 'waiting'; s.winner = null; s.last = null; return s; }); });
     addBtn(btns, T('end.leave'), false, function () { leaveOnline(); });
   }
   function addBtn(parent, label, primary, fn) {

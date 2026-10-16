@@ -10,3 +10,9 @@
 ## Routen
 `/` Start · `/solo` · `/multiplayer` · `/lobby/123456` (tritt direkt der Lobby bei).
 Auf Vercel sorgt `vercel.json` (auf GitHub Pages `404.html`) dafür, dass diese Pfade auch beim direkten Aufruf oder Neuladen funktionieren.
+
+## Supabase-Update (einmalig erneut ausführen)
+`supabase-setup.sql` im SQL Editor erneut ausführen (idempotent). Es aktiviert
+- das Aufräumen alter/leerer Lobbys (Lösch-Policy),
+- den Anti-Cheat-Trigger `lobbies_guard`, der jede Zustandsänderung im laufenden Spiel serverseitig prüft.
+Ohne das SQL läuft das Spiel weiter, nur ohne diese Absicherungen.

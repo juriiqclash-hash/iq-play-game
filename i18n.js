@@ -4,6 +4,7 @@
   var NAMES = { de: "Deutsch", en: "English", fr: "Français", es: "Español", it: "Italiano", pt: "Português", nl: "Nederlands", pl: "Polski", tr: "Türkçe", ru: "Русский", zh: "中文", ja: "日本語" };
 
   D.de = {
+    "set.mode": "Darstellung", "set.light": "Hell", "set.dark": "Dunkel", "set.auto": "Auto", "set.soloNoSet": "Solo: kein Set möglich (Original-Regeln)", "game.more3": "+3 Karten", "game.setLeft": "Noch ein Set da!", "game.reportNoSet": "Kein Set", "game.noSetOk": "Richtig, kein Set! +1", "game.noSetBad": "Da war noch ein Set! −1", "game.oppNoSet": "{name} meldet „Kein Set“ (+1)", "game.oppNoSetBad": "{name} meldete fälschlich „Kein Set“ (−1)", "game.timeUp": "Zeit abgelaufen – neue Karten!", "lobby.options": "Optionen", "lobby.limit": "Zeitlimit pro Runde", "lobby.limitOff": "Aus", "lobby.limitSec": "{n} s", "lobby.noset": "Kein Set möglich (Original-Regeln)", "lobby.nosetShort": "Kein Set möglich", "lobby.public": "Öffentlich", "lobby.private": "Privat", "mode.namePh": "Lobby-Name (optional)", "mode.public": "Öffentlich anzeigen", "multi.public": "Öffentliche Lobbys", "multi.none": "Gerade keine öffentlichen Lobbys.", "conn.lost": "Verbindung getrennt – verbinde neu …", "conn.back": "Wieder verbunden", "start.rejoin": "Zurück in Lobby {code}",
     "lobby.shuffle": "Mischen", "lobby.moveHint": "Tippe auf einen Spieler und dann auf einen anderen Platz, um ihn zu verschieben.",
     "start.tag": "Wer findet das Set zuerst?", "start.name": "Dein Username",
     "btn.multi": "Multiplayer", "btn.solo": "Solo spielen", "btn.stats": "Stats", "back": "Zurück",
@@ -49,6 +50,7 @@
   };
 
   D.en = {
+    "set.mode": "Appearance", "set.light": "Light", "set.dark": "Dark", "set.auto": "Auto", "set.soloNoSet": "Solo: no set possible (original rules)", "game.more3": "+3 cards", "game.setLeft": "There's still a set!", "game.reportNoSet": "No set", "game.noSetOk": "Correct, no set! +1", "game.noSetBad": "There was still a set! −1", "game.oppNoSet": "{name} reports \"No set\" (+1)", "game.oppNoSetBad": "{name} wrongly reported \"No set\" (−1)", "game.timeUp": "Time's up – new cards!", "lobby.options": "Options", "lobby.limit": "Time limit per round", "lobby.limitOff": "Off", "lobby.limitSec": "{n} s", "lobby.noset": "No set possible (original rules)", "lobby.nosetShort": "No set possible", "lobby.public": "Public", "lobby.private": "Private", "mode.namePh": "Lobby name (optional)", "mode.public": "Show publicly", "multi.public": "Public lobbies", "multi.none": "No public lobbies right now.", "conn.lost": "Connection lost – reconnecting …", "conn.back": "Reconnected", "start.rejoin": "Back to lobby {code}",
     "lobby.shuffle": "Shuffle", "lobby.moveHint": "Tap a player, then another spot to move them.",
     "start.tag": "Who finds the set first?", "start.name": "Your username",
     "btn.multi": "Multiplayer", "btn.solo": "Play solo", "btn.stats": "Stats", "back": "Back",
@@ -94,6 +96,7 @@
   };
 
   D.fr = {
+    "set.mode": "Apparence", "set.light": "Clair", "set.dark": "Sombre", "set.auto": "Auto", "set.soloNoSet": "Solo : set parfois impossible (règles d'origine)", "game.more3": "+3 cartes", "game.setLeft": "Il y a encore un set !", "game.reportNoSet": "Pas de set", "game.noSetOk": "Exact, pas de set ! +1", "game.noSetBad": "Il y avait encore un set ! −1", "game.oppNoSet": "{name} signale « pas de set » (+1)", "game.oppNoSetBad": "{name} a signalé « pas de set » à tort (−1)", "game.timeUp": "Temps écoulé – nouvelles cartes !", "lobby.options": "Options", "lobby.limit": "Limite de temps par manche", "lobby.limitOff": "Désactivée", "lobby.limitSec": "{n} s", "lobby.noset": "Set parfois impossible (règles d'origine)", "lobby.nosetShort": "Set parfois impossible", "lobby.public": "Public", "lobby.private": "Privé", "mode.namePh": "Nom du salon (facultatif)", "mode.public": "Afficher publiquement", "multi.public": "Salons publics", "multi.none": "Aucun salon public pour l'instant.", "conn.lost": "Connexion perdue – reconnexion …", "conn.back": "Reconnecté", "start.rejoin": "Retour au salon {code}",
     "lobby.shuffle": "Mélanger", "lobby.moveHint": "Touche un joueur, puis une autre place pour le déplacer.",
     "start.tag": "Qui trouve le set en premier ?", "start.name": "Ton pseudo",
     "btn.multi": "Multijoueur", "btn.solo": "Jouer en solo", "btn.stats": "Stats", "back": "Retour",
@@ -139,6 +142,7 @@
   };
 
   D.es = {
+    "set.mode": "Apariencia", "set.light": "Claro", "set.dark": "Oscuro", "set.auto": "Auto", "set.soloNoSet": "Solo: puede no haber set (reglas originales)", "game.more3": "+3 cartas", "game.setLeft": "¡Todavía hay un set!", "game.reportNoSet": "Sin set", "game.noSetOk": "¡Correcto, no hay set! +1", "game.noSetBad": "¡Todavía había un set! −1", "game.oppNoSet": "{name} avisa «sin set» (+1)", "game.oppNoSetBad": "{name} avisó «sin set» por error (−1)", "game.timeUp": "¡Se acabó el tiempo – cartas nuevas!", "lobby.options": "Opciones", "lobby.limit": "Límite de tiempo por ronda", "lobby.limitOff": "Desactivado", "lobby.limitSec": "{n} s", "lobby.noset": "Puede no haber set (reglas originales)", "lobby.nosetShort": "Puede no haber set", "lobby.public": "Pública", "lobby.private": "Privada", "mode.namePh": "Nombre de la sala (opcional)", "mode.public": "Mostrar públicamente", "multi.public": "Salas públicas", "multi.none": "Ahora no hay salas públicas.", "conn.lost": "Conexión perdida – reconectando …", "conn.back": "Reconectado", "start.rejoin": "Volver a la sala {code}",
     "lobby.shuffle": "Mezclar", "lobby.moveHint": "Toca un jugador y luego otro lugar para moverlo.",
     "start.tag": "¿Quién encuentra el set primero?", "start.name": "Tu nombre de usuario",
     "btn.multi": "Multijugador", "btn.solo": "Jugar solo", "btn.stats": "Estadísticas", "back": "Atrás",
@@ -184,6 +188,7 @@
   };
 
   D.it = {
+    "set.mode": "Aspetto", "set.light": "Chiaro", "set.dark": "Scuro", "set.auto": "Auto", "set.soloNoSet": "Solo: può non esserci un set (regole originali)", "game.more3": "+3 carte", "game.setLeft": "C'è ancora un set!", "game.reportNoSet": "Nessun set", "game.noSetOk": "Giusto, nessun set! +1", "game.noSetBad": "C'era ancora un set! −1", "game.oppNoSet": "{name} segnala «nessun set» (+1)", "game.oppNoSetBad": "{name} ha segnalato «nessun set» per errore (−1)", "game.timeUp": "Tempo scaduto – nuove carte!", "lobby.options": "Opzioni", "lobby.limit": "Limite di tempo per round", "lobby.limitOff": "Off", "lobby.limitSec": "{n} s", "lobby.noset": "Può non esserci un set (regole originali)", "lobby.nosetShort": "Può non esserci un set", "lobby.public": "Pubblica", "lobby.private": "Privata", "mode.namePh": "Nome della lobby (facoltativo)", "mode.public": "Mostra pubblicamente", "multi.public": "Lobby pubbliche", "multi.none": "Al momento nessuna lobby pubblica.", "conn.lost": "Connessione persa – riconnessione …", "conn.back": "Riconnesso", "start.rejoin": "Torna alla lobby {code}",
     "lobby.shuffle": "Mescola", "lobby.moveHint": "Tocca un giocatore e poi un altro posto per spostarlo.",
     "start.tag": "Chi trova il set per primo?", "start.name": "Il tuo username",
     "btn.multi": "Multiplayer", "btn.solo": "Gioca da solo", "btn.stats": "Statistiche", "back": "Indietro",
@@ -229,6 +234,7 @@
   };
 
   D.pt = {
+    "set.mode": "Aparência", "set.light": "Claro", "set.dark": "Escuro", "set.auto": "Auto", "set.soloNoSet": "Solo: pode não haver set (regras originais)", "game.more3": "+3 cartas", "game.setLeft": "Ainda há um set!", "game.reportNoSet": "Sem set", "game.noSetOk": "Certo, sem set! +1", "game.noSetBad": "Ainda havia um set! −1", "game.oppNoSet": "{name} avisa «sem set» (+1)", "game.oppNoSetBad": "{name} avisou «sem set» por engano (−1)", "game.timeUp": "Tempo esgotado – cartas novas!", "lobby.options": "Opções", "lobby.limit": "Limite de tempo por rodada", "lobby.limitOff": "Desligado", "lobby.limitSec": "{n} s", "lobby.noset": "Pode não haver set (regras originais)", "lobby.nosetShort": "Pode não haver set", "lobby.public": "Pública", "lobby.private": "Privada", "mode.namePh": "Nome da sala (opcional)", "mode.public": "Mostrar publicamente", "multi.public": "Salas públicas", "multi.none": "Nenhuma sala pública no momento.", "conn.lost": "Conexão perdida – reconectando …", "conn.back": "Reconectado", "start.rejoin": "Voltar à sala {code}",
     "lobby.shuffle": "Embaralhar", "lobby.moveHint": "Toque em um jogador e depois em outro lugar para movê-lo.",
     "start.tag": "Quem encontra o set primeiro?", "start.name": "Seu nome de usuário",
     "btn.multi": "Multijogador", "btn.solo": "Jogar sozinho", "btn.stats": "Estatísticas", "back": "Voltar",
@@ -274,6 +280,7 @@
   };
 
   D.nl = {
+    "set.mode": "Weergave", "set.light": "Licht", "set.dark": "Donker", "set.auto": "Auto", "set.soloNoSet": "Solo: geen set mogelijk (originele regels)", "game.more3": "+3 kaarten", "game.setLeft": "Er ligt nog een set!", "game.reportNoSet": "Geen set", "game.noSetOk": "Juist, geen set! +1", "game.noSetBad": "Er lag nog een set! −1", "game.oppNoSet": "{name} meldt „geen set” (+1)", "game.oppNoSetBad": "{name} meldde ten onrechte „geen set” (−1)", "game.timeUp": "Tijd om – nieuwe kaarten!", "lobby.options": "Opties", "lobby.limit": "Tijdslimiet per ronde", "lobby.limitOff": "Uit", "lobby.limitSec": "{n} s", "lobby.noset": "Geen set mogelijk (originele regels)", "lobby.nosetShort": "Geen set mogelijk", "lobby.public": "Openbaar", "lobby.private": "Privé", "mode.namePh": "Lobbynaam (optioneel)", "mode.public": "Openbaar tonen", "multi.public": "Openbare lobby's", "multi.none": "Op dit moment geen openbare lobby's.", "conn.lost": "Verbinding verbroken – opnieuw verbinden …", "conn.back": "Weer verbonden", "start.rejoin": "Terug naar lobby {code}",
     "lobby.shuffle": "Husselen", "lobby.moveHint": "Tik op een speler en daarna op een andere plek om hem te verplaatsen.",
     "start.tag": "Wie vindt de set het eerst?", "start.name": "Je gebruikersnaam",
     "btn.multi": "Multiplayer", "btn.solo": "Solo spelen", "btn.stats": "Statistieken", "back": "Terug",
@@ -319,6 +326,7 @@
   };
 
   D.pl = {
+    "set.mode": "Wygląd", "set.light": "Jasny", "set.dark": "Ciemny", "set.auto": "Auto", "set.soloNoSet": "Solo: może nie być setu (oryginalne zasady)", "game.more3": "+3 karty", "game.setLeft": "Jest jeszcze set!", "game.reportNoSet": "Brak setu", "game.noSetOk": "Dobrze, brak setu! +1", "game.noSetBad": "Był jeszcze set! −1", "game.oppNoSet": "{name} zgłasza „brak setu” (+1)", "game.oppNoSetBad": "{name} błędnie zgłosił(a) „brak setu” (−1)", "game.timeUp": "Czas minął – nowe karty!", "lobby.options": "Opcje", "lobby.limit": "Limit czasu na rundę", "lobby.limitOff": "Wył.", "lobby.limitSec": "{n} s", "lobby.noset": "Może nie być setu (oryginalne zasady)", "lobby.nosetShort": "Może nie być setu", "lobby.public": "Publiczne", "lobby.private": "Prywatne", "mode.namePh": "Nazwa lobby (opcjonalnie)", "mode.public": "Pokaż publicznie", "multi.public": "Publiczne lobby", "multi.none": "Obecnie brak publicznych lobby.", "conn.lost": "Utracono połączenie – łączenie …", "conn.back": "Połączono ponownie", "start.rejoin": "Wróć do lobby {code}",
     "lobby.shuffle": "Wymieszaj", "lobby.moveHint": "Dotknij gracza, a potem innego miejsca, aby go przenieść.",
     "start.tag": "Kto pierwszy znajdzie set?", "start.name": "Twoja nazwa użytkownika",
     "btn.multi": "Multiplayer", "btn.solo": "Graj solo", "btn.stats": "Statystyki", "back": "Wstecz",
@@ -364,6 +372,7 @@
   };
 
   D.tr = {
+    "set.mode": "Görünüm", "set.light": "Açık", "set.dark": "Koyu", "set.auto": "Otomatik", "set.soloNoSet": "Solo: set çıkmayabilir (orijinal kurallar)", "game.more3": "+3 kart", "game.setLeft": "Hâlâ bir set var!", "game.reportNoSet": "Set yok", "game.noSetOk": "Doğru, set yok! +1", "game.noSetBad": "Hâlâ bir set vardı! −1", "game.oppNoSet": "{name} „set yok” bildirdi (+1)", "game.oppNoSetBad": "{name} yanlışlıkla „set yok” bildirdi (−1)", "game.timeUp": "Süre doldu – yeni kartlar!", "lobby.options": "Seçenekler", "lobby.limit": "Tur başına süre sınırı", "lobby.limitOff": "Kapalı", "lobby.limitSec": "{n} sn", "lobby.noset": "Set çıkmayabilir (orijinal kurallar)", "lobby.nosetShort": "Set çıkmayabilir", "lobby.public": "Herkese açık", "lobby.private": "Özel", "mode.namePh": "Lobi adı (isteğe bağlı)", "mode.public": "Herkese açık göster", "multi.public": "Herkese açık lobiler", "multi.none": "Şu an herkese açık lobi yok.", "conn.lost": "Bağlantı koptu – yeniden bağlanılıyor …", "conn.back": "Yeniden bağlandı", "start.rejoin": "Lobiye dön {code}",
     "lobby.shuffle": "Karıştır", "lobby.moveHint": "Bir oyuncuya, sonra başka bir yere dokunarak taşı.",
     "start.tag": "Seti ilk kim bulacak?", "start.name": "Kullanıcı adın",
     "btn.multi": "Çok oyunculu", "btn.solo": "Tek başına oyna", "btn.stats": "İstatistikler", "back": "Geri",
@@ -409,6 +418,7 @@
   };
 
   D.ru = {
+    "set.mode": "Оформление", "set.light": "Светлая", "set.dark": "Тёмная", "set.auto": "Авто", "set.soloNoSet": "Соло: сета может не быть (оригинальные правила)", "game.more3": "+3 карты", "game.setLeft": "Сет ещё есть!", "game.reportNoSet": "Нет сета", "game.noSetOk": "Верно, сета нет! +1", "game.noSetBad": "Сет ещё был! −1", "game.oppNoSet": "{name} объявляет «нет сета» (+1)", "game.oppNoSetBad": "{name} ошибочно объявил(а) «нет сета» (−1)", "game.timeUp": "Время вышло – новые карты!", "lobby.options": "Опции", "lobby.limit": "Лимит времени на раунд", "lobby.limitOff": "Выкл.", "lobby.limitSec": "{n} с", "lobby.noset": "Сета может не быть (оригинальные правила)", "lobby.nosetShort": "Сета может не быть", "lobby.public": "Публичное", "lobby.private": "Приватное", "mode.namePh": "Название лобби (необязательно)", "mode.public": "Показывать публично", "multi.public": "Публичные лобби", "multi.none": "Сейчас нет публичных лобби.", "conn.lost": "Соединение потеряно – переподключение …", "conn.back": "Соединение восстановлено", "start.rejoin": "Вернуться в лобби {code}",
     "lobby.shuffle": "Перемешать", "lobby.moveHint": "Нажми на игрока, затем на другое место, чтобы переместить его.",
     "start.tag": "Кто первым найдёт сет?", "start.name": "Твой ник",
     "btn.multi": "Мультиплеер", "btn.solo": "Играть одному", "btn.stats": "Статистика", "back": "Назад",
@@ -454,6 +464,7 @@
   };
 
   D.zh = {
+    "set.mode": "外观", "set.light": "浅色", "set.dark": "深色", "set.auto": "自动", "set.soloNoSet": "单人：可能没有 SET（原版规则）", "game.more3": "+3 张牌", "game.setLeft": "还有 SET！", "game.reportNoSet": "没有 SET", "game.noSetOk": "正确，没有 SET！+1", "game.noSetBad": "还有 SET！−1", "game.oppNoSet": "{name} 报告“没有 SET”(+1)", "game.oppNoSetBad": "{name} 错误地报告了“没有 SET”(−1)", "game.timeUp": "时间到 – 新牌！", "lobby.options": "选项", "lobby.limit": "每回合时间限制", "lobby.limitOff": "关闭", "lobby.limitSec": "{n} 秒", "lobby.noset": "可能没有 SET（原版规则）", "lobby.nosetShort": "可能没有 SET", "lobby.public": "公开", "lobby.private": "私密", "mode.namePh": "房间名称（可选）", "mode.public": "公开显示", "multi.public": "公开房间", "multi.none": "目前没有公开房间。", "conn.lost": "连接中断 – 正在重连 …", "conn.back": "已重新连接", "start.rejoin": "返回房间 {code}",
     "lobby.shuffle": "随机打乱", "lobby.moveHint": "点击一名玩家，再点击另一个位置即可移动。",
     "start.tag": "谁最先找到 SET？", "start.name": "你的用户名",
     "btn.multi": "多人游戏", "btn.solo": "单人游戏", "btn.stats": "统计", "back": "返回",
@@ -499,6 +510,7 @@
   };
 
   D.ja = {
+    "set.mode": "外観", "set.light": "ライト", "set.dark": "ダーク", "set.auto": "自動", "set.soloNoSet": "ソロ：セットがない場合あり（オリジナルルール）", "game.more3": "+3枚", "game.setLeft": "まだセットがあります！", "game.reportNoSet": "セットなし", "game.noSetOk": "正解、セットなし！ +1", "game.noSetBad": "まだセットがありました！ −1", "game.oppNoSet": "{name} が「セットなし」を宣言 (+1)", "game.oppNoSetBad": "{name} が誤って「セットなし」を宣言 (−1)", "game.timeUp": "時間切れ – 新しいカード！", "lobby.options": "オプション", "lobby.limit": "ラウンドの制限時間", "lobby.limitOff": "オフ", "lobby.limitSec": "{n}秒", "lobby.noset": "セットがない場合あり（オリジナルルール）", "lobby.nosetShort": "セットなしあり", "lobby.public": "公開", "lobby.private": "非公開", "mode.namePh": "ロビー名（任意）", "mode.public": "公開して表示", "multi.public": "公開ロビー", "multi.none": "現在、公開ロビーはありません。", "conn.lost": "接続が切れました – 再接続中 …", "conn.back": "再接続しました", "start.rejoin": "ロビー {code} に戻る",
     "lobby.shuffle": "シャッフル", "lobby.moveHint": "プレイヤーをタップし、次に別の場所をタップして移動します。",
     "start.tag": "誰が最初にセットを見つける？", "start.name": "ユーザー名",
     "btn.multi": "マルチプレイ", "btn.solo": "ひとりで遊ぶ", "btn.stats": "統計", "back": "戻る",

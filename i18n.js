@@ -4,6 +4,7 @@
   var NAMES = { de: "Deutsch", en: "English", fr: "Français", es: "Español", it: "Italiano", pt: "Português", nl: "Nederlands", pl: "Polski", tr: "Türkçe", ru: "Русский", zh: "中文", ja: "日本語" };
 
   D.de = {
+    "lobby.copyLinkBtn": "Link kopieren",
     "logo.sub": "DUELL", "multi.refresh": "Aktualisieren",
     "rules.title": "Spielregeln", "rules.goal": "Finde drei Karten, die zusammen ein SET bilden.", "rules.attrs": "Jede Karte hat vier Eigenschaften: Anzahl (1–3), Farbe, Form und Füllung.", "rules.rule": "Bei einem SET ist jede Eigenschaft bei allen drei Karten entweder überall gleich oder überall verschieden.", "rules.ex1": "Beispiel: alles verschieden", "rules.ex2": "Beispiel: Farbe gleich, alles andere verschieden", "rules.solo": "Solo: Finde alle Sets so schnell du kannst. Liegt keins auf dem Tisch, legst du mit „+3 Karten“ nach.", "rules.mp": "Multiplayer: Alle sehen dieselben Karten. Ein richtiges Set gibt +1, ein falsches −1. Wer zuerst das Ziel erreicht, gewinnt. Liegt kein Set, drückst du „Kein Set“ (+1, bei Irrtum −1).", "rules.attack": "Zeitattacke: Finde so viele Sets wie möglich, bevor die Zeit abläuft. Jedes Set gibt +1, jeder Fehler −1.", "rules.close": "Verstanden", "solo.title": "Solo", "solo.classic": "Klassisch", "solo.classicText": "Alle Karten, so schnell du kannst", "solo.attack": "Zeitattacke", "solo.attackText": "So viele Sets wie möglich vor Ablauf der Zeit", "solo.start": "Start", "attack.best": "Beste: {n}", "attack.over": "Zeit abgelaufen!", "attack.score": "{n} Punkte", "attack.record": "Neuer Rekord!", "st.attack": "Zeitattacke", "st.attackRow": "{b} Beste · {g} Spiele",
     "lobby.away": "wartet …", "lobby.waitBack": "Warten, bis alle zurück in der Lobby sind", "lobby.kick": "Entfernen", "lobby.kickConfirm": "{name} aus der Lobby entfernen?", "lobby.kicked": "Du wurdest aus der Lobby entfernt.", "err.banned": "Du wurdest aus dieser Lobby entfernt.",
@@ -53,6 +54,7 @@
   };
 
   D.en = {
+    "lobby.copyLinkBtn": "Copy link",
     "logo.sub": "DUEL", "multi.refresh": "Refresh",
     "rules.title": "Rules", "rules.goal": "Find three cards that together form a SET.", "rules.attrs": "Every card has four features: number (1–3), color, shape and fill.", "rules.rule": "In a SET, each feature is either the same on all three cards or different on all three.", "rules.ex1": "Example: everything different", "rules.ex2": "Example: same color, everything else different", "rules.solo": "Solo: Find all sets as fast as you can. If none is on the table, add cards with “+3 cards”.", "rules.mp": "Multiplayer: Everyone sees the same cards. A correct set gives +1, a wrong one −1. First to the goal wins. If there is no set, press “No set” (+1, −1 if wrong).", "rules.attack": "Time attack: Find as many sets as possible before time runs out. Each set gives +1, each mistake −1.", "rules.close": "Got it", "solo.title": "Solo", "solo.classic": "Classic", "solo.classicText": "All cards, as fast as you can", "solo.attack": "Time attack", "solo.attackText": "As many sets as possible before time runs out", "solo.start": "Start", "attack.best": "Best: {n}", "attack.over": "Time's up!", "attack.score": "{n} points", "attack.record": "New record!", "st.attack": "Time attack", "st.attackRow": "Best {b} · {g} games",
     "lobby.away": "waiting …", "lobby.waitBack": "Waiting for everyone to return to the lobby", "lobby.kick": "Remove", "lobby.kickConfirm": "Remove {name} from the lobby?", "lobby.kicked": "You were removed from the lobby.", "err.banned": "You were removed from this lobby.",
@@ -102,6 +104,7 @@
   };
 
   D.fr = {
+    "lobby.copyLinkBtn": "Copier le lien",
     "logo.sub": "DUEL", "multi.refresh": "Actualiser",
     "rules.title": "Règles du jeu", "rules.goal": "Trouve trois cartes qui forment un SET.", "rules.attrs": "Chaque carte a quatre caractéristiques : nombre (1–3), couleur, forme et remplissage.", "rules.rule": "Dans un SET, chaque caractéristique est soit identique sur les trois cartes, soit différente sur les trois.", "rules.ex1": "Exemple : tout est différent", "rules.ex2": "Exemple : même couleur, tout le reste différent", "rules.solo": "Solo : trouve tous les sets le plus vite possible. S'il n'y en a pas, ajoute des cartes avec « +3 cartes ».", "rules.mp": "Multijoueur : tout le monde voit les mêmes cartes. Un bon set donne +1, un mauvais −1. Le premier à l'objectif gagne. S'il n'y a pas de set, appuie sur « Pas de set » (+1, −1 si faux).", "rules.attack": "Contre-la-montre : trouve un maximum de sets avant la fin du temps. Chaque set donne +1, chaque erreur −1.", "rules.close": "Compris", "solo.title": "Solo", "solo.classic": "Classique", "solo.classicText": "Toutes les cartes, le plus vite possible", "solo.attack": "Contre-la-montre", "solo.attackText": "Un maximum de sets avant la fin du temps", "solo.start": "Démarrer", "attack.best": "Meilleur : {n}", "attack.over": "Temps écoulé !", "attack.score": "{n} points", "attack.record": "Nouveau record !", "st.attack": "Contre-la-montre", "st.attackRow": "Meilleur {b} · {g} parties",
     "lobby.away": "attend …", "lobby.waitBack": "On attend que tout le monde revienne au salon", "lobby.kick": "Retirer", "lobby.kickConfirm": "Retirer {name} du salon ?", "lobby.kicked": "Tu as été retiré du salon.", "err.banned": "Tu as été retiré de ce salon.",
@@ -151,6 +154,7 @@
   };
 
   D.es = {
+    "lobby.copyLinkBtn": "Copiar enlace",
     "logo.sub": "DUELO", "multi.refresh": "Actualizar",
     "rules.title": "Reglas", "rules.goal": "Encuentra tres cartas que formen un SET.", "rules.attrs": "Cada carta tiene cuatro características: cantidad (1–3), color, forma y relleno.", "rules.rule": "En un SET, cada característica es igual en las tres cartas o diferente en las tres.", "rules.ex1": "Ejemplo: todo diferente", "rules.ex2": "Ejemplo: mismo color, todo lo demás diferente", "rules.solo": "Solo: encuentra todos los sets lo más rápido posible. Si no hay ninguno, añade cartas con «+3 cartas».", "rules.mp": "Multijugador: todos ven las mismas cartas. Un set correcto da +1, uno incorrecto −1. Gana quien llegue primero a la meta. Si no hay set, pulsa «Sin set» (+1, −1 si te equivocas).", "rules.attack": "Contrarreloj: encuentra tantos sets como puedas antes de que se acabe el tiempo. Cada set da +1, cada error −1.", "rules.close": "Entendido", "solo.title": "Solo", "solo.classic": "Clásico", "solo.classicText": "Todas las cartas, lo más rápido posible", "solo.attack": "Contrarreloj", "solo.attackText": "Tantos sets como puedas antes de que acabe el tiempo", "solo.start": "Empezar", "attack.best": "Mejor: {n}", "attack.over": "¡Se acabó el tiempo!", "attack.score": "{n} puntos", "attack.record": "¡Nuevo récord!", "st.attack": "Contrarreloj", "st.attackRow": "Mejor {b} · {g} partidas",
     "lobby.away": "esperando …", "lobby.waitBack": "Esperando a que todos vuelvan a la sala", "lobby.kick": "Expulsar", "lobby.kickConfirm": "¿Expulsar a {name} de la sala?", "lobby.kicked": "Te han expulsado de la sala.", "err.banned": "Te han expulsado de esta sala.",
@@ -200,6 +204,7 @@
   };
 
   D.it = {
+    "lobby.copyLinkBtn": "Copia link",
     "logo.sub": "DUELLO", "multi.refresh": "Aggiorna",
     "rules.title": "Regole del gioco", "rules.goal": "Trova tre carte che insieme formano un SET.", "rules.attrs": "Ogni carta ha quattro caratteristiche: numero (1–3), colore, forma e riempimento.", "rules.rule": "In un SET ogni caratteristica è uguale su tutte e tre le carte oppure diversa su tutte e tre.", "rules.ex1": "Esempio: tutto diverso", "rules.ex2": "Esempio: stesso colore, tutto il resto diverso", "rules.solo": "Solo: trova tutti i set il più in fretta possibile. Se non ce ne sono, aggiungi carte con «+3 carte».", "rules.mp": "Multiplayer: tutti vedono le stesse carte. Un set giusto dà +1, uno sbagliato −1. Vince chi raggiunge per primo l'obiettivo. Se non c'è un set, premi «Nessun set» (+1, −1 se sbagli).", "rules.attack": "Contro il tempo: trova più set possibile prima che il tempo scada. Ogni set dà +1, ogni errore −1.", "rules.close": "Capito", "solo.title": "Solo", "solo.classic": "Classico", "solo.classicText": "Tutte le carte, il più in fretta possibile", "solo.attack": "Contro il tempo", "solo.attackText": "Più set possibile prima che il tempo scada", "solo.start": "Avvia", "attack.best": "Migliore: {n}", "attack.over": "Tempo scaduto!", "attack.score": "{n} punti", "attack.record": "Nuovo record!", "st.attack": "Contro il tempo", "st.attackRow": "Migliore {b} · {g} partite",
     "lobby.away": "in attesa …", "lobby.waitBack": "In attesa che tutti tornino nella lobby", "lobby.kick": "Rimuovi", "lobby.kickConfirm": "Rimuovere {name} dalla lobby?", "lobby.kicked": "Sei stato rimosso dalla lobby.", "err.banned": "Sei stato rimosso da questa lobby.",
@@ -249,6 +254,7 @@
   };
 
   D.pt = {
+    "lobby.copyLinkBtn": "Copiar link",
     "logo.sub": "DUELO", "multi.refresh": "Atualizar",
     "rules.title": "Regras do jogo", "rules.goal": "Encontre três cartas que formem um SET.", "rules.attrs": "Cada carta tem quatro características: quantidade (1–3), cor, forma e preenchimento.", "rules.rule": "Num SET, cada característica é igual nas três cartas ou diferente nas três.", "rules.ex1": "Exemplo: tudo diferente", "rules.ex2": "Exemplo: mesma cor, o resto diferente", "rules.solo": "Solo: encontre todos os sets o mais rápido possível. Se não houver nenhum, adicione cartas com «+3 cartas».", "rules.mp": "Multijogador: todos veem as mesmas cartas. Um set certo dá +1, um errado −1. Vence quem chegar primeiro à meta. Se não houver set, toque em «Sem set» (+1, −1 se errar).", "rules.attack": "Contra o tempo: encontre o máximo de sets antes que o tempo acabe. Cada set dá +1, cada erro −1.", "rules.close": "Entendi", "solo.title": "Solo", "solo.classic": "Clássico", "solo.classicText": "Todas as cartas, o mais rápido possível", "solo.attack": "Contra o tempo", "solo.attackText": "O máximo de sets antes que o tempo acabe", "solo.start": "Iniciar", "attack.best": "Melhor: {n}", "attack.over": "Tempo esgotado!", "attack.score": "{n} pontos", "attack.record": "Novo recorde!", "st.attack": "Contra o tempo", "st.attackRow": "Melhor {b} · {g} jogos",
     "lobby.away": "aguardando …", "lobby.waitBack": "Aguardando todos voltarem à sala", "lobby.kick": "Remover", "lobby.kickConfirm": "Remover {name} da sala?", "lobby.kicked": "Você foi removido da sala.", "err.banned": "Você foi removido desta sala.",
@@ -298,6 +304,7 @@
   };
 
   D.nl = {
+    "lobby.copyLinkBtn": "Link kopiëren",
     "logo.sub": "DUEL", "multi.refresh": "Vernieuwen",
     "rules.title": "Spelregels", "rules.goal": "Vind drie kaarten die samen een SET vormen.", "rules.attrs": "Elke kaart heeft vier eigenschappen: aantal (1–3), kleur, vorm en vulling.", "rules.rule": "Bij een SET is elke eigenschap op alle drie de kaarten gelijk of op alle drie verschillend.", "rules.ex1": "Voorbeeld: alles verschillend", "rules.ex2": "Voorbeeld: dezelfde kleur, de rest verschillend", "rules.solo": "Solo: vind alle sets zo snel je kunt. Ligt er geen, leg dan bij met „+3 kaarten”.", "rules.mp": "Multiplayer: iedereen ziet dezelfde kaarten. Een goede set geeft +1, een foute −1. Wie het eerst het doel haalt, wint. Ligt er geen set, druk dan op „Geen set” (+1, −1 bij een fout).", "rules.attack": "Tijdsdruk: vind zoveel mogelijk sets voordat de tijd om is. Elke set geeft +1, elke fout −1.", "rules.close": "Begrepen", "solo.title": "Solo", "solo.classic": "Klassiek", "solo.classicText": "Alle kaarten, zo snel je kunt", "solo.attack": "Tijdsdruk", "solo.attackText": "Zoveel mogelijk sets voordat de tijd om is", "solo.start": "Start", "attack.best": "Beste: {n}", "attack.over": "Tijd om!", "attack.score": "{n} punten", "attack.record": "Nieuw record!", "st.attack": "Tijdsdruk", "st.attackRow": "Beste {b} · {g} spellen",
     "lobby.away": "wacht …", "lobby.waitBack": "Wachten tot iedereen terug is in de lobby", "lobby.kick": "Verwijderen", "lobby.kickConfirm": "{name} uit de lobby verwijderen?", "lobby.kicked": "Je bent uit de lobby verwijderd.", "err.banned": "Je bent uit deze lobby verwijderd.",
@@ -347,6 +354,7 @@
   };
 
   D.pl = {
+    "lobby.copyLinkBtn": "Kopiuj link",
     "logo.sub": "POJEDYNEK", "multi.refresh": "Odśwież",
     "rules.title": "Zasady gry", "rules.goal": "Znajdź trzy karty, które razem tworzą SET.", "rules.attrs": "Każda karta ma cztery cechy: liczbę (1–3), kolor, kształt i wypełnienie.", "rules.rule": "W SET-cie każda cecha jest albo taka sama na wszystkich trzech kartach, albo różna na wszystkich trzech.", "rules.ex1": "Przykład: wszystko różne", "rules.ex2": "Przykład: ten sam kolor, reszta różna", "rules.solo": "Solo: znajdź wszystkie sety jak najszybciej. Jeśli żadnego nie ma, dołóż karty przyciskiem „+3 karty”.", "rules.mp": "Multiplayer: wszyscy widzą te same karty. Dobry set daje +1, zły −1. Wygrywa ten, kto pierwszy osiągnie cel. Jeśli nie ma setu, naciśnij „Brak setu” (+1, −1 przy błędzie).", "rules.attack": "Na czas: znajdź jak najwięcej setów, zanim skończy się czas. Każdy set daje +1, każdy błąd −1.", "rules.close": "Jasne", "solo.title": "Solo", "solo.classic": "Klasyczny", "solo.classicText": "Wszystkie karty, jak najszybciej", "solo.attack": "Na czas", "solo.attackText": "Jak najwięcej setów, zanim skończy się czas", "solo.start": "Start", "attack.best": "Najlepszy: {n}", "attack.over": "Koniec czasu!", "attack.score": "{n} pkt", "attack.record": "Nowy rekord!", "st.attack": "Na czas", "st.attackRow": "Najlepszy {b} · {g} gier",
     "lobby.away": "czeka …", "lobby.waitBack": "Czekam, aż wszyscy wrócą do lobby", "lobby.kick": "Usuń", "lobby.kickConfirm": "Usunąć {name} z lobby?", "lobby.kicked": "Zostałeś usunięty z lobby.", "err.banned": "Zostałeś usunięty z tego lobby.",
@@ -396,6 +404,7 @@
   };
 
   D.tr = {
+    "lobby.copyLinkBtn": "Bağlantıyı kopyala",
     "logo.sub": "DÜELLO", "multi.refresh": "Yenile",
     "rules.title": "Oyun kuralları", "rules.goal": "Birlikte bir SET oluşturan üç kart bul.", "rules.attrs": "Her kartın dört özelliği vardır: adet (1–3), renk, şekil ve dolgu.", "rules.rule": "Bir SET'te her özellik üç kartta da ya aynıdır ya da üçünde de farklıdır.", "rules.ex1": "Örnek: her şey farklı", "rules.ex2": "Örnek: renk aynı, geri kalan farklı", "rules.solo": "Solo: Tüm setleri olabildiğince hızlı bul. Masada set yoksa „+3 kart“ ile kart ekle.", "rules.mp": "Çok oyunculu: Herkes aynı kartları görür. Doğru set +1, yanlış set −1 verir. Hedefe ilk ulaşan kazanır. Set yoksa „Set yok“ düğmesine bas (+1, yanlışsa −1).", "rules.attack": "Zamana karşı: Süre dolmadan olabildiğince çok set bul. Her set +1, her hata −1 verir.", "rules.close": "Anladım", "solo.title": "Solo", "solo.classic": "Klasik", "solo.classicText": "Tüm kartlar, olabildiğince hızlı", "solo.attack": "Zamana karşı", "solo.attackText": "Süre dolmadan olabildiğince çok set", "solo.start": "Başla", "attack.best": "En iyi: {n}", "attack.over": "Süre doldu!", "attack.score": "{n} puan", "attack.record": "Yeni rekor!", "st.attack": "Zamana karşı", "st.attackRow": "En iyi {b} · {g} oyun",
     "lobby.away": "bekliyor …", "lobby.waitBack": "Herkesin lobiye dönmesi bekleniyor", "lobby.kick": "Çıkar", "lobby.kickConfirm": "{name} lobiden çıkarılsın mı?", "lobby.kicked": "Lobiden çıkarıldın.", "err.banned": "Bu lobiden çıkarıldın.",
@@ -445,6 +454,7 @@
   };
 
   D.ru = {
+    "lobby.copyLinkBtn": "Копировать ссылку",
     "logo.sub": "ДУЭЛЬ", "multi.refresh": "Обновить",
     "rules.title": "Правила игры", "rules.goal": "Найди три карты, которые вместе образуют СЕТ.", "rules.attrs": "У каждой карты четыре признака: количество (1–3), цвет, форма и заливка.", "rules.rule": "В СЕТЕ каждый признак у всех трёх карт либо одинаковый, либо у всех разный.", "rules.ex1": "Пример: всё разное", "rules.ex2": "Пример: цвет одинаковый, остальное разное", "rules.solo": "Соло: находи все сеты как можно быстрее. Если на столе сетов нет, добавь карты кнопкой «+3 карты».", "rules.mp": "Мультиплеер: все видят одни и те же карты. Верный сет даёт +1, неверный −1. Побеждает тот, кто первым достигнет цели. Если сета нет, нажми «Нет сета» (+1, −1 при ошибке).", "rules.attack": "На время: найди как можно больше сетов, пока не кончилось время. Каждый сет даёт +1, каждая ошибка −1.", "rules.close": "Понятно", "solo.title": "Соло", "solo.classic": "Классика", "solo.classicText": "Все карты, как можно быстрее", "solo.attack": "На время", "solo.attackText": "Как можно больше сетов до конца времени", "solo.start": "Старт", "attack.best": "Лучший: {n}", "attack.over": "Время вышло!", "attack.score": "Очков: {n}", "attack.record": "Новый рекорд!", "st.attack": "На время", "st.attackRow": "Лучший {b} · игр: {g}",
     "lobby.away": "ждёт …", "lobby.waitBack": "Ждём, пока все вернутся в лобби", "lobby.kick": "Удалить", "lobby.kickConfirm": "Удалить {name} из лобби?", "lobby.kicked": "Тебя удалили из лобби.", "err.banned": "Тебя удалили из этого лобби.",
@@ -494,6 +504,7 @@
   };
 
   D.zh = {
+    "lobby.copyLinkBtn": "复制链接",
     "logo.sub": "对决", "multi.refresh": "刷新",
     "rules.title": "游戏规则", "rules.goal": "找出三张能组成一个 SET 的牌。", "rules.attrs": "每张牌有四个特征：数量（1–3）、颜色、形状和填充。", "rules.rule": "在一个 SET 中，每个特征在三张牌上要么全部相同，要么全部不同。", "rules.ex1": "示例：全部不同", "rules.ex2": "示例：颜色相同，其余全部不同", "rules.solo": "单人：尽快找出所有 SET。桌上没有时，点“+3 张牌”补牌。", "rules.mp": "多人：所有人看到相同的牌。正确的 SET +1，错误 −1。先达到目标者获胜。没有 SET 时点“没有 SET”（+1，错误 −1）。", "rules.attack": "限时挑战：在时间用完前找出尽可能多的 SET。每个 SET +1，每个错误 −1。", "rules.close": "明白了", "solo.title": "单人", "solo.classic": "经典", "solo.classicText": "所有牌，越快越好", "solo.attack": "限时挑战", "solo.attackText": "在时间用完前找出尽可能多的 SET", "solo.start": "开始", "attack.best": "最佳：{n}", "attack.over": "时间到！", "attack.score": "{n} 分", "attack.record": "新纪录！", "st.attack": "限时挑战", "st.attackRow": "最佳 {b} · {g} 场",
     "lobby.away": "等待中 …", "lobby.waitBack": "等待所有人回到房间", "lobby.kick": "移除", "lobby.kickConfirm": "将 {name} 移出房间？", "lobby.kicked": "你已被移出房间。", "err.banned": "你已被移出此房间。",
@@ -543,6 +554,7 @@
   };
 
   D.ja = {
+    "lobby.copyLinkBtn": "リンクをコピー",
     "logo.sub": "デュエル", "multi.refresh": "更新",
     "rules.title": "ゲームのルール", "rules.goal": "3枚のカードで1つのセットを作りましょう。", "rules.attrs": "各カードには4つの特徴があります：数（1〜3）、色、形、塗り。", "rules.rule": "セットでは、各特徴が3枚とも同じか、3枚ともすべて違います。", "rules.ex1": "例：すべて違う", "rules.ex2": "例：色は同じ、ほかはすべて違う", "rules.solo": "ソロ：できるだけ早くすべてのセットを見つけます。場にない時は「+3枚」で追加します。", "rules.mp": "マルチ：全員が同じカードを見ます。正解は+1、不正解は−1。先に目標に達した人の勝ち。セットがない時は「セットなし」を押します（+1、間違いは−1）。", "rules.attack": "タイムアタック：時間内にできるだけ多くのセットを見つけます。セット+1、ミス−1。", "rules.close": "わかった", "solo.title": "ソロ", "solo.classic": "クラシック", "solo.classicText": "全カードをできるだけ早く", "solo.attack": "タイムアタック", "solo.attackText": "時間内にできるだけ多くのセット", "solo.start": "スタート", "attack.best": "ベスト：{n}", "attack.over": "時間切れ！", "attack.score": "{n}点", "attack.record": "新記録！", "st.attack": "タイムアタック", "st.attackRow": "ベスト {b} · {g}回",
     "lobby.away": "待機中 …", "lobby.waitBack": "全員がロビーに戻るのを待っています", "lobby.kick": "退出させる", "lobby.kickConfirm": "{name} をロビーから退出させますか？", "lobby.kicked": "ロビーから退出させられました。", "err.banned": "このロビーから退出させられました。",

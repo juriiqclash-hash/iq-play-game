@@ -249,6 +249,9 @@
   @keyframes emoout { 0% { opacity: 0; transform: translateY(-34px) scale(.2); } 12% { opacity: 1; transform: translateY(20px) scale(1.25); } 22% { transform: translateY(14px) scale(1); } 82% { opacity: 1; transform: translateY(14px) scale(1); } 100% { opacity: 0; transform: translateY(30px) scale(.9); } }
   .slot.away { opacity: .55; } .slot .kick { margin-left: auto; width: 28px; height: 28px; border-radius: 9px; border: 1px solid var(--line); background: var(--surface-2); color: var(--muted); cursor: pointer; font-size: 13px; flex: none; padding: 0; }
   .slot .kick:hover { background: var(--bad); color: #fff; border-color: var(--bad); }
+  #dlg { z-index: 90; } .dlgsheet { max-width: 360px; } .dlgsheet .title { font-size: 24px; } .dlgsheet p { font-size: 15px; line-height: 1.45; white-space: pre-line; }
+  .dlgsheet input { text-align: center; font-size: 15px; }
+  button.btn.danger { background: var(--bad); border-color: transparent; color: #fff; box-shadow: 0 8px 20px -8px rgba(220,53,69,.6); }
   .btn.cheatbtn { background: #e3ecff; border-color: #2f6bff; color: #0e0e10; outline: 3px solid #2f6bff; box-shadow: 0 0 0 4px rgba(47,107,255,.3), 0 0 18px rgba(47,107,255,.6); }
   .btn.shake { animation: shake .4s ease; }
   .btn.pulse { outline: 3px solid var(--accent); outline-offset: 2px; animation: pulse 1.1s ease-in-out infinite; }
@@ -548,6 +551,14 @@
     <label class="switch"><span data-i18n="lobby.public">Öffentlich</span><input type="checkbox" id="swPublic"></label>
     <input type="text" id="optName" hidden maxlength="24" data-i18n-ph="mode.namePh" placeholder="">
     <div class="btns"><button class="btn primary block" id="bOptClose" type="button" data-i18n="set.close">Fertig</button></div>
+  </div>
+</div>
+<div id="dlg" class="modal" hidden>
+  <div class="sheet dlgsheet" role="alertdialog" aria-modal="true">
+    <h2 class="title" id="dlgTitle" hidden></h2>
+    <p class="muted" id="dlgText"></p>
+    <input type="text" id="dlgInput" readonly hidden>
+    <div class="btns" id="dlgBtns"></div>
   </div>
 </div>
 <div class="conn" id="conn" hidden></div>
@@ -1060,6 +1071,33 @@
   $('bSettingsClose').addEventListener('click', function () { $('settingsModal').hidden = true; });
   $('settingsModal').addEventListener('click', function (e) { if (e.target === this) this.hidden = true; });
 
+  /* ---------- In-App-Dialoge (statt Browser-confirm/prompt) ---------- */
+  function appDialog(o) {
+    return new Promise(function (resolve) {
+      var d = $('dlg'), box = $('dlgBtns'), inp = $('dlgInput');
+      $('dlgTitle').textContent = o.title || ''; $('dlgTitle').hidden = !o.title;
+      $('dlgText').textContent = o.text || ''; $('dlgText').hidden = !o.text;
+      inp.hidden = o.input == null; if (o.input != null) inp.value = o.input;
+      box.innerHTML = '';
+      function close(v) { d.hidden = true; document.removeEventListener('keydown', onkey, true); d.onclick = null; resolve(v); }
+      function onkey(e) {
+        if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); close(false); }
+        else if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); close(true); }
+      }
+      o.buttons.forEach(function (bt) {
+        var b = el('button', 'btn block' + (bt.danger ? ' danger' : bt.primary ? ' primary' : ''), bt.label); b.type = 'button';
+        b.addEventListener('click', function () { close(bt.value); }); box.appendChild(b);
+      });
+      d.onclick = function (e) { if (e.target === d) close(false); };
+      document.addEventListener('keydown', onkey, true);
+      d.hidden = false;
+      if (o.input != null) { inp.focus(); inp.select(); } else { var f = box.querySelector('.danger, .primary'); if (f) f.focus(); }
+    });
+  }
+  function appConfirm(text, okLabel, danger) {
+    return appDialog({ text: text, buttons: [{ label: okLabel, value: true, primary: !danger, danger: !!danger }, { label: T('mode.cancel'), value: false }] });
+  }
+
   /* ---------- Stats (lokal gespeichert) ---------- */
   function emptyStats() {
     return { solo: { games: 0, sets: 0, misses: 0, hints: 0, bestTime: null, iqSum: 0, iqBest: 0, attack: {} },
@@ -1120,7 +1158,9 @@
   $('bStatsClose').addEventListener('click', function () { $('statsModal').hidden = true; });
   $('statsModal').addEventListener('click', function (e) { if (e.target === this) this.hidden = true; });
   document.querySelectorAll('.seg button').forEach(function (b) { b.addEventListener('click', function () { statsTab = b.dataset.tab; renderStats(); }); });
-  $('bStatsReset').addEventListener('click', function () { if (window.confirm(T('stats.confirm'))) { saveStats(emptyStats()); renderStats(); } });
+  $('bStatsReset').addEventListener('click', function () {
+    appConfirm(T('stats.confirm'), T('stats.reset'), true).then(function (ok) { if (ok) { saveStats(emptyStats()); renderStats(); } });
+  });
 
   /* ---------- Modus-Popup ---------- */
   var MODES = { teams: [{ kind: 'ffa', n: 2 }, { kind: 'teams', teams: 2, size: 2 }, { kind: 'teams', teams: 2, size: 3 }, { kind: 'teams', teams: 2, size: 4 }, { kind: 'teams', teams: 2, size: 5 }], ffa: [] };
@@ -1369,7 +1409,9 @@
     $('bOptions').hidden = !host;
   }
   function kickPlayer(p) {
-    if (!window.confirm(T('lobby.kickConfirm', { name: p.name }))) return;
+    appConfirm(T('lobby.kickConfirm', { name: p.name }), T('lobby.kick'), true).then(function (ok) { if (ok) doKick(p); });
+  }
+  function doKick(p) {
     mutate(function (s) {
       if (s.status !== 'waiting' || s.players[0].id !== myId) return null;
       var c = cfgOf(s);
@@ -1440,7 +1482,10 @@
   $('bShare').addEventListener('click', function () {
     var b = this, url = shareUrl();
     function done(msg) { b.textContent = msg; setTimeout(function () { b.textContent = T('lobby.share'); }, 1500); }
-    copyText(url).then(function () { done(T('lobby.linkCopied')); }, function () { window.prompt(T('lobby.linkPrompt'), url); });
+    copyText(url).then(function () { done(T('lobby.linkCopied')); }, function () {
+      appDialog({ title: T('lobby.share'), text: T('lobby.linkPrompt'), input: url, buttons: [{ label: T('lobby.copyLinkBtn'), value: true, primary: true }, { label: T('set.close'), value: false }] })
+        .then(function (cp) { if (cp) { var i = $('dlgInput'); i.select(); try { document.execCommand('copy'); } catch (e) {} } });
+    });
   });
   $('bCopy').addEventListener('click', function () {
     var b = this;

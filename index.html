@@ -198,13 +198,14 @@
   @keyframes pop { 0% { opacity: 0; transform: scale(1.6); } 25% { opacity: 1; transform: scale(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: scale(.85); } }
 
   /* Solo: alles in einer Zeile, weiße Fläche nur um die Karten */
-  #s-game.solo .stats { flex: none; min-width: 0; gap: 6px; flex-wrap: nowrap; }
-  #s-game.solo .stat { min-width: 0; padding: 3px 10px; }
-  #s-game.solo .stat dd { font-size: 16px; }
-  #s-game.solo .stage { background: none; border: 0; box-shadow: none; padding: 0; border-radius: 0; }
-  #s-game.solo .table { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 8px; box-shadow: 0 8px 24px -14px rgba(0,0,0,.12); }
-  #s-game.solo .table, #s-game.solo .stage { align-content: center; }
-
+  #s-game.solo { gap: 6px; }
+  #s-game.solo .stats { flex: none; justify-content: center; gap: 8px; flex-wrap: nowrap; }
+  #s-game.solo .stat { flex: 0 0 auto; width: 92px; min-width: 0; padding: 9px 8px; text-align: center; border-radius: 14px; }
+  #s-game.solo .stat dt { font-size: 9px; }
+  #s-game.solo .stat dd { font-size: 22px; margin-top: 3px; }
+  #s-game .stage { background: none; border: 0; box-shadow: none; padding: 0; border-radius: 0; }
+  #s-game .table { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 8px; box-shadow: 0 8px 24px -14px rgba(0,0,0,.12); }
+  
   /* Spielkarten – unverändert */
   .card { display: block; width: 100%; aspect-ratio: 3 / 2; padding: 0; background: var(--card); border: 1px solid var(--card-line); border-radius: 10px; cursor: pointer;
     box-shadow: 0 1px 0 rgba(0,0,0,.08), 0 3px 8px rgba(20,30,40,.14); outline: 3px solid transparent; outline-offset: 2px;
@@ -261,7 +262,8 @@
     button.btn { padding: 12px 18px; }
     .sheet { padding: 20px 18px 18px; gap: 12px; }
   }
-  @media (max-width: 520px) { body { padding-left: 8px; padding-right: 8px; } #s-game .stage { padding: 6px; border-radius: 16px; } }
+  @media (max-width: 520px) { body { padding-left: 8px; padding-right: 8px; } }
+  @media (max-height: 800px) { #s-game.solo .stat { padding: 6px 8px; } body { padding-top: 12px; padding-bottom: 10px; } }
   @media (max-height: 620px) { .fan { display: none; } .msg { min-height: 30px; padding: 4px 12px; } }
   @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
@@ -849,7 +851,7 @@
   function fitBoard() {
     var stage = $('stage'), t = $('table'), n = st ? st.board.length : 0;
     if (!n) return;
-    var cs = getComputedStyle(stage), gap = 8, pad = (mode === 'solo') ? 18 : 0;
+    var cs = getComputedStyle(stage), gap = 8, pad = 18;
     var w = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - pad;
     var h = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 6 - pad;
     if (w <= 0 || h <= 0) return;

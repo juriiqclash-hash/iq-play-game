@@ -44,7 +44,7 @@
   }
   [hidden] { display: none !important; }
   p, h1, h2, h3 { margin: 0; }
-  .app { max-width: 960px; width: 100%; margin: 0 auto; flex: 1; min-height: 0; display: flex; flex-direction: column; }
+  .app { max-width: 1240px; width: 100%; margin: 0 auto; flex: 1; min-height: 0; display: flex; flex-direction: column; }
   .screen { display: flex; flex-direction: column; gap: 16px; flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: none; animation: rise .35s ease-out; }
   .screen::-webkit-scrollbar { display: none; }
   .screen > :first-child { margin-top: auto; } .screen > :last-child { margin-bottom: auto; }
@@ -761,6 +761,7 @@
   function renderGame() {
     renderScoreboard();
     $('soloBar').hidden = mode !== 'solo';
+    $('msg').hidden = mode === 'solo';   // Solo: kein Statustext, Spielfeld nutzt den Platz
     $('bHint').hidden = mode !== 'solo';
     $('gChip').innerHTML = mode === 'online' ? 'Lobby <b>' + st.code + '</b>' : 'Solo';
     var m = me() || st.players[0];
@@ -793,7 +794,7 @@
     var w = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
     var h = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 6;
     if (w <= 0 || h <= 0) return;
-    function size(c, r) { return Math.min((w - gap * (c - 1)) / c, (h - gap * (r - 1)) / r * 1.5, 260); }
+    function size(c, r) { return Math.min((w - gap * (c - 1)) / c, (h - gap * (r - 1)) / r * 1.5, 320); }
     var cols = Math.ceil(n / 3);
     var A = size(3, cols), B = size(cols, 3);   // A: 3 Spalten, B: 3 Reihen
     var useB = B > A, cw = Math.max(40, Math.floor(useB ? B : A));

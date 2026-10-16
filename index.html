@@ -10,7 +10,7 @@
       var d = l.search.slice(1).split('&').map(function (x) { return x.replace(/~and~/g, '&'); }).join('?');
       history.replaceState(null, null, l.pathname.slice(0, -1) + d + l.hash);
     }
-    var m = l.pathname.match(/^(.*?\/)(?:solo|multiplayer|lobby(?:\/\d{0,6})?)\/?$/);
+    var m = l.pathname.match(/^(.*?\/)(?:solo|multiplayer|zeitattacke(?:\/\d{0,3})?|lobby(?:\/\d{0,6})?)\/?$/);
     window.__BASE = m ? m[1] : l.pathname.replace(/[^\/]*$/, '');
     document.write('<base href="' + window.__BASE + '">');
   })(location);
@@ -18,6 +18,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f6f6f3">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SET Duell">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>SET Duell</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap">
@@ -190,6 +197,14 @@
 
   .seg { display: grid; grid-template-columns: 1fr 1fr; background: var(--surface-2); border-radius: 13px; padding: 4px; gap: 4px; }
   .seg button { font: 600 14px var(--font-body); border: 0; background: transparent; border-radius: 10px; padding: 9px; cursor: pointer; color: var(--muted); }
+  .rules p { font-size: 14px; line-height: 1.5; } .rules .cap { font-size: 12px; color: var(--muted); margin-top: -8px; text-align: center; }
+  .exrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .rcard { background: #fffefb; border: 1px solid #b7bfc8; border-radius: 9px; aspect-ratio: 3 / 2; box-shadow: 0 2px 6px rgba(20,30,40,.12); }
+  .rcard svg { display: block; width: 100%; height: 100%; }
+  .modecard { display: flex; flex-direction: column; gap: 8px; text-align: left; padding: 14px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); color: var(--ink); font-family: var(--font-body); }
+  button.modecard { cursor: pointer; width: 100%; } button.modecard:hover { border-color: var(--accent); }
+  .modecard b { font: 800 18px var(--font-display); } .modecard span { font-size: 13px; color: var(--muted); }
+  .opts.t3 { grid-template-columns: repeat(3, 1fr); margin-top: 0; }
   .seg.three { grid-template-columns: repeat(3, 1fr); }
   .seg button.on { background: var(--paper); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
   .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
@@ -404,6 +419,7 @@
 </svg>
 
 <button class="iconbtn" id="gSettings" data-settings type="button" aria-label="Settings" style="position:fixed;top:max(12px,env(safe-area-inset-top));left:12px;z-index:12"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+<button class="iconbtn" id="gRules" type="button" aria-label="Regeln" data-i18n-aria="rules.title" style="position:fixed;top:max(12px,env(safe-area-inset-top));left:62px;z-index:12"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
 <div class="app">
 
   <!-- START -->
@@ -545,6 +561,30 @@
     <div class="seg three" id="modeSeg"><button type="button" data-mode="light" data-i18n="set.light">Hell</button><button type="button" data-mode="dark" data-i18n="set.dark">Dunkel</button><button type="button" data-mode="auto" data-i18n="set.auto">Auto</button></div>
     <label class="switch"><span data-i18n="set.soloNoSet">Solo: kein Set möglich (Original-Regeln)</span><input type="checkbox" id="swSolo"></label>
     <div class="btns"><button class="btn primary block" id="bSettingsClose" type="button" data-i18n="set.close">Fertig</button></div>
+  </div>
+</div>
+<div id="rulesModal" class="modal" hidden>
+  <div class="sheet picker rules" role="dialog">
+    <h2 class="title" data-i18n="rules.title">Spielregeln</h2>
+    <p data-i18n="rules.goal">Finde drei Karten, die zusammen ein SET bilden.</p>
+    <p class="muted" data-i18n="rules.attrs">Jede Karte hat vier Eigenschaften.</p>
+    <p data-i18n="rules.rule">Bei einem SET ist jede Eigenschaft überall gleich oder überall verschieden.</p>
+    <div class="exrow" id="ex1"></div><p class="cap" data-i18n="rules.ex1">Beispiel</p>
+    <div class="exrow" id="ex2"></div><p class="cap" data-i18n="rules.ex2">Beispiel</p>
+    <p data-i18n="rules.solo">Solo</p>
+    <p data-i18n="rules.mp">Multiplayer</p>
+    <p data-i18n="rules.attack">Zeitattacke</p>
+    <div class="btns"><button class="btn primary block" id="bRulesClose" type="button" data-i18n="rules.close">Verstanden</button></div>
+  </div>
+</div>
+<div id="soloModal" class="modal" hidden>
+  <div class="sheet picker" role="dialog">
+    <h2 class="title" data-i18n="solo.title">Solo</h2>
+    <button class="modecard" id="bClassic" type="button"><b data-i18n="solo.classic">Klassisch</b><span data-i18n="solo.classicText">Alle Karten, so schnell du kannst</span></button>
+    <div class="modecard"><b data-i18n="solo.attack">Zeitattacke</b><span data-i18n="solo.attackText">So viele Sets wie möglich vor Ablauf der Zeit</span>
+      <div class="opts t3" id="atkOpts"></div>
+      <button class="btn primary block" id="bAttackGo" type="button" data-i18n="solo.start">Start</button></div>
+    <div class="btns"><button class="btn block ghost" id="bSoloCancel" type="button" data-i18n="mode.cancel">Abbrechen</button></div>
   </div>
 </div>
 <div id="statsModal" class="modal" hidden>
@@ -768,7 +808,7 @@
 
   /* ---------- Screens ---------- */
   var SCREENS = ['start', 'multi', 'lobby', 'game'];
-  function show(name) { SCREENS.forEach(function (n) { $('s-' + n).hidden = n !== name; }); $('gSettings').hidden = name !== 'start';
+  function show(name) { SCREENS.forEach(function (n) { $('s-' + n).hidden = n !== name; }); $('gSettings').hidden = name !== 'start'; $('gRules').hidden = name !== 'start';
     if (name === 'multi') startPubPoll(); else stopPubPoll();
     $('wheel').hidden = true; window.scrollTo(0, 0); }
 
@@ -790,7 +830,22 @@
   $('name').value = lsGet('set_name') || '';
   syncAvatar();
   $('name').addEventListener('input', function () { lsSet('set_name', $('name').value.trim()); syncAvatar(); });
-  $('bSolo').addEventListener('click', function () { lsSet('set_name', myName()); go('/solo'); });
+  var ATTACK_LENS = [30, 60, 120];
+  function atkLen() { var v = parseInt(lsGet('set_attack_len'), 10); return ATTACK_LENS.indexOf(v) >= 0 ? v : 60; }
+  function renderAtkOpts() {
+    var box = $('atkOpts'), cur = atkLen(), a = (loadStats().solo.attack) || {}; box.innerHTML = '';
+    ATTACK_LENS.forEach(function (n) {
+      var b = el('button', 'opt' + (n === cur ? ' on' : ''), n + ' s'); b.type = 'button';
+      b.appendChild(el('small', null, T('attack.best', { n: a[n] && a[n].best != null ? a[n].best : '–' })));
+      b.addEventListener('click', function () { lsSet('set_attack_len', String(n)); renderAtkOpts(); });
+      box.appendChild(b);
+    });
+  }
+  $('bSolo').addEventListener('click', function () { lsSet('set_name', myName()); renderAtkOpts(); $('soloModal').hidden = false; });
+  $('bClassic').addEventListener('click', function () { $('soloModal').hidden = true; go('/solo'); });
+  $('bAttackGo').addEventListener('click', function () { $('soloModal').hidden = true; go('/zeitattacke/' + atkLen()); });
+  $('bSoloCancel').addEventListener('click', function () { $('soloModal').hidden = true; });
+  $('soloModal').addEventListener('click', function (e) { if (e.target === this) this.hidden = true; });
   $('bMulti').addEventListener('click', function () {
     if (!$('name').value.trim()) { $('name').focus(); $('name').placeholder = T('ph.name'); return; }
     lsSet('set_name', myName());
@@ -812,6 +867,11 @@
   async function route() {
     var rel = relPath(), m;
     if (rel === 'solo') { await leaveCurrent(); startSolo(); return; }
+    if ((m = rel.match(/^zeitattacke(?:\/(\d{2,3}))?$/))) {
+      await leaveCurrent();
+      var al = parseInt(m[1] || atkLen(), 10); if (ATTACK_LENS.indexOf(al) < 0) al = 60;
+      startSolo(al); return;
+    }
     if (rel === 'multiplayer') {
       await leaveCurrent();
       if (!$('name').value.trim()) { $('name').placeholder = T('ph.name'); setUrl('', true); show('start'); return; }
@@ -832,17 +892,39 @@
   window.addEventListener('popstate', route);
 
   /* ---------- Solo ---------- */
-  function startSolo() {
-    mode = 'solo';
-    var s = { players: [{ id: myId, name: myName(), score: 0, sets: 0, misses: 0, cfg: { kind: 'ffa', n: 1, noset: lsGet('set_solonoset') !== '0' } }], target: 0, version: 0, winner: null, last: null };
+  var attackEnd = 0;
+  function startSolo(a) {
+    var alen = typeof a === 'number' ? a : 0;
+    mode = 'solo'; attackEnd = 0;
+    var s = { players: [{ id: myId, name: myName(), score: 0, sets: 0, misses: 0, cfg: alen ? { kind: 'ffa', n: 1, noset: false, attack: alen } : { kind: 'ffa', n: 1, noset: lsGet('set_solonoset') !== '0' } }], target: 0, version: 0, winner: null, last: null };
     st = startState(s);
     sel = []; prevBoard = []; hintId = null; soloHints = 0; busy = false; boardKey = '';
     stopCountdown();
     soloStart = Date.now(); clearInterval(soloTimer);
-    $('sTime').textContent = '0:00';
-    soloTimer = setInterval(function () { if (st && st.status === 'playing') $('sTime').textContent = fmt(Math.floor((Date.now() - soloStart) / 1000)); }, 1000);
+    $('sTime').textContent = alen ? fmt(alen) : '0:00';
+    soloTimer = setInterval(function () {
+      if (!st || st.status !== 'playing' || mode !== 'solo') return;
+      var at = cfgOf(st).attack;
+      if (!at) { $('sTime').textContent = fmt(Math.floor((Date.now() - soloStart) / 1000)); return; }
+      if (!attackEnd) { $('sTime').textContent = fmt(at); return; }
+      var left = attackEnd - Date.now();
+      $('sTime').textContent = fmt(Math.max(0, Math.ceil(left / 1000)));
+      var bar = $('tbar'); bar.firstChild.style.width = Math.max(0, left / (at * 1000) * 100) + '%'; bar.classList.toggle('low', left < at * 250);
+      if (left <= 0) finishAttack();
+    }, 200);
     setMsg('', '');
     show('game'); renderGame();
+    if (alen) startCountdown();
+  }
+  function finishAttack() {
+    if (!st || st.status !== 'playing') return;
+    var p = st.players[0], len = cfgOf(st).attack, o = loadStats();
+    var a = o.solo.attack || (o.solo.attack = {}), rec = a[len] || (a[len] = { best: null, games: 0, sets: 0 });
+    st.attackRecord = p.score > 0 && (rec.best == null || p.score > rec.best);
+    rec.games++; rec.sets += p.sets; if (rec.best == null || p.score > rec.best) rec.best = p.score;
+    saveStats(o);
+    st.status = 'finished'; sel = []; busy = false; clearHint();
+    renderGame();
   }
 
   /* ---------- Online: DB ---------- */
@@ -921,6 +1003,15 @@
     } catch (e) {}
   }
 
+  /* ---------- Spielregeln ---------- */
+  function renderRules() {
+    function row(box, ids) { box.innerHTML = ''; ids.forEach(function (id) { var c = el('div', 'rcard'); c.innerHTML = cardSVG(id); box.appendChild(c); }); }
+    row($('ex1'), [0, 40, 80]); row($('ex2'), [0, 37, 74]);
+  }
+  $('gRules').addEventListener('click', function () { renderRules(); $('rulesModal').hidden = false; });
+  $('bRulesClose').addEventListener('click', function () { $('rulesModal').hidden = true; });
+  $('rulesModal').addEventListener('click', function (e) { if (e.target === this) this.hidden = true; });
+
   /* ---------- Einstellungen: Sprache + Theme ---------- */
   var THEMES = [['creme', '#f6f6f3', '#0e0e10'], ['blau', '#eef3fb', '#1d4ed8'], ['rot', '#fbf0f0', '#c92a2a'], ['gruen', '#eff7f1', '#16803c'], ['violett', '#f4f0fb', '#6d28d9'],
     ['gelb', '#fbf8e8', '#a16207'], ['orange', '#fcf1e8', '#ea580c'], ['rosa', '#fcf0f5', '#db2777'], ['tuerkis', '#ecf7f7', '#0f766e']];
@@ -970,11 +1061,11 @@
 
   /* ---------- Stats (lokal gespeichert) ---------- */
   function emptyStats() {
-    return { solo: { games: 0, sets: 0, misses: 0, hints: 0, bestTime: null, iqSum: 0, iqBest: 0 },
+    return { solo: { games: 0, sets: 0, misses: 0, hints: 0, bestTime: null, iqSum: 0, iqBest: 0, attack: {} },
       mp: { games: 0, wins: 0, losses: 0, draws: 0, sets: 0, misses: 0, iqSum: 0, iqBest: 0, streak: 0, bestStreak: 0, tsum: 0, tn: 0, modes: {} } };
   }
   function loadStats() {
-    try { var o = JSON.parse(lsGet('set_stats')); if (o && o.solo && o.mp) return o; } catch (e) {}
+    try { var o = JSON.parse(lsGet('set_stats')); if (o && o.solo && o.mp) { if (!o.solo.attack) o.solo.attack = {}; return o; } } catch (e) {}
     return emptyStats();
   }
   function saveStats(o) { lsSet('set_stats', JSON.stringify(o)); }
@@ -1016,6 +1107,10 @@
       tile(grid, q.games, T('st.games'), true);
       tile(grid, q.bestTime == null ? '–' : fmt(Math.round(q.bestTime / 1000)), T('st.bestTime')); tile(grid, avg(q.iqSum, q.games), T('st.avgIq')); tile(grid, q.iqBest || '–', T('st.bestIq'));
       tile(grid, q.sets, T('st.sets')); tile(grid, q.misses, T('st.misses')); tile(grid, q.hints, T('st.hints'));
+      ATTACK_LENS.forEach(function (n) {
+        var a = q.attack && q.attack[n]; if (!a || !a.games) return;
+        var rw = el('div', 'mrow'); rw.appendChild(el('span', null, T('st.attack') + ' ' + n + ' s')); rw.appendChild(el('span', null, T('st.attackRow', { b: a.best, g: a.games }))); body.appendChild(rw);
+      });
     }
   }
   $('bStats').addEventListener('click', function () { renderStats(); $('statsModal').hidden = false; });
@@ -1450,12 +1545,12 @@
     if (solo && $('soloBar').nextElementSibling !== $('stage')) sec.insertBefore($('soloBar'), $('stage'));   // Stats unter der Kopfzeile
     if (!solo && $('soloBar').nextElementSibling === $('stage')) sec.insertBefore($('soloBar'), $('msg'));
     $('msg').hidden = mode === 'solo';   // Solo: kein Statustext, Spielfeld nutzt den Platz
-    $('bHint').hidden = mode !== 'solo';
+    $('bHint').hidden = mode !== 'solo' || !!cfgOf(st).attack;
     var ns = !!cfgOf(st).noset, playing = st.status === 'playing';
     $('bMore').hidden = !(solo && ns); $('bMore').disabled = !playing;
     $('bNoSet').hidden = !(mode === 'online' && ns); $('bNoSet').disabled = !playing;
-    $('tbar').hidden = !(mode === 'online' && cfgOf(st).limit > 0 && playing);
-    $('gChip').innerHTML = mode === 'online' ? T('lobby.title', { mode: '<b>' + st.code + '</b>' }).replace(/ · /, ' ') + ' · ' + modeLabel(cfgOf(st)) + ' · ' + T('game.goalN', { n: st.target }) : T('game.solo');
+    $('tbar').hidden = !((mode === 'online' && cfgOf(st).limit > 0 && playing) || (mode === 'solo' && cfgOf(st).attack && playing));
+    $('gChip').innerHTML = mode === 'online' ? T('lobby.title', { mode: '<b>' + st.code + '</b>' }).replace(/ · /, ' ') + ' · ' + modeLabel(cfgOf(st)) + ' · ' + T('game.goalN', { n: st.target }) : (cfgOf(st).attack ? T('solo.attack') + ' ' + cfgOf(st).attack + ' s' : T('game.solo'));
     var m = me() || st.players[0];
     $('sSets').textContent = m.sets; $('sMiss').textContent = m.misses; $('sDeck').textContent = st.deck.length;
     $('bHint').disabled = st.status !== 'playing';
@@ -1508,7 +1603,9 @@
     var seq = ['3', '2', '1', T('game.go')], i = 0, c = $('count');
     c.hidden = false;
     (function tick() {
-      if (i >= seq.length) { stopCountdown(); roundStart = Date.now(); setMsg(mode === 'solo' ? '' : T('game.who'), ''); return; }
+      if (i >= seq.length) { stopCountdown(); roundStart = Date.now(); setMsg(mode === 'solo' ? '' : T('game.who'), '');
+        if (mode === 'solo' && st && cfgOf(st).attack) { soloStart = Date.now(); attackEnd = soloStart + cfgOf(st).attack * 1000; }
+        return; }
       c.innerHTML = ''; c.appendChild(el('span', null, seq[i]));
       var last = i === seq.length - 1; i++;
       cdTimer = setTimeout(tick, last ? 600 : 900);
@@ -1636,6 +1733,15 @@
       return d;
     }
     sc.className = 'final';
+    if (mode === 'solo' && cfgOf(st).attack) {
+      var pa = st.players[0], al2 = cfgOf(st).attack;
+      $('endTitle').textContent = T('attack.over');
+      $('endText').textContent = T('attack.score', { n: pa.score }) + (st.attackRecord ? ' · ' + T('attack.record') : '');
+      sc.appendChild(block(pa, 0, false));
+      addBtn(btns, T('end.again'), true, function () { startSolo(al2); });
+      addBtn(btns, T('end.toStart'), false, toStart);
+      return;
+    }
     if (mode === 'solo') {
       $('endTitle').textContent = T('end.allPlayed');
       $('endText').textContent = T('end.soloText', { t: $('sTime').textContent, h: T(soloHints === 1 ? 'end.tip1' : 'end.tips', { n: soloHints }) });
@@ -1730,7 +1836,7 @@
         var wasOver = st.status === 'finished';
         floatAtEl(ok ? $('sSets').parentNode : $('sMiss').parentNode, '+1', ok);
         if (next) st = next;
-        if (!wasOver && st.status === 'finished') recordSolo(st.players[0], Date.now() - soloStart);
+        if (!wasOver && st.status === 'finished') { if (cfgOf(st).attack) { st.status = 'playing'; finishAttack(); } else recordSolo(st.players[0], Date.now() - soloStart); }
         renderGame();
       }, 450);
       return;
@@ -1804,6 +1910,7 @@
   });
 
   /* ---------- Start / Wiedereinstieg ---------- */
+  if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(function () {});
   window.I18N.apply();
   applyTheme(currentTheme());
   route();

@@ -16,3 +16,6 @@ Auf Vercel sorgt `vercel.json` (auf GitHub Pages `404.html`) dafür, dass diese 
 - das Aufräumen alter/leerer Lobbys (Lösch-Policy),
 - den Anti-Cheat-Trigger `lobbies_guard`, der jede Zustandsänderung im laufenden Spiel serverseitig prüft.
 Ohne das SQL läuft das Spiel weiter, nur ohne diese Absicherungen.
+
+## PWA
+`manifest.webmanifest`, `sw.js` und `icons/` machen die Seite installierbar (Handy: „Zum Startbildschirm hinzufügen“ bzw. Install-Symbol im Browser). Die App-Hülle läuft auch offline (Solo); Multiplayer braucht Internet.

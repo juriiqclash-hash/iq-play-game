@@ -19,6 +19,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f6f6f3">
+<meta name="description" content="Finde zuerst das Set – Solo, Zeitattacke oder live gegen Freunde (bis 10 Spieler).">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SET Duell">
+<meta property="og:title" content="SET Duell – wer findet das Set zuerst?">
+<meta property="og:description" content="Das Kartenspiel SET live gegen Freunde: Teams, Jeder gegen jeden, Zeitattacke und Solo. Kostenlos im Browser.">
+<meta property="og:url" content="https://iq-play-game-gold.vercel.app/">
+<meta property="og:image" content="https://iq-play-game-gold.vercel.app/icons/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SET Duell – drei Spielkarten und der Schriftzug SET">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SET Duell – wer findet das Set zuerst?">
+<meta name="twitter:description" content="Das Kartenspiel SET live gegen Freunde: Teams, Jeder gegen jeden, Zeitattacke und Solo.">
+<meta name="twitter:image" content="https://iq-play-game-gold.vercel.app/icons/og-image.png">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -224,6 +238,7 @@
   .langs .opt { font: 600 14px var(--font-body); padding: 10px 4px; }
 
   .switch { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); font-weight: 600; font-size: 14px; cursor: pointer; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .switch input { appearance: none; -webkit-appearance: none; width: 44px; height: 26px; border-radius: 99px; background: var(--switch-off); position: relative; flex: none; cursor: pointer; transition: background .2s; }
   .switch input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
   .switch input:checked { background: var(--accent); } .switch input:checked::after { transform: translateX(18px); }
@@ -248,6 +263,7 @@
   .emobub span { font-size: 44px; line-height: 1; }
   .emobub::before { content: ""; position: absolute; top: -9px; left: 50%; width: 14px; height: 14px; background: var(--paper); border-left: 3px solid var(--accent); border-top: 3px solid var(--accent); transform: translateX(-50%) rotate(45deg); }
   @keyframes emoout { 0% { opacity: 0; transform: translateY(-34px) scale(.2); } 12% { opacity: 1; transform: translateY(20px) scale(1.25); } 22% { transform: translateY(14px) scale(1); } 82% { opacity: 1; transform: translateY(14px) scale(1); } 100% { opacity: 0; transform: translateY(30px) scale(.9); } }
+  .slot .kick.crown { margin-left: auto; margin-right: -2px; font-size: 14px; } .slot .kick.crown + .kick { margin-left: 4px; } .slot .kick.crown:hover { background: var(--accent); color: var(--on-accent, #fff); border-color: var(--accent); }
   .slot.away { opacity: .55; } .slot .kick { margin-left: auto; width: 28px; height: 28px; border-radius: 9px; border: 1px solid var(--line); background: var(--surface-2); color: var(--muted); cursor: pointer; font-size: 13px; flex: none; padding: 0; }
   .slot .kick:hover { background: var(--bad); color: #fff; border-color: var(--bad); }
   #dlg { z-index: 90; } .dlgsheet { max-width: 360px; } .dlgsheet .title { font-size: 24px; } .dlgsheet p { font-size: 15px; line-height: 1.45; white-space: pre-line; }
@@ -577,6 +593,7 @@
     <div class="eyebrow" data-i18n="set.theme">Design</div><div class="swatches" id="themeList"></div>
     <div class="eyebrow" data-i18n="set.mode">Darstellung</div>
     <div class="seg three" id="modeSeg"><button type="button" data-mode="light" data-i18n="set.light">Hell</button><button type="button" data-mode="dark" data-i18n="set.dark">Dunkel</button><button type="button" data-mode="auto" data-i18n="set.auto">Auto</button></div>
+    <div class="two"><label class="switch"><span data-i18n="set.sound">Sound</span><input type="checkbox" id="swSound"></label><label class="switch" id="vibeRow"><span data-i18n="set.vibe">Vibration</span><input type="checkbox" id="swVibe"></label></div>
     <label class="switch"><span data-i18n="set.soloNoSet">Solo: kein Set möglich (Original-Regeln)</span><input type="checkbox" id="swSolo"></label>
     <div class="btns"><button class="btn primary block" id="bSettingsClose" type="button" data-i18n="set.close">Fertig</button></div>
   </div>
@@ -1047,6 +1064,45 @@
   $('bRulesClose').addEventListener('click', function () { $('rulesModal').hidden = true; });
   $('rulesModal').addEventListener('click', function (e) { if (e.target === this) this.hidden = true; });
 
+  /* ---------- Sound + Vibration ---------- */
+  var AC = null;
+  function soundOn() { return lsGet('set_sound') !== '0'; }
+  function vibeOn() { return lsGet('set_vibe') !== '0'; }
+  function audio() {
+    if (!AC) { var C = window.AudioContext || window.webkitAudioContext; if (C) { try { AC = new C(); } catch (e) {} } }
+    if (AC && AC.state === 'suspended') AC.resume();
+    return AC;
+  }
+  ['pointerdown', 'keydown', 'touchstart'].forEach(function (ev) { window.addEventListener(ev, function () { if (soundOn()) audio(); }, { passive: true }); });
+  // Töne: [Frequenz Hz, Dauer s, Wellenform, Lautstärke]
+  var SFX = {
+    set:   { n: [[659, .09, 'triangle', .22], [880, .16, 'triangle', .22]], v: [25] },
+    miss:  { n: [[196, .22, 'sawtooth', .16], [150, .22, 'sawtooth', .16]], v: [70, 40, 70] },
+    tick:  { n: [[880, .06, 'sine', .18]], v: [12] },
+    go:    { n: [[1319, .22, 'triangle', .22]], v: [40] },
+    opp:   { n: [[392, .07, 'sine', .13]], v: [] },
+    pop:   { n: [[740, .05, 'sine', .15], [1040, .08, 'sine', .15]], v: [15] },
+    win:   { n: [[523, .12, 'triangle', .24], [659, .12, 'triangle', .24], [784, .12, 'triangle', .24], [1047, .3, 'triangle', .26]], v: [60, 40, 60, 40, 140] },
+    lose:  { n: [[392, .18, 'triangle', .2], [330, .18, 'triangle', .2], [262, .32, 'triangle', .2]], v: [150] },
+    end:   { n: [[587, .14, 'triangle', .22], [784, .26, 'triangle', .24]], v: [60, 40, 90] }
+  };
+  function sfx(name) {
+    var d = SFX[name]; if (!d) return;
+    if (soundOn()) {
+      var a = audio();
+      if (a) {
+        var t = a.currentTime + .01;
+        d.n.forEach(function (n) {
+          var o = a.createOscillator(), g = a.createGain();
+          o.type = n[2]; o.frequency.value = n[0];
+          g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(n[3], t + .015); g.gain.exponentialRampToValueAtTime(0.0001, t + n[1]);
+          o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + n[1] + .02); t += n[1] * .85;
+        });
+      }
+    }
+    if (vibeOn() && d.v.length && navigator.vibrate) { try { navigator.vibrate(d.v); } catch (e) {} }
+  }
+
   /* ---------- Einstellungen: Sprache + Theme ---------- */
   var THEMES = [['creme', '#f6f6f3', '#0e0e10'], ['blau', '#eef3fb', '#1d4ed8'], ['rot', '#fbf0f0', '#c92a2a'], ['gruen', '#eff7f1', '#16803c'], ['violett', '#f4f0fb', '#6d28d9'],
     ['gelb', '#fbf8e8', '#a16207'], ['orange', '#fcf1e8', '#ea580c'], ['rosa', '#fcf0f5', '#db2777'], ['tuerkis', '#ecf7f7', '#0f766e']];
@@ -1066,7 +1122,7 @@
     applyMode();
   }
   function renderSettings() {
-    $('swSolo').checked = lsGet('set_solonoset') !== '0';
+    $('swSolo').checked = lsGet('set_solonoset') !== '0'; $('swSound').checked = soundOn(); $('swVibe').checked = vibeOn(); $('vibeRow').hidden = !navigator.vibrate;
     var L = $('langList'), cur = window.I18N.get(); L.innerHTML = '';
     window.I18N.codes.forEach(function (c) {
       var b = el('button', 'opt' + (c === cur ? ' on' : ''), window.I18N.names[c]); b.type = 'button';
@@ -1090,6 +1146,8 @@
   }
   document.querySelectorAll('[data-settings]').forEach(function (b) { b.addEventListener('click', function () { renderSettings(); $('settingsModal').hidden = false; }); });
   document.querySelectorAll('#modeSeg button').forEach(function (b) { b.addEventListener('click', function () { lsSet('set_mode', b.dataset.mode); applyMode(); renderSettings(); }); });
+  $('swSound').addEventListener('change', function () { lsSet('set_sound', this.checked ? '1' : '0'); if (this.checked) sfx('pop'); });
+  $('swVibe').addEventListener('change', function () { lsSet('set_vibe', this.checked ? '1' : '0'); if (this.checked) sfx('go'); });
   $('swSolo').addEventListener('change', function () { lsSet('set_solonoset', this.checked ? '1' : '0'); });
   $('bSettingsClose').addEventListener('click', function () { $('settingsModal').hidden = true; });
   $('settingsModal').addEventListener('click', function (e) { if (e.target === this) this.hidden = true; });
@@ -1345,6 +1403,7 @@
           var mate = sameSide(row, who, mine);
           setMsg(T(L.ns ? (L.ok ? 'game.oppNoSet' : 'game.oppNoSetBad') : (L.ok ? 'game.oppFound' : 'game.oppWrong'), { name: who.name }), L.ok === mate ? 'good' : 'bad');
           setTimeout(function () { flashPlayer(who.id, L.ok); }, 0);
+          if (L.ok) sfx(mate ? 'set' : 'opp');
         }
       }
     }
@@ -1383,6 +1442,8 @@
       if (p && p.back === false) { slot.classList.add('away'); who.lastChild.textContent = T('lobby.away'); }
       slot.appendChild(av); slot.appendChild(who);
       if (p && host && p.id !== myId) {
+        var cb = el('button', 'kick crown', '♛'); cb.type = 'button'; cb.title = T('lobby.makeHost'); cb.setAttribute('aria-label', T('lobby.makeHost'));
+        cb.addEventListener('click', function (ev) { ev.stopPropagation(); makeHost(p); }); slot.appendChild(cb);
         var kb = el('button', 'kick', '✕'); kb.type = 'button'; kb.title = T('lobby.kick'); kb.setAttribute('aria-label', T('lobby.kick'));
         kb.addEventListener('click', function (ev) { ev.stopPropagation(); kickPlayer(p); }); slot.appendChild(kb);
       }
@@ -1441,6 +1502,18 @@
       s.players = s.players.filter(function (x) { return x.id !== p.id; });
       s.players[0].cfg = Object.assign({}, c, { banned: (c.banned || []).concat([p.id]) });
       normalizeSlots(s); return s;
+    });
+  }
+  function makeHost(p) {
+    appConfirm(T('lobby.makeHostConfirm', { name: p.name }), T('lobby.makeHost'), false).then(function (ok) {
+      if (!ok) return;
+      mutate(function (s) {
+        var idx = s.players.findIndex(function (x) { return x.id === p.id; });
+        if (s.status !== 'waiting' || s.players[0].id !== myId || idx <= 0) return null;
+        var cfg = s.players[0].cfg; delete s.players[0].cfg;
+        var np = s.players.splice(idx, 1)[0]; s.players.unshift(np); np.cfg = cfg;
+        return s;
+      });
     });
   }
   var leaving = false;
@@ -1677,7 +1750,7 @@
       if (i >= seq.length) { stopCountdown(); roundStart = Date.now(); setMsg(mode === 'solo' ? '' : T('game.who'), '');
         if (mode === 'solo' && st && cfgOf(st).attack) { soloStart = Date.now(); attackEnd = soloStart + cfgOf(st).attack * 1000; }
         return; }
-      c.innerHTML = ''; c.appendChild(el('span', null, seq[i]));
+      c.innerHTML = ''; c.appendChild(el('span', null, seq[i])); sfx(i === seq.length - 1 ? 'go' : 'tick');
       var last = i === seq.length - 1; i++;
       cdTimer = setTimeout(tick, last ? 600 : 900);
     })();
@@ -1759,6 +1832,7 @@
   function showEmote(pid, i, t) {
     var e = EMOTES[i]; if (!e) return;
     var key = pid + ':' + (t || i); if (seenEmo[key]) return; seenEmo[key] = 1;
+    if (pid !== myId) sfx('pop');
     if (t && Date.now() - t > 8000) return;
     var tg = pidEl(pid), rc = tg ? tg.getBoundingClientRect() : { left: window.innerWidth / 2, top: 80, width: 0, height: 40 };
     var b = el('div', 'emobub'); b.appendChild(el('span', null, e));
@@ -1788,7 +1862,7 @@
     var end = $('end');
     var pend = st.status === 'waiting' && me() && me().back === false;
     if (st.status !== 'finished' && !pend) { end.hidden = true; endShown = false; return; }
-    if (!endShown) { endShown = true; var mw = me(); if (mode === 'online' && mw && isWinnerP(st, mw)) confetti(); }
+    if (!endShown) { endShown = true; var mw = me(); if (mode === 'online' && mw && isWinnerP(st, mw)) { confetti(); sfx('win'); } else sfx(mode === 'online' ? (st.winner == null ? 'end' : 'lose') : 'end'); }
     end.hidden = false;
     var sc = $('endScores'), btns = $('endBtns'), note = $('endNote');
     btns.innerHTML = ''; sc.innerHTML = ''; note.hidden = true;
@@ -1900,7 +1974,7 @@
     busy = true;
     picked.forEach(function (p) { cardNode(p).classList.add(ok ? 'good' : 'bad'); });
     if (mode === 'solo') {
-      setMsg(T(ok ? 'game.found' : 'game.notSet'), ok ? 'good' : 'bad');
+      setMsg(T(ok ? 'game.found' : 'game.notSet'), ok ? 'good' : 'bad'); sfx(ok ? 'set' : 'miss');
       setTimeout(function () {
         var next = applyMove(clone(st), myId, picked, ms);
         sel = []; busy = false;
@@ -1920,7 +1994,7 @@
       var n = cardNode(p); if (n) { n.classList.add('bad'); setTimeout(function () { n.classList.remove('bad'); }, 450); }
     });
     if (r.ok) {
-      setMsg(T(ok ? 'game.found1' : 'game.notSet1'), ok ? 'good' : 'bad');
+      setMsg(T(ok ? 'game.found1' : 'game.notSet1'), ok ? 'good' : 'bad'); sfx(ok ? 'set' : 'miss');
       flashPlayer(myId, ok);
     } else if (r.reason === 'invalid') {
       setMsg(T('game.late'), 'bad');
@@ -1951,7 +2025,7 @@
     var ms = Date.now() - roundStart; busy = true; clearHint();
     var r = await mutate(function (s) { return applyNoSet(s, myId, ms); });
     busy = false; sel = []; renderGame();
-    if (r.ok) setMsg(T(st.last && st.last.ok ? 'game.noSetOk' : 'game.noSetBad'), st.last && st.last.ok ? 'good' : 'bad');
+    if (r.ok) { setMsg(T(st.last && st.last.ok ? 'game.noSetOk' : 'game.noSetBad'), st.last && st.last.ok ? 'good' : 'bad'); sfx(st.last && st.last.ok ? 'set' : 'miss'); }
     else setMsg(T('game.conn'), 'bad');
   });
 

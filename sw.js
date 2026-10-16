@@ -1,5 +1,5 @@
 // Service Worker: App-Shell offline verfügbar, HTML immer zuerst vom Netz (damit neue Versionen sofort ankommen)
-const CACHE = 'set-duell-v1';
+const CACHE = 'set-duell-v2';
 const SHELL = ['./', 'index.html', 'i18n.js', 'config.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png'];
 
 self.addEventListener('install', (e) => {

@@ -4,6 +4,7 @@
   var NAMES = { de: "Deutsch", en: "English", fr: "Français", es: "Español", it: "Italiano", pt: "Português", nl: "Nederlands", pl: "Polski", tr: "Türkçe", ru: "Русский", zh: "中文", ja: "日本語" };
 
   D.de = {
+    "set.sound": "Sound", "set.vibe": "Vibration", "lobby.makeHost": "Zum Host machen", "lobby.makeHostConfirm": "{name} zum Host machen? Du verlierst die Host-Rechte.",
     "install.btn": "App installieren", "install.iosTitle": "App installieren", "install.iosText": "Tippe unten in Safari auf das Teilen-Symbol und wähle „Zum Home-Bildschirm“.",
     "lobby.copyLinkBtn": "Link kopieren",
     "logo.sub": "DUELL", "multi.refresh": "Aktualisieren",
@@ -55,6 +56,7 @@
   };
 
   D.en = {
+    "set.sound": "Sound", "set.vibe": "Vibration", "lobby.makeHost": "Make host", "lobby.makeHostConfirm": "Make {name} the host? You will lose the host rights.",
     "install.btn": "Install app", "install.iosTitle": "Install app", "install.iosText": "In Safari, tap the Share icon at the bottom and choose “Add to Home Screen”.",
     "lobby.copyLinkBtn": "Copy link",
     "logo.sub": "DUEL", "multi.refresh": "Refresh",
@@ -106,6 +108,7 @@
   };
 
   D.fr = {
+    "set.sound": "Son", "set.vibe": "Vibration", "lobby.makeHost": "Nommer hôte", "lobby.makeHostConfirm": "Nommer {name} hôte ? Tu perds les droits d'hôte.",
     "install.btn": "Installer l'app", "install.iosTitle": "Installer l'app", "install.iosText": "Dans Safari, touche l'icône Partager en bas et choisis « Sur l'écran d'accueil ».",
     "lobby.copyLinkBtn": "Copier le lien",
     "logo.sub": "DUEL", "multi.refresh": "Actualiser",
@@ -157,6 +160,7 @@
   };
 
   D.es = {
+    "set.sound": "Sonido", "set.vibe": "Vibración", "lobby.makeHost": "Hacer anfitrión", "lobby.makeHostConfirm": "¿Hacer a {name} anfitrión? Perderás los derechos de anfitrión.",
     "install.btn": "Instalar app", "install.iosTitle": "Instalar app", "install.iosText": "En Safari, toca el icono de Compartir abajo y elige «Añadir a pantalla de inicio».",
     "lobby.copyLinkBtn": "Copiar enlace",
     "logo.sub": "DUELO", "multi.refresh": "Actualizar",
@@ -208,6 +212,7 @@
   };
 
   D.it = {
+    "set.sound": "Suoni", "set.vibe": "Vibrazione", "lobby.makeHost": "Rendi host", "lobby.makeHostConfirm": "Rendere {name} host? Perderai i diritti di host.",
     "install.btn": "Installa app", "install.iosTitle": "Installa app", "install.iosText": "In Safari tocca l'icona Condividi in basso e scegli «Aggiungi alla schermata Home».",
     "lobby.copyLinkBtn": "Copia link",
     "logo.sub": "DUELLO", "multi.refresh": "Aggiorna",
@@ -259,6 +264,7 @@
   };
 
   D.pt = {
+    "set.sound": "Som", "set.vibe": "Vibração", "lobby.makeHost": "Tornar anfitrião", "lobby.makeHostConfirm": "Tornar {name} o anfitrião? Você perderá os direitos de anfitrião.",
     "install.btn": "Instalar app", "install.iosTitle": "Instalar app", "install.iosText": "No Safari, toque no ícone Compartilhar embaixo e escolha «Adicionar à Tela de Início».",
     "lobby.copyLinkBtn": "Copiar link",
     "logo.sub": "DUELO", "multi.refresh": "Atualizar",
@@ -310,6 +316,7 @@
   };
 
   D.nl = {
+    "set.sound": "Geluid", "set.vibe": "Trillen", "lobby.makeHost": "Host maken", "lobby.makeHostConfirm": "{name} host maken? Je verliest de host-rechten.",
     "install.btn": "App installeren", "install.iosTitle": "App installeren", "install.iosText": "Tik in Safari onderaan op het deel-icoon en kies „Zet op beginscherm”.",
     "lobby.copyLinkBtn": "Link kopiëren",
     "logo.sub": "DUEL", "multi.refresh": "Vernieuwen",
@@ -361,6 +368,7 @@
   };
 
   D.pl = {
+    "set.sound": "Dźwięk", "set.vibe": "Wibracje", "lobby.makeHost": "Mianuj hostem", "lobby.makeHostConfirm": "Mianować {name} hostem? Stracisz uprawnienia hosta.",
     "install.btn": "Zainstaluj aplikację", "install.iosTitle": "Zainstaluj aplikację", "install.iosText": "W Safari dotknij ikony Udostępnij na dole i wybierz „Dodaj do ekranu głównego”.",
     "lobby.copyLinkBtn": "Kopiuj link",
     "logo.sub": "POJEDYNEK", "multi.refresh": "Odśwież",
@@ -412,6 +420,7 @@
   };
 
   D.tr = {
+    "set.sound": "Ses", "set.vibe": "Titreşim", "lobby.makeHost": "Ev sahibi yap", "lobby.makeHostConfirm": "{name} ev sahibi olsun mu? Ev sahibi yetkilerini kaybedersin.",
     "install.btn": "Uygulamayı yükle", "install.iosTitle": "Uygulamayı yükle", "install.iosText": "Safari'de alttaki Paylaş simgesine dokun ve „Ana Ekrana Ekle“yi seç.",
     "lobby.copyLinkBtn": "Bağlantıyı kopyala",
     "logo.sub": "DÜELLO", "multi.refresh": "Yenile",
@@ -463,6 +472,7 @@
   };
 
   D.ru = {
+    "set.sound": "Звук", "set.vibe": "Вибрация", "lobby.makeHost": "Сделать хостом", "lobby.makeHostConfirm": "Сделать {name} хостом? Ты потеряешь права хоста.",
     "install.btn": "Установить приложение", "install.iosTitle": "Установить приложение", "install.iosText": "В Safari нажми значок «Поделиться» внизу и выбери «На экран Домой».",
     "lobby.copyLinkBtn": "Копировать ссылку",
     "logo.sub": "ДУЭЛЬ", "multi.refresh": "Обновить",
@@ -514,6 +524,7 @@
   };
 
   D.zh = {
+    "set.sound": "声音", "set.vibe": "震动", "lobby.makeHost": "设为房主", "lobby.makeHostConfirm": "将 {name} 设为房主？你将失去房主权限。",
     "install.btn": "安装应用", "install.iosTitle": "安装应用", "install.iosText": "在 Safari 中点击底部的分享图标，然后选择“添加到主屏幕”。",
     "lobby.copyLinkBtn": "复制链接",
     "logo.sub": "对决", "multi.refresh": "刷新",
@@ -565,6 +576,7 @@
   };
 
   D.ja = {
+    "set.sound": "サウンド", "set.vibe": "バイブレーション", "lobby.makeHost": "ホストにする", "lobby.makeHostConfirm": "{name} をホストにしますか？ホスト権限を失います。",
     "install.btn": "アプリをインストール", "install.iosTitle": "アプリをインストール", "install.iosText": "Safariで下の共有アイコンをタップし、「ホーム画面に追加」を選びます。",
     "lobby.copyLinkBtn": "リンクをコピー",
     "logo.sub": "デュエル", "multi.refresh": "更新",

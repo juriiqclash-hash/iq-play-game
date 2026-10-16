@@ -271,6 +271,7 @@
   .gcard .fill { height: 100%; border-radius: 99px; transition: width .4s cubic-bezier(.2,.8,.2,1); }
   .gcard .mem { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 0 10px; font-size: 11px; color: var(--muted); }
   .gcard .mem .me { color: var(--ink); font-weight: 700; } .gcard .mem .gone { text-decoration: line-through; opacity: .6; }
+  .gcard.r { direction: rtl; } .gcard.r > * { direction: ltr; } .gcard.r .nm { text-align: right; } .gcard.r .mem { justify-content: flex-end; }
   .gcard.flash-good { animation: flashg .7s ease; } .gcard.flash-bad { animation: flashb .7s ease; }
   .vs.mini .gcard { padding: 4px 8px; } .vs.mini .sc { font-size: 18px; }
   .final.list { gap: 6px; }
@@ -1425,7 +1426,7 @@
     if (teams) box.style.gridTemplateColumns = 'repeat(' + gs.length + ', 1fr)';
     gs.forEach(function (g) {
       var mineG = meP && g.players.indexOf(meP) >= 0, col = PALETTE[g.idx % PALETTE.length];
-      var d = el('div', 'gcard' + (mineG ? ' me' : '')); d.dataset.pids = g.players.map(function (p) { return p.id; }).join(' ');
+      var d = el('div', 'gcard' + (teams && g.idx === 1 ? ' r' : '') + (mineG ? ' me' : '')); d.dataset.pids = g.players.map(function (p) { return p.id; }).join(' ');
       var dot = el('span', 'dot'); dot.style.background = col;
       var nm = el('div', 'nm', teams ? g.name : g.players[0].name + (g.players[0].id === myId ? ' · ' + T('you') : ''));
       d.appendChild(dot); d.appendChild(nm); d.appendChild(el('div', 'sc' + (g.score < 0 ? ' neg' : ''), String(g.score)));

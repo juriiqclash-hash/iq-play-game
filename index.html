@@ -186,8 +186,7 @@
   @keyframes pop { 0% { opacity: 0; transform: scale(1.6); } 25% { opacity: 1; transform: scale(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: scale(.85); } }
 
   /* Solo: alles in einer Zeile, weiße Fläche nur um die Karten */
-  #s-game.solo .topbar { gap: 8px; }
-  #s-game.solo .topbar .stats { flex: 1; min-width: 0; gap: 6px; flex-wrap: nowrap; }
+  #s-game.solo .stats { flex: none; min-width: 0; gap: 6px; flex-wrap: nowrap; }
   #s-game.solo .stat { min-width: 0; padding: 3px 10px; }
   #s-game.solo .stat dd { font-size: 16px; }
   #s-game.solo .stage { background: none; border: 0; box-shadow: none; padding: 0; border-radius: 0; }
@@ -772,9 +771,9 @@
     var solo = mode === 'solo';
     $('s-game').classList.toggle('solo', solo);
     $('soloBar').hidden = !solo;
-    $('gChip').hidden = solo;
-    var tb = document.querySelector('#s-game .topbar');
-    if (solo && $('soloBar').parentNode !== tb) tb.insertBefore($('soloBar'), $('bHint'));
+    var sec = $('s-game');
+    if (solo && $('soloBar').nextElementSibling !== $('end')) sec.insertBefore($('soloBar'), $('end'));   // Stats unten
+    if (!solo && $('soloBar').nextElementSibling === $('end')) sec.insertBefore($('soloBar'), $('msg'));
     $('msg').hidden = mode === 'solo';   // Solo: kein Statustext, Spielfeld nutzt den Platz
     $('bHint').hidden = mode !== 'solo';
     $('gChip').innerHTML = mode === 'online' ? 'Lobby <b>' + st.code + '</b>' : 'Solo';

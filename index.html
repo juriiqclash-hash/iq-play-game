@@ -341,6 +341,7 @@
       <div class="stat"><dt>Sets</dt><dd id="sSets">0</dd></div>
       <div class="stat"><dt>Stapel</dt><dd id="sDeck">69</dd></div>
       <div class="stat"><dt>Fehler</dt><dd id="sMiss">0</dd></div>
+      <div class="stat"><dt>Zeit</dt><dd id="sTime">0:00</dd></div>
     </dl>
     <p id="msg" class="msg" role="status" aria-live="polite"></p>
     <div class="stage" id="stage"><div id="table" class="table"></div><div class="count" id="count" hidden></div></div>
@@ -493,7 +494,7 @@
   var mode = null;            // 'solo' | 'online'
   var st = null;
   var sel = [], busy = false, prevBoard = [], hintId = null, boardKey = '', roundStart = Date.now(), cheatOn = false, counting = false, cdTimer = null;
-  var soloHints = 0;
+  var soloStart = 0, soloHints = 0, soloTimer = null;
   var sb = null, channel = null, pollTimer = null, online = {};
   var cfg = window.SUPABASE_CONFIG || {};
   var configured = !!(cfg.url && cfg.anonKey && window.supabase);
@@ -522,8 +523,12 @@
     var s = { players: [{ id: myId, name: myName(), score: 0, sets: 0, misses: 0 }], target: 0, version: 0, winner: null, last: null };
     st = startState(s);
     sel = []; prevBoard = []; hintId = null; soloHints = 0; busy = false; boardKey = '';
-    setMsg('Mach dich bereit …', '');
-    show('game'); renderGame(); startCountdown();
+    stopCountdown();
+    soloStart = Date.now(); clearInterval(soloTimer);
+    $('sTime').textContent = '0:00';
+    soloTimer = setInterval(function () { if (st && st.status === 'playing') $('sTime').textContent = fmt(Math.floor((Date.now() - soloStart) / 1000)); }, 1000);
+    setMsg('', '');
+    show('game'); renderGame();
   }
 
   /* ---------- Online: DB ---------- */
@@ -719,7 +724,7 @@
     toStart();
   }
   function toStart() {
-    stopCountdown(); unsubscribe(); lsSet('set_lobby', null);
+    clearInterval(soloTimer); stopCountdown(); unsubscribe(); lsSet('set_lobby', null);
     mode = null; st = null; sel = []; $('end').hidden = true; show('start');
   }
   $('bLeave').addEventListener('click', leaveOnline);
@@ -854,7 +859,7 @@
     sc.className = 'final';
     if (mode === 'solo') {
       $('endTitle').textContent = 'Alle Karten gespielt';
-      $('endText').textContent = soloHints + (soloHints === 1 ? ' Tipp' : ' Tipps') + ' genutzt';
+      $('endText').textContent = 'Zeit ' + $('sTime').textContent + ' · ' + soloHints + (soloHints === 1 ? ' Tipp' : ' Tipps');
       sc.appendChild(block(st.players[0], 0, false));
       addBtn(btns, 'Nochmal spielen', true, startSolo);
       addBtn(btns, 'Zum Start', false, toStart);

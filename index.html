@@ -200,7 +200,7 @@
   /* Solo: alles in einer Zeile, weiße Fläche nur um die Karten */
   #s-game.solo { gap: 6px; }
   #s-game.solo .stats { flex: none; justify-content: center; gap: 8px; flex-wrap: nowrap; }
-  #s-game.solo .stat { flex: 0 0 auto; width: 92px; min-width: 0; padding: 9px 8px; text-align: center; border-radius: 14px; }
+  #s-game.solo .stat { flex: 0 0 auto; width: 150px; min-width: 0; padding: 9px 8px; text-align: center; border-radius: 14px; }
   #s-game.solo .stat dt { font-size: 9px; }
   #s-game.solo .stat dd { font-size: 22px; margin-top: 3px; }
   #s-game .stage { background: none; border: 0; box-shadow: none; padding: 0; border-radius: 0; }
@@ -332,7 +332,11 @@
     <div class="glass codecard">
       <span class="eyebrow">Lobby-Code</span>
       <div class="codebig" id="lobbyCode">••••••</div>
-      <button class="btn sm" id="bCopy" type="button">Code kopieren</button>
+      <p class="muted" id="shareLink" style="font-size:12px;word-break:break-all"></p>
+      <div class="row" style="justify-content:center">
+        <button class="btn sm" id="bCopy" type="button">Code kopieren</button>
+        <button class="btn sm primary" id="bShare" type="button">Link teilen</button>
+      </div>
     </div>
     <div class="slots" id="lobbyPlayers"></div>
     <div class="glass">
@@ -710,6 +714,7 @@
   function renderLobby() {
     var host = st.players[0] && st.players[0].id === myId;
     $('lobbyCode').textContent = st.code;
+    $('shareLink').textContent = shareUrl().replace(/^https:\/\//, '');
     var box = $('lobbyPlayers'); box.innerHTML = '';
     for (var i = 0; i < 2; i++) {
       var p = st.players[i], slot = el('div', 'slot' + (p ? '' : ' empty'));
@@ -743,6 +748,18 @@
   }
   $('tMinus').addEventListener('click', function () { setTarget(st.target - 1); });
   $('tPlus').addEventListener('click', function () { setTarget(st.target + 1); });
+  var SHARE_ORIGIN = 'https://iq-play-game-gold.vercel.app';
+  function shareUrl() { return SHARE_ORIGIN + '/lobby/' + st.code; }
+  function copyText(t) {
+    if (navigator.clipboard) return navigator.clipboard.writeText(t);
+    return Promise.reject();
+  }
+  $('bShare').addEventListener('click', function () {
+    var b = this, url = shareUrl();
+    function done(msg) { b.textContent = msg; setTimeout(function () { b.textContent = 'Link teilen'; }, 1500); }
+    if (navigator.share) { navigator.share({ title: 'SET Duell', text: 'Tritt meiner SET-Lobby bei!', url: url }).catch(function () {}); return; }
+    copyText(url).then(function () { done('Link kopiert ✓'); }, function () { window.prompt('Link kopieren:', url); });
+  });
   $('bCopy').addEventListener('click', function () {
     var b = this;
     function done() { b.textContent = 'Kopiert ✓'; setTimeout(function () { b.textContent = 'Code kopieren'; }, 1500); }

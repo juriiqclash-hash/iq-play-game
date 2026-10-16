@@ -9,4 +9,4 @@
 
 ## Routen
 `/` Start · `/solo` · `/multiplayer` · `/lobby/123456` (tritt direkt der Lobby bei).
-Auf GitHub Pages sorgt `404.html` dafür, dass diese Pfade auch beim direkten Aufruf oder Neuladen funktionieren.
+Auf Vercel sorgt `vercel.json` (auf GitHub Pages `404.html`) dafür, dass diese Pfade auch beim direkten Aufruf oder Neuladen funktionieren.

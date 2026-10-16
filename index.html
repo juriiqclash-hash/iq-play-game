@@ -62,7 +62,7 @@
   body {
     margin: 0; height: 100vh; height: 100dvh; overflow: hidden; display: flex; color: var(--ink); font: 15px/1.45 var(--font-body);
     background: var(--bg);
-    padding: max(20px, env(safe-area-inset-top)) 16px max(28px, env(safe-area-inset-bottom));
+    padding: max(12px, env(safe-area-inset-top)) 16px max(28px, env(safe-area-inset-bottom));
   }
   [hidden] { display: none !important; }
   p, h1, h2, h3 { margin: 0; }
@@ -196,7 +196,8 @@
   .sw.on { border-color: var(--ink); }
   .langs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .langs .opt { font: 600 14px var(--font-body); padding: 10px 4px; }
-  .settingsbtn { position: absolute; top: 0; left: 0; }
+  @media (max-width: 540px) { .narrow .topbar { padding-left: 50px; } }
+  #s-multi > :first-child, #s-lobby > :first-child { margin-top: 0; }
 
   /* Modi: Popup, Teams, Mehrspieler-Anzeige */
   .sheet.picker { text-align: left; max-width: 440px; }
@@ -210,7 +211,7 @@
   .slots.dense .avatar { width: 30px; height: 30px; border-radius: 10px; font-size: 13px; }
   .team { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
   .slot.empty .who b { white-space: normal; font-size: 13px; line-height: 1.25; }
-  .slot.sel { outline: 2px solid var(--accent); outline-offset: 1px; } .slot.clk { cursor: pointer; }
+  .slot.sel { border-color: var(--accent); box-shadow: inset 0 0 0 2px var(--accent); } .slot.clk { cursor: pointer; }
   .slot.pick { cursor: pointer; } .slot.pick:hover { background: var(--surface-2); }
   .vs.many { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 6px; }
   .gcard { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 6px 10px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 3px 8px; min-width: 0; transition: border-color .2s; }
@@ -346,11 +347,11 @@
   </defs>
 </svg>
 
+<button class="iconbtn" id="gSettings" data-settings type="button" aria-label="Settings" style="position:fixed;top:max(12px,env(safe-area-inset-top));left:12px;z-index:12"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
 <div class="app">
 
   <!-- START -->
   <section id="s-start" class="screen narrow" hidden style="position:relative">
-    <button class="iconbtn settingsbtn" data-settings type="button" aria-label="Settings"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
     <div class="hero">
       <div class="fan" id="fan" aria-hidden="true"></div>
       <h1 class="logo">SET<small>DUELL</small></h1>
@@ -373,9 +374,9 @@
   <!-- MULTIPLAYER MENU -->
   <section id="s-multi" class="screen narrow" hidden>
     <div class="topbar">
-      <div class="row" style="gap:8px;flex:none;flex-wrap:nowrap"><button class="iconbtn" data-settings type="button" aria-label="Settings"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button><button class="iconbtn" id="bMultiBack" type="button" data-i18n-aria="back" aria-label="Zurück">←</button></div>
+      <button class="iconbtn" id="bMultiBack" type="button" data-i18n-aria="back" aria-label="Zurück">←</button>
       <span class="eyebrow" data-i18n="multi.title">Multiplayer</span>
-      <span style="width:92px"></span>
+      <span style="width:42px"></span>
     </div>
     <div id="cfgWarn" class="notice" hidden data-i18n-html="multi.cfg">Supabase ist noch nicht konfiguriert. Trage URL und anon key in <code>config.js</code> ein.</div>
     <div class="glass option">
@@ -395,9 +396,9 @@
   <!-- LOBBY -->
   <section id="s-lobby" class="screen narrow" hidden>
     <div class="topbar">
-      <div class="row" style="gap:8px;flex:none;flex-wrap:nowrap"><button class="iconbtn" data-settings type="button" aria-label="Settings"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button><button class="iconbtn" id="bLeave" type="button" data-i18n-aria="lobby.leave" aria-label="Lobby verlassen">←</button></div>
+      <button class="iconbtn" id="bLeave" type="button" data-i18n-aria="lobby.leave" aria-label="Lobby verlassen">←</button>
       <span class="eyebrow" id="lobbyTitle">Lobby</span>
-      <span style="width:92px"></span>
+      <span style="width:42px"></span>
     </div>
     <div class="glass codecard">
       <span class="eyebrow" data-i18n="lobby.code">Lobby-Code</span>
@@ -408,7 +409,7 @@
       </div>
     </div>
     <div class="slots" id="lobbyPlayers"></div>
-    <div class="row split" id="teamTools" hidden><span class="muted" id="moveHint" style="font-size:12px;flex:1"></span><button class="btn sm" id="bShuffle" type="button" data-i18n="lobby.shuffle">Mischen</button></div>
+    <div class="row split" id="teamTools" hidden><span class="muted" id="moveHint" style="font-size:12px;flex:1"></span><button class="btn sm" id="bShuffle" type="button"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg><span data-i18n="lobby.shuffle">Mischen</span></button></div>
     <div class="glass">
       <div class="row split">
         <div><div style="font-weight:600" data-i18n="lobby.target">Punkte zum Sieg</div><div class="muted" id="tHint" style="font-size:13px"></div></div>
@@ -660,7 +661,7 @@
 
   /* ---------- Screens ---------- */
   var SCREENS = ['start', 'multi', 'lobby', 'game'];
-  function show(name) { SCREENS.forEach(function (n) { $('s-' + n).hidden = n !== name; }); window.scrollTo(0, 0); }
+  function show(name) { SCREENS.forEach(function (n) { $('s-' + n).hidden = n !== name; }); $('gSettings').hidden = name === 'game'; window.scrollTo(0, 0); }
 
   /* ---------- Zustand ---------- */
   var mode = null;            // 'solo' | 'online'

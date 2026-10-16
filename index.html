@@ -169,6 +169,43 @@
   .stage { background: #fff; box-shadow: 0 8px 24px -14px rgba(0,0,0,.12); border: 1px solid var(--line); border-radius: 26px; padding: 12px; flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
   .table { display: grid; gap: 8px; justify-content: center; align-content: center; }
 
+  /* Modi: Popup, Teams, Mehrspieler-Anzeige */
+  .sheet.picker { text-align: left; max-width: 440px; }
+  .sheet.picker .title { text-align: center; }
+  .opts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: -6px; }
+  .opts.t5 { grid-template-columns: repeat(5, 1fr); }
+  .opt { font: 800 15px var(--font-display); padding: 10px 2px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; text-align: center; }
+  .opt small { display: block; font: 500 10px var(--font-body); color: var(--muted); margin-top: 2px; }
+  .opt.on { background: var(--ink); color: #fff; border-color: var(--ink); } .opt.on small { color: #bbb; }
+  .slots.dense { gap: 6px; } .slots.dense .slot { padding: 7px 10px; border-radius: 13px; gap: 8px; }
+  .slots.dense .avatar { width: 30px; height: 30px; border-radius: 10px; font-size: 13px; }
+  .team { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .slot.pick { cursor: pointer; } .slot.pick:hover { background: var(--surface-2); }
+  .vs.many { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 6px; }
+  .gcard { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 6px 10px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 3px 8px; min-width: 0; transition: border-color .2s; }
+  .gcard.me { border-color: var(--ink); } .gcard.gone, .pcard.gone { opacity: .45; }
+  .gcard .dot { width: 11px; height: 11px; border-radius: 4px; flex: none; }
+  .gcard .nm { font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gcard .sc { font: 800 24px/1 var(--font-display); font-variant-numeric: tabular-nums; } .gcard .sc.neg { color: var(--bad); }
+  .gcard .track { grid-column: 1 / -1; height: 4px; border-radius: 99px; background: #ecece7; overflow: hidden; }
+  .gcard .fill { height: 100%; border-radius: 99px; transition: width .4s cubic-bezier(.2,.8,.2,1); }
+  .gcard .mem { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 0 10px; font-size: 11px; color: var(--muted); }
+  .gcard .mem .me { color: var(--ink); font-weight: 700; } .gcard .mem .gone { text-decoration: line-through; opacity: .6; }
+  .gcard.flash-good { animation: flashg .7s ease; } .gcard.flash-bad { animation: flashb .7s ease; }
+  .vs.mini .gcard { padding: 4px 8px; } .vs.mini .sc { font-size: 18px; }
+  .final.list { gap: 6px; }
+  .final.list.tight { gap: 4px; } .final.list.tight .crow { padding: 4px 10px; } .final.list.tight .crow .avatar { width: 24px; height: 24px; font-size: 12px; }
+  #s-lobby.dense .codebig { font-size: 34px; } #s-lobby.dense .glass { padding: 12px; gap: 8px; } #s-lobby.dense { gap: 8px; }
+  .ghead { display: flex; align-items: center; gap: 8px; padding: 6px 4px 0; font-size: 14px; text-align: left; }
+  .ghead .dot { width: 11px; height: 11px; border-radius: 4px; } .ghead span:last-child { margin-left: auto; font-weight: 700; color: var(--muted); }
+  .ghead.win b::after { content: " 🏆"; }
+  .crow { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); text-align: left; font-weight: 600; }
+  .crow.win { background: #e8f7ef; border-color: #b5e3c9; }
+  .crow .avatar { width: 28px; height: 28px; border-radius: 9px; font-size: 13px; }
+  .crow .cn { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+  .crow .cp { margin-left: auto; font-size: 12px; color: var(--muted); }
+  .crow .ciq { margin-left: auto; font: 800 20px var(--font-display); } .crow .cp + .ciq { margin-left: 12px; } .crow .ciq small { font: 600 11px var(--font-body); color: var(--muted); }
+
   /* kompaktes Spiel-UI, damit das Spielfeld maximal Platz hat */
   #s-game { gap: 8px; }
   #s-game .topbar .iconbtn { width: 36px; height: 36px; border-radius: 11px; font-size: 16px; }
@@ -326,7 +363,7 @@
   <section id="s-lobby" class="screen narrow" hidden>
     <div class="topbar">
       <button class="iconbtn" id="bLeave" type="button" aria-label="Lobby verlassen">←</button>
-      <span class="eyebrow">Lobby</span>
+      <span class="eyebrow" id="lobbyTitle">Lobby</span>
       <span style="width:42px"></span>
     </div>
     <div class="glass codecard">
@@ -383,6 +420,15 @@
   </section>
 </div>
 
+<div id="modeModal" class="modal" hidden>
+  <div class="sheet picker" role="dialog" aria-label="Spielmodus">
+    <h2 class="title">Spielmodus</h2>
+    <div class="eyebrow">Teams</div><div class="opts t5" id="optTeams"></div>
+    <div class="eyebrow">Jeder gegen jeden</div><div class="opts" id="optFfa"></div>
+    <p class="muted" id="modeInfo" style="font-size:13px"></p>
+    <div class="btns"><button class="btn primary block" id="bModeGo" type="button">Lobby erstellen</button><button class="btn block ghost" id="bModeCancel" type="button">Abbrechen</button></div>
+  </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script src="config.js"></script>
 <script>
@@ -441,16 +487,46 @@
       board.length = newLen;
     }
   }
+  /* ---------- Modi: 1v1, Teams (2v2 … 5v5), Jeder gegen jeden (3–10) ---------- */
+  var PALETTE = ['#0e0e10', '#2f6bff', '#e8590c', '#16a05d', '#a63fd8', '#d6336c', '#0ca5b0', '#b58900', '#5c5f66', '#c92a2a'];
+  function cfgOf(s) { return (s.players[0] && s.players[0].cfg) || { kind: 'ffa', n: 2 }; }
+  function capOf(c) { return c.kind === 'teams' ? c.teams * c.size : c.n; }
+  function isTeams(s) { return cfgOf(s).kind === 'teams'; }
+  function modeLabel(c) {
+    if (c.kind === 'teams') return Array(c.teams).fill(c.size).join('v');
+    return c.n <= 5 ? Array(c.n).fill(1).join('v') : 'FFA ' + c.n;
+  }
+  function groupsOf(s) {
+    var c = cfgOf(s), g = [];
+    if (c.kind === 'teams') for (var t = 0; t < c.teams; t++) g.push({ id: 't' + t, idx: t, name: 'Team ' + (t + 1), players: s.players.filter(function (p) { return p.team === t; }) });
+    else g = s.players.map(function (p, i) { return { id: p.id, idx: i, name: p.name, players: [p] }; });
+    g.forEach(function (x) { x.score = x.players.reduce(function (a, p) { return a + p.score; }, 0); });
+    return g;
+  }
+  function colorOf(s, p) { return PALETTE[(isTeams(s) ? (p.team || 0) : Math.max(0, s.players.indexOf(p))) % PALETTE.length]; }
+  function isWinnerP(s, p) { return s.winner != null && (s.winner === p.id || (isTeams(s) && s.winner === 't' + p.team)); }
+  function sameSide(s, a, b) { return isTeams(s) ? a.team === b.team : a.id === b.id; }
+  function hostId(s) { var p = s.players.filter(function (x) { return !x.left; })[0]; return p && p.id; }
+  function startable(s) {
+    var c = cfgOf(s), act = s.players.filter(function (p) { return !p.left; });
+    if (c.kind !== 'teams') return act.length >= 2;
+    var cnt = groupsOf(s).map(function (g) { return g.players.filter(function (p) { return !p.left; }).length; });
+    return cnt[0] >= 1 && cnt.every(function (x) { return x === cnt[0]; });
+  }
+  function cleanLeft(s) {
+    var cfg = s.players[0] && s.players[0].cfg;
+    s.players = s.players.filter(function (p) { return !p.left; });
+    if (s.players[0] && cfg) s.players[0].cfg = cfg;
+  }
   function settle(s) {
     while (!findSet(s.board) && s.deck.length >= 3) s.board = s.board.concat(s.deck.splice(0, 3));
-    var lead = null;
-    s.players.forEach(function (p) { if (s.target > 0 && p.score >= s.target && (!lead || p.score > lead.score)) lead = p; });
+    var gs = groupsOf(s), lead = null;
+    gs.forEach(function (g) { if (s.target > 0 && g.score >= s.target && (!lead || g.score > lead.score)) lead = g; });
     if (lead) { s.status = 'finished'; s.winner = lead.id; return; }
     if (!findSet(s.board) && s.deck.length === 0) {
       s.status = 'finished';
-      var sorted = s.players.slice().sort(function (a, b) { return b.score - a.score; });
-      s.winner = (sorted.length > 1 && sorted[0].score === sorted[1].score) ? null : sorted[0].id;
-      if (s.players.length === 1) s.winner = null;
+      var sorted = gs.slice().sort(function (a, b) { return b.score - a.score; });
+      s.winner = (gs.length > 1 && sorted[0].score !== sorted[1].score) ? sorted[0].id : null;
     }
   }
   // reine Funktion: wendet einen Zug an
@@ -609,19 +685,48 @@
 
   function genCode() { return String(Math.floor(100000 + Math.random() * 900000)); }
 
-  $('bCreate').addEventListener('click', async function () {
+  /* ---------- Modus-Popup ---------- */
+  var MODES = { teams: [{ kind: 'ffa', n: 2 }, { kind: 'teams', teams: 2, size: 2 }, { kind: 'teams', teams: 2, size: 3 }, { kind: 'teams', teams: 2, size: 4 }, { kind: 'teams', teams: 2, size: 5 }], ffa: [] };
+  for (var fn = 3; fn <= 10; fn++) MODES.ffa.push({ kind: 'ffa', n: fn });
+  var pickedMode = MODES.teams[0];
+  function modeInfoText(c) {
+    if (c.kind === 'teams') return 'Zwei Teams à ' + c.size + '. Die Punkte eines Teams werden zusammengezählt, das erste Team am Ziel gewinnt.';
+    if (c.n === 2) return 'Einer gegen einen. Wer zuerst das Ziel erreicht, gewinnt.';
+    return 'Jeder gegen jeden mit ' + c.n + ' Spielern. Wer zuerst das Ziel erreicht, gewinnt.';
+  }
+  function renderModePicker() {
+    function fill(box, list) {
+      box.innerHTML = '';
+      list.forEach(function (c) {
+        var b = el('button', 'opt' + (modeLabel(c) === modeLabel(pickedMode) ? ' on' : ''), modeLabel(c)); b.type = 'button';
+        b.appendChild(el('small', null, capOf(c) + ' Spieler'));
+        b.addEventListener('click', function () { pickedMode = c; renderModePicker(); });
+        box.appendChild(b);
+      });
+    }
+    fill($('optTeams'), MODES.teams); fill($('optFfa'), MODES.ffa);
+    $('modeInfo').textContent = modeInfoText(pickedMode);
+  }
+  $('bCreate').addEventListener('click', function () {
     if (!configured) { $('multiErr').textContent = 'Supabase ist nicht konfiguriert.'; return; }
-    $('multiErr').textContent = '';
+    $('multiErr').textContent = ''; renderModePicker(); $('modeModal').hidden = false;
+  });
+  $('bModeCancel').addEventListener('click', function () { $('modeModal').hidden = true; });
+  $('modeModal').addEventListener('click', function (e) { if (e.target === this) this.hidden = true; });
+  $('bModeGo').addEventListener('click', function () { $('modeModal').hidden = true; createLobby(pickedMode); });
+
+  async function createLobby(cfg) {
     for (var i = 0; i < 5; i++) {
       var code = genCode();
-      var row = { code: code, status: 'waiting', target: 5, version: 0,
-        players: [{ id: myId, name: myName(), score: 0, sets: 0, misses: 0 }], deck: [], board: [] };
+      var host = { id: myId, name: myName(), score: 0, sets: 0, misses: 0, team: 0, cfg: cfg };
+      var row = { code: code, status: 'waiting', target: cfg.kind === 'teams' ? 5 * cfg.size : 5, version: 0,
+        players: [host], deck: [], board: [] };
       var r = await sb.from('lobbies').insert(row).select().single();
       if (!r.error) { enterLobby(r.data); return; }
       if (r.error.code !== '23505') { $('multiErr').textContent = 'Fehler: ' + r.error.message; return; }
     }
     $('multiErr').textContent = 'Konnte keine Lobby erstellen. Bitte nochmal versuchen.';
-  });
+  }
 
   $('joinCode').addEventListener('input', function () { this.value = this.value.replace(/\D/g, '').slice(0, 6); });
   $('bJoin').addEventListener('click', async function () {
@@ -641,8 +746,15 @@
       if (!row) return 'Keine Lobby mit diesem Code gefunden.';
       if (row.players.some(function (p) { return p.id === myId; })) { enterLobby(row); return null; }
       if (row.status !== 'waiting') return 'Dieses Spiel läuft bereits.';
-      if (row.players.length >= 2) return 'Die Lobby ist voll.';
-      var players = row.players.concat([{ id: myId, name: myName(), score: 0, sets: 0, misses: 0 }]);
+      var jc = cfgOf(row);
+      if (row.players.length >= capOf(jc)) return 'Die Lobby ist voll.';
+      var me2 = { id: myId, name: myName(), score: 0, sets: 0, misses: 0, team: 0 };
+      if (jc.kind === 'teams') {
+        var best = 0, bestN = 99;
+        for (var t = 0; t < jc.teams; t++) { var n = row.players.filter(function (p) { return p.team === t; }).length; if (n < jc.size && n < bestN) { best = t; bestN = n; } }
+        me2.team = best;
+      }
+      var players = row.players.concat([me2]);
       var u = await sb.from('lobbies').update({ players: players, version: row.version + 1 }).eq('code', code).eq('version', row.version).select().maybeSingle();
       if (u.error) return 'Fehler: ' + u.error.message;
       if (u.data) { enterLobby(u.data); return null; }
@@ -687,11 +799,13 @@
     if (mode !== 'online' || !st || row.code !== st.code) return;
     if (row.version <= st.version) return;
     var old = st; st = row;
-    // Meldung bei Zug des Gegners
-    if (row.last && (!old.last || row.last.n !== old.last.n || old.status !== row.status) && row.last.pid !== myId && row.status !== 'waiting' && !row.last.left) {
-      var who = row.players.filter(function (p) { return p.id === row.last.pid; })[0];
-      if (who) {
-        setMsg(who.name + (row.last.ok ? ' hat ein Set gefunden (+1)' : ' lag falsch (−1)'), row.last.ok ? 'bad' : 'good');
+    // Meldung bei Zug eines Mitspielers
+    if (row.last && (!old.last || row.last.n !== old.last.n || old.status !== row.status) && row.last.pid !== myId && row.status !== 'waiting') {
+      var who = row.players.filter(function (p) { return p.id === row.last.pid; })[0], mine = row.players.filter(function (p) { return p.id === myId; })[0];
+      if (who && row.last.left) { if (row.status === 'playing') setMsg(who.name + ' hat das Spiel verlassen', ''); }
+      else if (who && mine) {
+        var mate = sameSide(row, who, mine);
+        setMsg(who.name + (row.last.ok ? ' hat ein Set gefunden (+1)' : ' lag falsch (−1)'), row.last.ok === mate ? 'good' : 'bad');
         setTimeout(function () { flashPlayer(who.id, row.last.ok); }, 0);
       }
     }
@@ -711,37 +825,63 @@
   /* ---------- Lobby ---------- */
   var PRESETS = [3, 5, 10, 15, 25];
   function renderLobby() {
-    var host = st.players[0] && st.players[0].id === myId;
+    var host = st.players[0] && st.players[0].id === myId, c = cfgOf(st);
     $('lobbyCode').textContent = st.code;
+    $('lobbyTitle').textContent = 'Lobby · ' + modeLabel(c);
     var box = $('lobbyPlayers'); box.innerHTML = '';
-    for (var i = 0; i < 2; i++) {
-      var p = st.players[i], slot = el('div', 'slot' + (p ? '' : ' empty'));
-      var av = el('div', 'avatar ' + (p ? 'a' + i : 'dim'), p ? initial(p.name) : '?');
-      if (p) { var lv = el('span', 'live' + (isOn(p.id) ? ' on' : '')); av.appendChild(lv); }
+    box.className = 'slots' + (capOf(c) > 4 ? ' dense' : '');
+    $('s-lobby').classList.toggle('dense', capOf(c) > 4);
+    function slotFor(p, teamIdx) {
+      var slot = el('div', 'slot' + (p ? '' : ' empty'));
+      var av = el('div', 'avatar' + (p ? '' : ' dim'), p ? initial(p.name) : '?');
+      if (p) { av.style.background = colorOf(st, p); av.appendChild(el('span', 'live' + (isOn(p.id) ? ' on' : ''))); }
       var who = el('div', 'who');
-      if (p) { who.appendChild(el('b', null, p.name)); who.appendChild(el('span', null, (i === 0 ? 'Host' : 'Gast') + (p.id === myId ? ' · du' : ''))); }
-      else { who.appendChild(el('b', 'muted pulse-dots', 'Warte auf Gegner')); }
-      slot.appendChild(av); slot.appendChild(who); box.appendChild(slot);
+      if (p) { who.appendChild(el('b', null, p.name)); who.appendChild(el('span', null, (p === st.players[0] ? 'Host' : 'Spieler') + (p.id === myId ? ' · du' : ''))); }
+      else { who.appendChild(el('b', 'muted', teamIdx != null ? 'Frei – hier beitreten' : 'Warte auf Spieler')); if (teamIdx == null) who.firstChild.className += ' pulse-dots'; }
+      slot.appendChild(av); slot.appendChild(who);
+      if (!p && teamIdx != null) { slot.classList.add('pick'); slot.addEventListener('click', function () { moveToTeam(teamIdx); }); }
+      return slot;
+    }
+    if (c.kind === 'teams') {
+      box.style.gridTemplateColumns = 'repeat(' + c.teams + ', 1fr)';
+      for (var t = 0; t < c.teams; t++) {
+        var col = el('div', 'team'); var mem = st.players.filter(function (p) { return p.team === t; });
+        var hd = el('div', 'eyebrow', 'Team ' + (t + 1)); hd.style.color = PALETTE[t]; col.appendChild(hd);
+        for (var k = 0; k < c.size; k++) col.appendChild(slotFor(mem[k], mem[k] ? null : t));
+        box.appendChild(col);
+      }
+    } else {
+      box.style.gridTemplateColumns = '';
+      for (var i = 0; i < c.n; i++) box.appendChild(slotFor(st.players[i], null));
     }
     $('tVal').textContent = st.target;
     $('tMinus').disabled = !host || st.target <= 1;
-    $('tPlus').disabled = !host || st.target >= 50;
-    $('tHint').textContent = host ? 'Du bestimmst als Host.' : 'Wird vom Host festgelegt.';
+    $('tPlus').disabled = !host || st.target >= 100;
+    $('tHint').textContent = (c.kind === 'teams' ? 'Teampunkte zusammen · ' : '') + (host ? 'Du bestimmst als Host.' : 'Wird vom Host festgelegt.');
     var pr = $('presets'); pr.innerHTML = '';
     PRESETS.forEach(function (n) {
       var b = el('button', 'btn sm' + (n === st.target ? ' on' : ''), String(n)); b.type = 'button'; b.disabled = !host;
       b.addEventListener('click', function () { setTarget(n); }); pr.appendChild(b);
     });
+    var ok = startable(st);
     $('bStart').hidden = !host;
-    $('bStart').disabled = st.players.length < 2;
-    $('bStart').textContent = st.players.length < 2 ? 'Warte auf Gegner …' : 'Spiel starten';
+    $('bStart').disabled = !ok;
+    $('bStart').textContent = ok ? 'Spiel starten' : (c.kind === 'teams' && st.players.length >= 2 ? 'Teams müssen gleich groß sein' : 'Warte auf Mitspieler …');
     $('lobbyWait').hidden = host;
     $('lobbyErr').textContent = '';
+  }
+  function moveToTeam(t) {
+    mutate(function (s) {
+      var c = cfgOf(s), p = s.players.filter(function (x) { return x.id === myId; })[0];
+      if (s.status !== 'waiting' || !p || c.kind !== 'teams') return null;
+      if (s.players.filter(function (x) { return x.team === t; }).length >= c.size) return null;
+      p.team = t; return s;
+    });
   }
   function setTarget(n) {
     mutate(function (s) {
       if (s.status !== 'waiting' || s.players[0].id !== myId) return null;
-      s.target = Math.max(1, Math.min(50, n)); return s;
+      s.target = Math.max(1, Math.min(100, n)); return s;
     });
   }
   $('tMinus').addEventListener('click', function () { setTarget(st.target - 1); });
@@ -764,7 +904,7 @@
   });
   async function hostStart() {
     var r = await mutate(function (s) {
-      if (s.players[0].id !== myId || s.players.length < 2) return null;
+      if (s.players[0].id !== myId || !startable(s)) return null;
       return startState(s);
     });
     if (!r.ok && r.reason !== 'invalid') $('lobbyErr').textContent = 'Start fehlgeschlagen, bitte nochmal.';
@@ -777,15 +917,20 @@
       try {
         await mutate(function (s) {
           if (s.status === 'waiting') {
+            var cfg0 = s.players[0].cfg;
             s.players = s.players.filter(function (p) { return p.id !== myId; });
+            if (s.players[0] && cfg0) s.players[0].cfg = cfg0;   // nächster Spieler wird Host
             return s;
           }
+          var meP = s.players.filter(function (p) { return p.id === myId; })[0];
+          if (!meP) return null;
+          meP.left = true;
           if (s.status === 'playing') {
-            var other = s.players.filter(function (p) { return p.id !== myId; })[0];
-            s.status = 'finished'; s.winner = other ? other.id : null; s.last = { pid: myId, ok: false, n: (s.last ? s.last.n : 0) + 1, left: true };
-            return s;
+            var act = groupsOf(s).filter(function (g) { return g.players.some(function (p) { return !p.left; }); });
+            s.last = { pid: myId, ok: false, n: (s.last ? s.last.n : 0) + 1, left: true };
+            if (act.length <= 1) { s.status = 'finished'; s.winner = act[0] ? act[0].id : null; }
           }
-          return null;
+          return s;
         });
       } catch (e) {}
       if (code && st && st.status === 'waiting' && st.players.length === 0) { try { await sb.from('lobbies').delete().eq('code', code); } catch (e) {} }
@@ -802,7 +947,7 @@
 
   /* ---------- Spiel ---------- */
   function flashPlayer(pid, ok) {
-    var e = document.querySelector('.pcard[data-pid="' + pid + '"]');
+    var e = document.querySelector('[data-pids~="' + pid + '"]');
     if (!e) return;
     e.classList.remove('flash-good', 'flash-bad'); void e.offsetWidth;
     e.classList.add(ok ? 'flash-good' : 'flash-bad');
@@ -810,22 +955,43 @@
   function renderScoreboard() {
     var box = $('scoreboard');
     if (mode !== 'online') { box.hidden = true; return; }
-    box.hidden = false; box.innerHTML = '';
-    function pcard(p, i) {
-      var d = el('div', 'pcard p' + i + (p.id === myId ? ' me' : '')); d.dataset.pid = p.id;
-      var head = el('div', 'head');
-      var av = el('div', 'avatar a' + i, initial(p.name)); av.appendChild(el('span', 'live' + (isOn(p.id) ? ' on' : '')));
-      var nm = el('div', 'nm', p.name); if (p.id === myId) nm.appendChild(el('i', null, ' · du'));
-      head.appendChild(av); head.appendChild(nm);
-      var pt = el('div', 'pt' + (p.score < 0 ? ' neg' : ''), String(p.score));
-      var tr = el('div', 'track'), fl = el('div', 'fill');
-      fl.style.width = Math.max(0, Math.min(100, p.score / st.target * 100)) + '%'; tr.appendChild(fl);
-      d.appendChild(head); d.appendChild(pt); d.appendChild(tr); return d;
+    box.hidden = false; box.innerHTML = ''; box.className = 'vs'; box.style.gridTemplateColumns = '';
+    var teams = isTeams(st), meP = me();
+    function ava(p) { var a = el('div', 'avatar', initial(p.name)); a.style.background = colorOf(st, p); a.appendChild(el('span', 'live' + (isOn(p.id) && !p.left ? ' on' : ''))); return a; }
+    function pct(sc) { return Math.max(0, Math.min(100, sc / st.target * 100)) + '%'; }
+    if (!teams && st.players.length <= 2) {          // klassisches 1v1
+      var pcard = function (p) {
+        var d = el('div', 'pcard' + (p.id === myId ? ' me' : '') + (p.left ? ' gone' : '')); d.dataset.pids = p.id;
+        var head = el('div', 'head'), nm = el('div', 'nm', p.name); if (p.id === myId) nm.appendChild(el('i', null, ' · du'));
+        head.appendChild(ava(p)); head.appendChild(nm);
+        var pt = el('div', 'pt' + (p.score < 0 ? ' neg' : ''), String(p.score));
+        var tr = el('div', 'track'), fl = el('div', 'fill'); fl.style.width = pct(p.score); fl.style.background = colorOf(st, p); tr.appendChild(fl);
+        d.appendChild(head); d.appendChild(pt); d.appendChild(tr); return d;
+      };
+      box.appendChild(pcard(st.players[0]));
+      var mid = el('div', 'mid'); mid.appendChild(document.createTextNode('Ziel')); mid.appendChild(el('b', null, String(st.target)));
+      box.appendChild(mid);
+      if (st.players[1]) box.appendChild(pcard(st.players[1]));
+      return;
     }
-    box.appendChild(pcard(st.players[0], 0));
-    var mid = el('div', 'mid'); mid.appendChild(document.createTextNode('Ziel')); mid.appendChild(el('b', null, String(st.target)));
-    box.appendChild(mid);
-    if (st.players[1]) box.appendChild(pcard(st.players[1], 1));
+    var gs = groupsOf(st), mini = !teams && st.players.length > 5;
+    box.className = 'vs many' + (mini ? ' mini' : '');
+    if (teams) box.style.gridTemplateColumns = 'repeat(' + gs.length + ', 1fr)';
+    gs.forEach(function (g) {
+      var mineG = meP && g.players.indexOf(meP) >= 0, col = PALETTE[g.idx % PALETTE.length];
+      var d = el('div', 'gcard' + (mineG ? ' me' : '')); d.dataset.pids = g.players.map(function (p) { return p.id; }).join(' ');
+      var dot = el('span', 'dot'); dot.style.background = col;
+      var nm = el('div', 'nm', teams ? g.name : g.players[0].name + (g.players[0].id === myId ? ' · du' : ''));
+      d.appendChild(dot); d.appendChild(nm); d.appendChild(el('div', 'sc' + (g.score < 0 ? ' neg' : ''), String(g.score)));
+      if (!mini) { var tr = el('div', 'track'), fl = el('div', 'fill'); fl.style.width = pct(g.score); fl.style.background = col; tr.appendChild(fl); d.appendChild(tr); }
+      if (teams) {
+        var mem = el('div', 'mem');
+        g.players.forEach(function (p) { mem.appendChild(el('span', (p.id === myId ? 'me' : '') + (p.left ? ' gone' : ''), p.name + ': ' + p.score)); });
+        d.appendChild(mem);
+      }
+      if (!teams && g.players[0].left) d.classList.add('gone');
+      box.appendChild(d);
+    });
   }
 
   function renderGame() {
@@ -838,7 +1004,7 @@
     if (!solo && $('soloBar').nextElementSibling === $('stage')) sec.insertBefore($('soloBar'), $('msg'));
     $('msg').hidden = mode === 'solo';   // Solo: kein Statustext, Spielfeld nutzt den Platz
     $('bHint').hidden = mode !== 'solo';
-    $('gChip').innerHTML = mode === 'online' ? 'Lobby <b>' + st.code + '</b>' : 'Solo';
+    $('gChip').innerHTML = mode === 'online' ? 'Lobby <b>' + st.code + '</b> · ' + modeLabel(cfgOf(st)) + ' · Ziel ' + st.target : 'Solo';
     var m = me() || st.players[0];
     $('sSets').textContent = m.sets; $('sMiss').textContent = m.misses; $('sDeck').textContent = st.deck.length;
     $('bHint').disabled = st.status !== 'playing';
@@ -923,7 +1089,7 @@
     btns.innerHTML = ''; sc.innerHTML = ''; note.hidden = true;
     function block(p, i, win, iqOverride) {
       var d = el('div', 'pres' + (win ? ' win' : ''));
-      var ph = el('div', 'ph'); ph.appendChild(el('div', 'avatar a' + i, initial(p.name)));
+      var ph = el('div', 'ph'); var bav = el('div', 'avatar', initial(p.name)); bav.style.background = (mode === 'online' ? colorOf(st, p) : PALETTE[0]); ph.appendChild(bav);
       ph.appendChild(el('span', null, p.name + (p.id === myId && mode === 'online' ? ' (du)' : '')));
       if (mode === 'online') ph.appendChild(el('b', null, p.score + ' Pkt.'));
       var iq = iqOverride != null ? iqOverride : calcIQ(p), row = el('div', 'iq'); row.appendChild(el('span', null, 'Geschätzter IQ'));
@@ -941,24 +1107,50 @@
       addBtn(btns, 'Zum Start', false, toStart);
       return;
     }
-    var winner = st.players.filter(function (p) { return p.id === st.winner; })[0];
+    var meP = me(), teams = isTeams(st), hasWin = st.winner != null;
+    var iWon = !!(meP && isWinnerP(st, meP)), many = teams || st.players.length > 2;
     var left = st.last && st.last.left;
-    var iWon = winner && winner.id === myId;
-    $('endTitle').textContent = !winner ? 'Unentschieden' : iWon ? 'True High IQ!' : 'Du wurdest IQ-Gemoggt!';
-    $('endText').textContent = !winner ? 'Der Stapel ist leer.' : iWon ? 'Du hast gewonnen!' : 'Du hast verloren!';
-    if (left) { note.textContent = st.last.pid === myId ? 'Du hast das Spiel verlassen.' : 'Dein Gegner hat das Spiel verlassen.'; note.hidden = false; }
-    // Der Gewinner hat immer den höheren IQ
-    var iqs = st.players.map(calcIQ);
-    if (winner && st.players.length === 2) {
-      var w = st.players[0].id === winner.id ? 0 : 1, o = 1 - w;
-      if (iqs[w] <= iqs[o]) { iqs[w] = Math.min(180, iqs[o] + 1); if (iqs[w] <= iqs[o]) iqs[o] = iqs[w] - 1; }
+    $('endTitle').textContent = !hasWin ? 'Unentschieden' : iWon ? 'True High IQ!' : 'Du wurdest IQ-Gemoggt!';
+    var wname = '';
+    if (hasWin && !teams) { var wp = st.players.filter(function (p) { return p.id === st.winner; })[0]; wname = wp ? wp.name : ''; }
+    $('endText').textContent = !hasWin ? 'Der Stapel ist leer.'
+      : teams ? (iWon ? 'Dein Team hat gewonnen!' : 'Dein Team hat verloren!')
+      : iWon ? 'Du hast gewonnen!' : (many && wname ? wname + ' hat gewonnen. Du hast verloren!' : 'Du hast verloren!');
+    if (left) { note.textContent = st.last.pid === myId ? 'Du hast das Spiel verlassen.' : 'Ein Mitspieler hat das Spiel verlassen.'; note.hidden = false; }
+    // Einzelner Gewinner hat immer den höchsten IQ
+    var iqs = st.players.map(calcIQ), winIdx = teams ? -1 : st.players.findIndex(function (p) { return p.id === st.winner; });
+    if (winIdx >= 0) {
+      var mx = Math.max.apply(null, iqs.filter(function (_, i) { return i !== winIdx; }));
+      if (iqs[winIdx] <= mx) { iqs[winIdx] = Math.min(180, mx + 1); if (iqs[winIdx] <= mx) iqs = iqs.map(function (v, i) { return i === winIdx ? v : Math.min(v, iqs[winIdx] - 1); }); }
     }
-    st.players.forEach(function (p, i) { sc.appendChild(block(p, i, winner && winner.id === p.id, iqs[i])); });
-    var host = st.players[0].id === myId;
-    if (host && st.players.length === 2 && !left) {
-      addBtn(btns, 'Revanche', true, hostStart);
-      addBtn(btns, 'Zur Lobby', false, function () { mutate(function (s) { s.status = 'waiting'; s.winner = null; s.last = null; return s; }); });
-    } else if (!host && !left) {
+    if (!many) {
+      st.players.forEach(function (p, i) { sc.appendChild(block(p, i, isWinnerP(st, p), iqs[i])); });
+    } else {
+      sc.className = 'final list' + (st.players.length > 6 ? ' tight' : '');
+      var gs = groupsOf(st).slice().sort(function (a, b) { return b.score - a.score; });
+      gs.forEach(function (g) {
+        var win = st.winner === g.id;
+        if (teams) { var h = el('div', 'ghead' + (win ? ' win' : '')); var dd = el('span', 'dot'); dd.style.background = PALETTE[g.idx]; h.appendChild(dd); h.appendChild(el('b', null, g.name)); h.appendChild(el('span', null, g.score + ' Pkt.')); sc.appendChild(h); }
+        g.players.forEach(function (p) {
+          var row = el('div', 'crow' + (!teams && win ? ' win' : '')), av = el('div', 'avatar', initial(p.name)); av.style.background = colorOf(st, p);
+          row.appendChild(av); row.appendChild(el('span', 'cn', p.name + (p.id === myId ? ' (du)' : '')));
+          if (!teams) row.appendChild(el('span', 'cp', p.score + ' Pkt.'));
+          var q = el('b', 'ciq', String(iqs[st.players.indexOf(p)])); q.appendChild(el('small', null, ' IQ')); row.appendChild(q);
+          sc.appendChild(row);
+        });
+      });
+    }
+    var active = st.players.filter(function (p) { return !p.left; }).length;
+    if (hostId(st) === myId && active >= 2) {
+      addBtn(btns, 'Revanche', true, function () {
+        mutate(function (s) {
+          cleanLeft(s);
+          if (startable(s)) return startState(s);
+          s.status = 'waiting'; s.winner = null; s.last = null; return s;
+        });
+      });
+      addBtn(btns, 'Zur Lobby', false, function () { mutate(function (s) { cleanLeft(s); s.status = 'waiting'; s.winner = null; s.last = null; return s; }); });
+    } else if (hostId(st) !== myId && active >= 2) {
       btns.appendChild(el('p', 'muted pulse-dots', 'Warte auf den Host'));
     }
     addBtn(btns, 'Verlassen', false, function () { leaveOnline(); });

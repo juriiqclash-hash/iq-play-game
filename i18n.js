@@ -628,6 +628,7 @@
     document.querySelectorAll("[data-i18n]").forEach(function (e) { e.textContent = t(e.getAttribute("data-i18n")); });
     document.querySelectorAll("[data-i18n-html]").forEach(function (e) { e.innerHTML = t(e.getAttribute("data-i18n-html")); });
     document.querySelectorAll("[data-i18n-aria]").forEach(function (e) { e.setAttribute("aria-label", t(e.getAttribute("data-i18n-aria"))); });
+    document.querySelectorAll("[data-i18n-title]").forEach(function (e) { e.title = t(e.getAttribute("data-i18n-title")); });
     document.querySelectorAll("[data-i18n-ph]").forEach(function (e) { e.placeholder = t(e.getAttribute("data-i18n-ph")); });
   }
   function setLang(l) {

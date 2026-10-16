@@ -424,6 +424,7 @@
 
 <button class="iconbtn" id="gSettings" data-settings type="button" data-i18n-aria="set.title" aria-label="Settings" style="position:fixed;top:max(12px,env(safe-area-inset-top));left:12px;z-index:12"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
 <button class="iconbtn" id="gRules" type="button" aria-label="Regeln" data-i18n-aria="rules.title" style="position:fixed;top:max(12px,env(safe-area-inset-top));left:62px;z-index:12"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+<button class="iconbtn" id="bInstall" type="button" hidden data-i18n-aria="install.btn" data-i18n-title="install.btn" aria-label="App installieren" title="App installieren" style="position:fixed;top:max(12px,env(safe-area-inset-top));left:112px;z-index:12"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><path d="M5 21h14"/></svg></button>
 <div class="app">
 
   <!-- START -->
@@ -445,7 +446,6 @@
       <button class="btn block" id="bSolo" type="button" data-i18n="btn.solo">Solo spielen</button>
       <button class="btn block" id="bStats" type="button" data-i18n="btn.stats">Stats</button>
       <button class="btn block" id="bRejoin" type="button" hidden></button>
-      <button class="btn block" id="bInstall" type="button" hidden><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><path d="M5 21h14"/></svg><span data-i18n="install.btn">App installieren</span></button>
     </div>
   </section>
 
@@ -821,7 +821,7 @@
 
   /* ---------- Screens ---------- */
   var SCREENS = ['start', 'multi', 'lobby', 'game'];
-  function show(name) { SCREENS.forEach(function (n) { $('s-' + n).hidden = n !== name; }); $('gSettings').hidden = name !== 'start'; $('gRules').hidden = name !== 'start';
+  function show(name) { SCREENS.forEach(function (n) { $('s-' + n).hidden = n !== name; }); $('gSettings').hidden = name !== 'start'; $('gRules').hidden = name !== 'start'; curScreen = name; if (typeof updateInstall === 'function') updateInstall();
     if (name === 'multi') startPubPoll(); else stopPubPoll();
     $('wheel').hidden = true; window.scrollTo(0, 0); }
 
@@ -1020,7 +1020,8 @@
   /* ---------- App installieren (PWA) ---------- */
   var isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
   var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  function updateInstall() { $('bInstall').hidden = isStandalone || !(window.__bip || isIOS); }
+  var curScreen = 'start';
+  function updateInstall() { $('bInstall').hidden = curScreen !== 'start' || isStandalone || !(window.__bip || isIOS); }
   window.addEventListener('bip-ready', updateInstall);
   window.addEventListener('appinstalled', function () { window.__bip = null; isStandalone = true; updateInstall(); });
   $('bInstall').addEventListener('click', function () {
